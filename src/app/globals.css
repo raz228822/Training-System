@@ -2,26 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+.th {
+  @apply px-4 py-2 bg-yellow-300 border font-bold text-2xl
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.name {
+  @apply px-4 py-2 text-center font-bold border-l text-2xl bg-black text-white
+}
+
+.firstExc {
+  @apply px-4 py-2 text-center font-bold text-2xl bg-black text-white
+}
+
+.secondExc {
+  @apply px-4 py-2 text-center font-bold text-2xl bg-black text-red-500
+}
+
+.excType {
+  @apply px-4 py-2 text-center border font-bold text-2xl
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-image: url('/background.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
