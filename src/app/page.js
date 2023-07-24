@@ -5,12 +5,19 @@ import logo from 'public/logo.png'
 import Timer from '../components/timer'
 import React from 'react';
 import { useState, useRef } from 'react';
+import EditableCell from '../components/EditableCell'
+
+
 
 export default function Home() {
-  const [editingNameIndex, setEditingNameIndex] = useState(null);
-  const startEditingName = (index) => setEditingNameIndex(index)
-  const stopEditingName = () =>  setEditingNameIndex(null)
+  const [editingCell, setEditingCell] = useState(null)
   const editNameRef = useRef()
+
+  const startEditingCell = (index, fieldName) => {
+    setEditingCell({ index, fieldName })
+  }
+  
+  const stopEditingCell = () =>  setEditingCell(null)
 
   const [tableData, setTableData] = useState([
     {excType: 'SQUAT(1)', bgColor: 'bg-gray-100', firstExc: 'סקוואט הטחות \u2190 קפיצה על תיבה', secondExc: 'בטן סטטית(הולו הולד) + ראשן טויסט', name1: '', name2: ''},
@@ -21,23 +28,19 @@ export default function Home() {
     {excType: 'TWIST(6)', bgColor: 'bg-yellow-300', firstExc: 'כפיפות צד', secondExc: 'חבל קפיצה על רגל אחת', name1: '', name2: ''}
   ])
 
-  
-
-  const updateTableData = (index) => {
-    console.log(index)
-    const newName = editNameRef.current.value
-    console.log(newName)
+  const updateTableData = (index, fieldName) => {
+    const newData = editNameRef.current.value;
     setTableData((prevData) => {
-      const updatedData = [...prevData]
-      updatedData[index].name1 = newName
-      return updatedData
-    })
-    stopEditingName()
-  }
+      const updatedData = [...prevData];
+      updatedData[index][fieldName] = newData;
+      return updatedData;
+    });
+    stopEditingCell();
+  };
 
-  const handleKeyDown = (event, index) => {
+  const handleKeyDown = (event, index, fieldName) => {
     if (event.key === 'Enter') {
-      updateTableData(index);
+      updateTableData(index, fieldName);
     }
   }
 
@@ -55,39 +58,82 @@ export default function Home() {
 
           <tbody>
           {tableData.map((exercise, index) => (
-            <React.Fragment key={index}>
-              <tr key={index}>
-                <td className={`excType ${exercise.bgColor}`} rowSpan={2}>
-                  {exercise.excType}
-                </td>
-                <td className="firstExc">
-                  {exercise.firstExc}
-                </td>
-                <td className="name cursor-pointer"
-                  onClick={()=> startEditingName(index)}
-                  onBlur={() => updateTableData(index)}
-                  onKeyDown={(event) => handleKeyDown(event, index)}
-                  >
-                  {editingNameIndex === index ? (
-                    <>
-                    <input className="name" type="text" defaultValue={tableData[index].name1} ref={editNameRef} autoFocus />
-                    </>
-                ) : (
-                  <>
-                    {exercise.name1}
-                  </>
-                )}
-                </td>
-              </tr>
-              <tr className="border-b">
-                <td className="secondExc">{exercise.secondExc}</td>
-                <td className="name cursor-pointer" onClick={() => startEditingName(index)}>
-                  {exercise.name2}
-                </td>
-              </tr>
+          <React.Fragment key={index}>
+            <tr>
+
+              <EditableCell
+              key={index + "excType"}
+              exercise={exercise}
+              index={index}
+              editingCell={editingCell}
+              startEditingCell={startEditingCell}
+              updateTableData={updateTableData}
+              handleKeyDown={handleKeyDown}
+              editNameRef={editNameRef}
+              tableData={tableData}
+              fieldName={'excType'}
+              />
+
+              <EditableCell
+              key={index + "firstExc"}
+              exercise={exercise}
+              index={index}
+              editingCell={editingCell}
+              startEditingCell={startEditingCell}
+              updateTableData={updateTableData}
+              handleKeyDown={handleKeyDown}
+              editNameRef={editNameRef}
+              tableData={tableData}
+              fieldName={'firstExc'}
+              />
+
+              <EditableCell
+              key={index + "name1"}
+              exercise={exercise}
+              index={index}
+              editingCell={editingCell}
+              startEditingCell={startEditingCell}
+              updateTableData={updateTableData}
+              handleKeyDown={handleKeyDown}
+              editNameRef={editNameRef}
+              tableData={tableData}
+              fieldName={'name1'}
+              />
+            </tr>
+
+            <tr className="border-b">
+            <EditableCell
+              key={index + "secondExc"}
+              exercise={exercise}
+              index={index}
+              editingCell={editingCell}
+              startEditingCell={startEditingCell}
+              updateTableData={updateTableData}
+              handleKeyDown={handleKeyDown}
+              editNameRef={editNameRef}
+              tableData={tableData}
+              fieldName={'secondExc'}
+              />
+
+            
+            <EditableCell
+              key={index + "name2"}
+              exercise={exercise}
+              index={index}
+              editingCell={editingCell}
+              startEditingCell={startEditingCell}
+              updateTableData={updateTableData}
+              handleKeyDown={handleKeyDown}
+              editNameRef={editNameRef}
+              tableData={tableData}
+              fieldName={'name2'}
+              />
+              
+            </tr>
             </React.Fragment>
           ))}
           </tbody>
+
         </table>
         <div className="ml-5">
         <Timer />
