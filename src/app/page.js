@@ -8,6 +8,9 @@ import { useState, useRef } from 'react';
 
 export default function Home() {
   const [editingNameIndex, setEditingNameIndex] = useState(null);
+  const startEditingName = (index) => setEditingNameIndex(index)
+  const stopEditingName = () =>  setEditingNameIndex(null)
+  const editNameRef = useRef()
 
   const [tableData, setTableData] = useState([
     {excType: 'SQUAT(1)', bgColor: 'bg-gray-100', firstExc: 'סקוואט הטחות \u2190 קפיצה על תיבה', secondExc: 'בטן סטטית(הולו הולד) + ראשן טויסט', name1: '', name2: ''},
@@ -18,11 +21,10 @@ export default function Home() {
     {excType: 'TWIST(6)', bgColor: 'bg-yellow-300', firstExc: 'כפיפות צד', secondExc: 'חבל קפיצה על רגל אחת', name1: '', name2: ''}
   ])
 
-  const startEditingName = (index) => setEditingNameIndex(index)
-  const stopEditingName = () =>  setEditingNameIndex(null)
-  const editName = useRef()
+  
 
   const updateTableData = (index) => {
+    console.log(index)
     const newName = editNameRef.current.value
     console.log(newName)
     setTableData((prevData) => {
@@ -54,23 +56,28 @@ export default function Home() {
           <tbody>
           {tableData.map((exercise, index) => (
             <React.Fragment key={index}>
-              <tr>
+              <tr key={index}>
                 <td className={`excType ${exercise.bgColor}`} rowSpan={2}>
                   {exercise.excType}
                 </td>
-                <td className="firstExc">{exercise.firstExc}</td>
-
-                {editingNameIndex === index ? (
-                  <td className="name cursor-pointer">
-                <input className="bg-black" type="text" defaultValue={tableData[index].name1} ref={editName} autoFocus />
+                <td className="firstExc">
+                  {exercise.firstExc}
                 </td>
-                ) : (
                 <td className="name cursor-pointer"
-                    onClick={()=> startEditingName(index)}
-                    onBlur={() => updateTableData(index)}
-                    onKeyDown={(event) => handleKeyDown(event, index)}
-                    >{exercise.name1}</td>
+                  onClick={()=> startEditingName(index)}
+                  onBlur={() => updateTableData(index)}
+                  onKeyDown={(event) => handleKeyDown(event, index)}
+                  >
+                  {editingNameIndex === index ? (
+                    <>
+                    <input className="name" type="text" defaultValue={tableData[index].name1} ref={editNameRef} autoFocus />
+                    </>
+                ) : (
+                  <>
+                    {exercise.name1}
+                  </>
                 )}
+                </td>
               </tr>
               <tr className="border-b">
                 <td className="secondExc">{exercise.secondExc}</td>
