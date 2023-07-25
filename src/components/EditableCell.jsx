@@ -2,13 +2,14 @@ import React from 'react';
 
 export default function EditableCell ({exercise, index, editingCell, startEditingCell, updateTableData, handleKeyDown, editNameRef, tableData, fieldName} ){
   const isEditing = editingCell && editingCell.index === index && editingCell.fieldName === fieldName;
-  let cellClassName = ''
+  let cellClassName = ""
   let row_span = 1
 
   if (fieldName === 'firstExc') {
-    cellClassName = 'firstExc';
-  } else if (fieldName === 'secondExc') {
-    cellClassName = 'secondExc';
+    cellClassName = 'exercise text-white'
+  }
+    else if (fieldName === 'secondExc') {
+      cellClassName = 'exercise text-red-500'
   } else if (fieldName === 'excType') {
     cellClassName = `excType ${exercise.bgColor}`;
     row_span = 2
@@ -28,7 +29,7 @@ export default function EditableCell ({exercise, index, editingCell, startEditin
       {isEditing ? (
         <>
           <input
-            className={cellClassName}
+            className= {cellClassName}
             rowSpan = {row_span}
             type="text"
             defaultValue={tableData[index][fieldName]}

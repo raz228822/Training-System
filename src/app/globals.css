@@ -7,19 +7,15 @@
 }
 
 .name {
-  @apply px-4 py-2 text-center font-bold border-l text-2xl bg-black text-white w-28 h-8
+  @apply px-2 py-2 text-center font-bold border-l text-2xl bg-black text-white truncate max-w-[150px] h-8
 }
 
-.firstExc {
-  @apply px-4 py-2 text-center font-bold text-2xl bg-black text-white h-8
-}
-
-.secondExc {
-  @apply px-4 py-2 text-center font-bold text-2xl bg-black text-red-500 h-8
+.exercise {
+  @apply px-2 py-2 text-center font-bold text-2xl bg-black truncate h-8
 }
 
 .excType {
-  @apply px-4 py-2 text-center border font-bold text-2xl w-[160px]
+  @apply px-2 py-2 text-center border font-bold text-2xl max-w-[170px]
 }
 
 body {
