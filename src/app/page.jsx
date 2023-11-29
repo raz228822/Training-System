@@ -47,12 +47,13 @@ export default function Home() {
   return(
       <div className="my-8 flex items-center">
         <Image src={logo} alt="logo"/>
-          <table className="bg-white border border-gray-300 w-[900px]">
+        <div className="w-1/2">
+          <table className="bg-white border border-gray-300">
             <thead>
               <tr>
-                <th className="th w-[250px]">בית</th>
-                <th className="th w-[500px]">האתגרים</th>
-                <th className="th w-[250px]">אקטיביסטים</th>
+                <th className="th w-1/12">בית</th>
+                <th className="th w-1/6">האתגרים</th>
+                <th className="th w-1/12">אקטיביסטים</th>
               </tr>
             </thead>
 
@@ -134,7 +135,10 @@ export default function Home() {
             ))}
             </tbody>
           </table>
-        <Timer />
+        </div>
+        <div className="w-1/2">
+          <Timer />
+        </div>
       </div>
     )
 }

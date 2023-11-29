@@ -66,43 +66,37 @@ export default function Timer() {
   };
 
   return (
-    <div className="ml-5 p-4 rounded-lg shadow-md w-[800px] h-[635px] flex flex-col justify-center items-center bg-contain bg-center bg-no-repeat"
-         style={{ backgroundImage: `url(${timerLogo.src})`}} >
-      {!isRest ? (
-      <h1 className="text-8xl font-semibold mb-4 text-white">&#x1F4AA;תנו בראש</h1>
-      ) : (
-        <h1 className="text-8xl font-semibold mb-4 text-white">&#x1F634;מנוחה</h1>
-      )}
-
-      <div
-        className={`text-[180px] font-bold my-12 ml-[184px] ${!isRest ? 'text-green-500' : 'text-red-500'}`}
-      >
+    <div className="ml-5 mr-4 p-4 rounded-lg shadow-md flex flex-col justify-center items-center bg-contain bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${timerLogo.src})`}} >
+      <h1 className="text-8xl font-semibold mb-4 text-white">
+        {!isRest ? '\u{1F4AA}תנו בראש' : '\u{1F634}מנוחה'}
+      </h1>
+      
+      <div className={`text-[250px] font-bold mb-20 ml-[280px] ${!isRest ? 'text-green-500' : 'text-red-500'}`}>
         {formatTime(seconds)}
       </div>
 
       {/* <h1 className="text-8xl font-semibold mb-5 text-white">{setNum} סט מספר</h1> */}
-      <h1 className="text-8xl font-semibold mb-5 text-white">{text}</h1>
+      <h1 className="text-7xl font-semibold mt-5 text-white">{text}</h1>
 
       <div className="flex gap-4">
         {!isRunning ? (
           <button
             onClick={handleStart}
-            className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md focus:outline-none"
-          >
+            className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md focus:outline-none">
             Start
           </button>
         ) : (
           <button
             onClick={handleStop}
-            className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md focus:outline-none"
-          >
+            className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md focus:outline-none">
             Stop
           </button>
         )}
+
         <button
           onClick={handleReset}
-          className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md focus:outline-none"
-        >
+          className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md focus:outline-none">
           Reset
         </button>
       </div>
