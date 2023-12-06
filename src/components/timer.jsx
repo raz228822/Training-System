@@ -79,7 +79,7 @@ export default function Timer() {
       </div>
 
       {/* <h1 className="text-8xl font-semibold mb-5 text-white">{setNum} סט מספר</h1> */}
-      <h1 className="text-[192px] font-semibold text-white">{text}</h1>
+      <h1 className="text-[164px] font-semibold text-white">{text}</h1>
 
       <div className="flex gap-12">
         {!isRunning ? (
