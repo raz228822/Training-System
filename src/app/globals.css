@@ -3,19 +3,19 @@
 @tailwind utilities;
 
 .th {
-  @apply px-4 py-2 bg-yellow-300 border font-bold text-2xl
+  @apply py-6 bg-yellow-300 border font-bold text-3xl
 }
 
 .name {
-  @apply px-2 py-2 text-center font-bold border-l text-2xl bg-black text-white truncate max-w-[150px] h-8
+  @apply px-2 text-center font-bold border-l text-4xl bg-black text-white truncate max-w-[300px]
 }
 
 .exercise {
-  @apply px-2 py-2 text-center font-bold text-2xl bg-black truncate h-8
+  @apply px-2 text-center font-bold text-4xl bg-black truncate max-w-[600px]
 }
 
 .excType {
-  @apply px-2 py-2 text-center border font-bold text-2xl max-w-[170px]
+  @apply px-2 text-center border font-bold text-4xl
 }
 
 body {

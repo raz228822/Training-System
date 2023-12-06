@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import Image from 'next/image'
 import timerLogo from 'public/timerLogo.png'
 
 

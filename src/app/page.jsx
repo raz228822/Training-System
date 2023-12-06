@@ -48,91 +48,91 @@ export default function Home() {
       <div className="my-8 flex items-center">
         <Image src={logo} alt="logo"/>
         <div className="w-1/2">
-          <table className="bg-white border border-gray-300">
+          <table className="bg-white border border-gray-300 h-[92vh] w-full">
             <thead>
               <tr>
-                <th className="th w-1/12">בית</th>
-                <th className="th w-1/6">האתגרים</th>
-                <th className="th w-1/12">אקטיביסטים</th>
+                <th className="th w-[25%]">בית</th>
+                <th className="th w-[50%]">האתגרים</th>
+                <th className="th w-[25%]">אקטיביסטים</th>
               </tr>
             </thead>
 
             <tbody>
-            {tableData.map((exercise, index) => (
-            <React.Fragment key={index}>
-              <tr>
+              {tableData.map((exercise, index) => (
+                <React.Fragment key={index}>
+                  <tr className="h-22">
 
-                <EditableCell
-                key={index + "excType"}
-                exercise={exercise}
-                index={index}
-                editingCell={editingCell}
-                startEditingCell={startEditingCell}
-                updateTableData={updateTableData}
-                handleKeyDown={handleKeyDown}
-                editNameRef={editNameRef}
-                tableData={tableData}
-                fieldName={'excType'}
-                />
+                    <EditableCell
+                    key={index + "excType"}
+                    exercise={exercise}
+                    index={index}
+                    editingCell={editingCell}
+                    startEditingCell={startEditingCell}
+                    updateTableData={updateTableData}
+                    handleKeyDown={handleKeyDown}
+                    editNameRef={editNameRef}
+                    tableData={tableData}
+                    fieldName={'excType'}
+                    />
 
-                <EditableCell
-                key={index + "firstExc"}
-                exercise={exercise}
-                index={index}
-                editingCell={editingCell}
-                startEditingCell={startEditingCell}
-                updateTableData={updateTableData}
-                handleKeyDown={handleKeyDown}
-                editNameRef={editNameRef}
-                tableData={tableData}
-                fieldName={'firstExc'}
-                />
+                    <EditableCell
+                    key={index + "firstExc"}
+                    exercise={exercise}
+                    index={index}
+                    editingCell={editingCell}
+                    startEditingCell={startEditingCell}
+                    updateTableData={updateTableData}
+                    handleKeyDown={handleKeyDown}
+                    editNameRef={editNameRef}
+                    tableData={tableData}
+                    fieldName={'firstExc'}
+                    />
 
-                <EditableCell
-                key={index + "name1"}
-                exercise={exercise}
-                index={index}
-                editingCell={editingCell}
-                startEditingCell={startEditingCell}
-                updateTableData={updateTableData}
-                handleKeyDown={handleKeyDown}
-                editNameRef={editNameRef}
-                tableData={tableData}
-                fieldName={'name1'}
-                />
-              </tr>
+                    <EditableCell
+                    key={index + "name1"}
+                    exercise={exercise}
+                    index={index}
+                    editingCell={editingCell}
+                    startEditingCell={startEditingCell}
+                    updateTableData={updateTableData}
+                    handleKeyDown={handleKeyDown}
+                    editNameRef={editNameRef}
+                    tableData={tableData}
+                    fieldName={'name1'}
+                    />
+                  </tr>
 
-              <tr className="border-b">
-              <EditableCell
-                key={index + "secondExc"}
-                exercise={exercise}
-                index={index}
-                editingCell={editingCell}
-                startEditingCell={startEditingCell}
-                updateTableData={updateTableData}
-                handleKeyDown={handleKeyDown}
-                editNameRef={editNameRef}
-                tableData={tableData}
-                fieldName={'secondExc'}
-                />
+                <tr className="border-b">
+                  <EditableCell
+                    key={index + "secondExc"}
+                    exercise={exercise}
+                    index={index}
+                    editingCell={editingCell}
+                    startEditingCell={startEditingCell}
+                    updateTableData={updateTableData}
+                    handleKeyDown={handleKeyDown}
+                    editNameRef={editNameRef}
+                    tableData={tableData}
+                    fieldName={'secondExc'}
+                  />
 
-              
-              <EditableCell
-                key={index + "name2"}
-                exercise={exercise}
-                index={index}
-                editingCell={editingCell}
-                startEditingCell={startEditingCell}
-                updateTableData={updateTableData}
-                handleKeyDown={handleKeyDown}
-                editNameRef={editNameRef}
-                tableData={tableData}
-                fieldName={'name2'}
-                />
-                
-              </tr>
-              </React.Fragment>
-            ))}
+                  
+                  <EditableCell
+                    key={index + "name2"}
+                    exercise={exercise}
+                    index={index}
+                    editingCell={editingCell}
+                    startEditingCell={startEditingCell}
+                    updateTableData={updateTableData}
+                    handleKeyDown={handleKeyDown}
+                    editNameRef={editNameRef}
+                    tableData={tableData}
+                    fieldName={'name2'}
+                    />
+                    
+                  </tr>
+                  </React.Fragment>
+              ))}
             </tbody>
           </table>
         </div>

@@ -29,7 +29,7 @@ export default function EditableCell ({exercise, index, editingCell, startEditin
       {isEditing ? (
         <>
           <input
-            className= {cellClassName}
+            className= {`w-full ${cellClassName}`}
             rowSpan = {row_span}
             type="text"
             defaultValue={tableData[index][fieldName]}
