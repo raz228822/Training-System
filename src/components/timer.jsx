@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import timerLogo from 'public/timerLogo.png'
+import Image from 'next/image'
 
 
 export default function Timer() {
@@ -65,37 +66,39 @@ export default function Timer() {
   };
 
   return (
-    <div className="mx-5 flex flex-col justify-center items-center bg-contain bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${timerLogo.src})`}} >
-      <h1 className="text-8xl font-semibold mb-52 text-white">
+    <div className="mx-5 flex flex-col justify-center items-center bg-contain bg-center bg-no-repeat">
+      <h1 className="text-[192px] font-semibold text-white -mt-24">
         {!isRest ? '\u{1F4AA}תנו בראש' : '\u{1F634}מנוחה'}
       </h1>
-      
-      <div className={`text-2/3 md:text-lg lg:text-xl xl:text-2xl 2xl:text-[270px] ml-64 mb-20 font-bold  ${!isRest ? 'text-green-500' : 'text-red-500'}`}>
-        {formatTime(seconds)}
+
+      <div className="flex flex-col items-center">
+        <Image src={timerLogo.src} alt="Timer Logo" width={1200} height={100} />
+        <div className={`absolute top-[460px] left-1/2 text-2/3 md:text-lg lg:text-xl xl:text-2xl 2xl:text-[270px] ml-[390px] font-bold ${!isRest ? 'text-green-500' : 'text-red-500'}`}>
+          {formatTime(seconds)}
+        </div>
       </div>
 
       {/* <h1 className="text-8xl font-semibold mb-5 text-white">{setNum} סט מספר</h1> */}
-      <h1 className="text-7xl font-semibold mt-44 text-white">{text}</h1>
+      <h1 className="text-[192px] font-semibold text-white">{text}</h1>
 
-      <div className="flex gap-4">
+      <div className="flex gap-12">
         {!isRunning ? (
           <button
             onClick={handleStart}
-            className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md focus:outline-none">
+            className="px-10 py-5 bg-blue-500 hover:bg-blue-600 text-white rounded-md focus:outline-none">
             Start
           </button>
         ) : (
           <button
             onClick={handleStop}
-            className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md focus:outline-none">
+            className="px-10 py-5 bg-red-500 hover:bg-red-600 text-white rounded-md focus:outline-none">
             Stop
           </button>
         )}
 
         <button
           onClick={handleReset}
-          className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md focus:outline-none">
+          className="px-10 py-5 bg-gray-500 hover:bg-gray-600 text-white rounded-md focus:outline-none">
           Reset
         </button>
       </div>
