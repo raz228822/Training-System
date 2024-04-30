@@ -50,7 +50,7 @@ export default function Timer() {
         console.log("Raz")
         console.log(setNum)
         setNumSet(setNum + 1)
-        setText(`סט מספר ${setNum}`)
+        setText(`סט מספר ${setNum}`) 
         
       }
       setIsRest((prev) => !prev); // Toggle between 40 and 30 seconds
@@ -73,7 +73,7 @@ export default function Timer() {
 
       <div className="flex flex-col items-center">
         <Image src={timerLogo.src} alt="Timer Logo" width={1200} height={100} />
-        <div className={`absolute top-[460px] left-1/2 text-2/3 md:text-lg lg:text-xl xl:text-2xl 2xl:text-[270px] ml-[390px] font-bold ${!isRest ? 'text-green-500' : 'text-red-500'}`}>
+        <div className={`absolute timer-pos text-2/3 md:text-lg lg:text-xl xl:text-2xl 2xl:text-[270px] ml-[390px] font-bold ${!isRest ? 'text-green-500' : 'text-red-500'}`}>
           {formatTime(seconds)}
         </div>
       </div>

@@ -18,6 +18,11 @@
   @apply px-2 text-center border font-bold text-4xl
 }
 
+.timer-pos {
+  left: 54%;
+  top: 40%;
+}
+
 body {
   background-image: url('/background.png');
   background-size: cover;
