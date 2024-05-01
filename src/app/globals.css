@@ -3,24 +3,19 @@
 @tailwind utilities;
 
 .th {
-  @apply py-6 bg-yellow-300 border font-bold text-3xl
+  @apply py-6 bg-yellow-300 border font-bold laptop:text-2xl desktop:text-3xl
 }
 
 .name {
-  @apply px-2 text-center font-bold border-l text-4xl bg-black text-white truncate max-w-[300px]
+  @apply px-2 text-center font-bold border-l laptop:text-xl desktop:text-4xl bg-black text-white truncate laptop:max-w-[100px] desktop:max-w-[300px]
 }
 
 .exercise {
-  @apply text-center font-bold text-4xl bg-black truncate max-w-[600px]
+  @apply text-center font-bold laptop:text-xl desktop:text-4xl bg-black truncate laptop:max-w-[300px] desktop:max-w-[600px]
 }
 
 .excType {
-  @apply px-2 text-center border font-bold text-4xl
-}
-
-.timer-pos {
-  left: 54%;
-  top: 40%;
+  @apply px-2 text-center border font-bold laptop:text-2xl desktop:text-4xl truncate laptop:max-w-[100px] desktop:max-w-[300px]
 }
 
 body {

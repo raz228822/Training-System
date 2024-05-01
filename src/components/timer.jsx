@@ -73,21 +73,21 @@ export default function Timer() {
 
   return (
     <div className="mx-5 flex flex-col justify-center items-center bg-contain bg-center bg-no-repeat">
-      <h1 className="text-[192px] font-semibold text-white -mt-24">
+      <h1 className="laptop:text-[110px] desktop:text-[192px] font-semibold text-white -mt-24">
         {!isRest ? '\u{1F4AA} תנו בראש' : '\u{1F634} מנוחה'}
       </h1>
 
       <div className="flex flex-col items-center">
         <Image src={timerLogo.src} alt="Timer Logo" width={1200} height={100} />
-        <div className={`absolute timer-pos text-2/3 md:text-lg lg:text-xl xl:text-2xl 2xl:text-[270px] ml-[390px] font-bold ${!isRest ? 'text-green-500' : 'text-red-500'}`}>
+        <div className={`absolute laptop:text-[150px] laptop:ml-[150px] desktop:text-[270px] desktop:ml-[270px] font-bold ${!isRest ? 'text-green-500' : 'text-red-500'}`}>
           {formatTime(seconds)}
         </div>
       </div>
 
       {/* <h1 className="text-8xl font-semibold mb-5 text-white">{setNum} סט מספר</h1> */}
-      <h1 className="text-[164px] font-semibold text-white">{text}</h1>
+      <h1 className="laptop:text-[85px] desktop:text-[164px] font-semibold text-white">{text}</h1>
 
-      <div className="flex gap-12">
+      <div className="flex gap-12 mt-10">
         {!isRunning ? (
           <button
             onClick={handleStart}

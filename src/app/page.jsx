@@ -48,7 +48,7 @@ export default function Home() {
       <div className="my-8 flex items-center">
         <Image src={logo} alt="logo"/>
         <div className="w-1/2">
-          <table className="bg-white border border-gray-300 h-[92vh] w-full">
+          <table className="bg-white border border-gray-300 laptop:h-[90vh] desktop:h-[92vh] w-full">
             <thead>
               <tr>
                 <th className="th w-[25%]">בית</th>
