@@ -11,11 +11,11 @@
 }
 
 .exercise {
-  @apply text-center font-bold laptop:text-xl desktop:text-4xl bg-black truncate laptop:max-w-[300px] desktop:max-w-[600px]
+  @apply text-center font-bold laptop:text-2xl desktop:text-4xl bg-black truncate laptop:max-w-[400px] desktop:max-w-[600px]
 }
 
 .excType {
-  @apply px-2 text-center border font-bold laptop:text-2xl desktop:text-4xl truncate laptop:max-w-[100px] desktop:max-w-[300px]
+  @apply px-2 text-center border font-bold laptop:text-xl desktop:text-4xl truncate laptop:max-w-[170px] desktop:max-w-[300px]
 }
 
 body {

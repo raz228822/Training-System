@@ -51,9 +51,9 @@ export default function Home() {
           <table className="bg-white border border-gray-300 laptop:h-[90vh] desktop:h-[92vh] w-full">
             <thead>
               <tr>
-                <th className="th w-[25%]">בית</th>
-                <th className="th w-[50%]">האתגרים</th>
-                <th className="th w-[25%]">אקטיביסטים</th>
+                <th className="th w-[22%]">בית</th>
+                <th className="th w-[60%]">האתגרים</th>
+                <th className="th w-[18%]">אקטיביסטים</th>
               </tr>
             </thead>
 

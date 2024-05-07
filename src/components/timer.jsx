@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 
 export default function Timer() {
-  const [seconds, setSeconds] = useState(4);
+  const [seconds, setSeconds] = useState(40);
   const [isRunning, setIsRunning] = useState(false);
   const [isRest, setIsRest] = useState(false);
   const [setNum, setNumSet] = useState(1);
@@ -32,15 +32,16 @@ export default function Timer() {
   };
 
   const handleResetTime = () => {
-    setSeconds(isRest ? 3 : 4);
+    setSeconds(isRest ? 30 : 40);
     setIsRunning(false)
   }
 
   const handleReset = () => {
     setNumSet(1)
     setIsRest(false);
-    setSeconds(4);
+    setSeconds(40);
     setIsRunning(false);
+    setText("! בואו נתחיל");
   };
 
   useEffect(() => {
@@ -60,7 +61,7 @@ export default function Timer() {
           });
       }
       setIsRest((prev) => !prev); // Toggle between 40 and 30 seconds
-      setSeconds(isRest ? 4 : 3); // Reset the timer to the new duration
+      setSeconds(isRest ? 40 : 30); // Reset the timer to the new duration
       setIsRunning(true); // Start the timer again
     }
   }, [seconds, isRest]);
