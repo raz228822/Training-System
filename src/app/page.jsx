@@ -46,9 +46,9 @@ export default function Home() {
 
   return(
       <div className="my-8 flex items-center">
-        <Image src={logo} alt="logo"/>
+        <Image src={logo} alt="logo"  width={180}/>
         <div className="w-1/2">
-          <table className="bg-white border border-gray-300 laptop:h-[90vh] desktop:h-[92vh] w-full">
+          <table className="bg-white border border-gray-300 laptop:h-[90vh] desktop:h-[95vh] w-full">
             <thead>
               <tr>
                 <th className="th w-[22%]">בית</th>

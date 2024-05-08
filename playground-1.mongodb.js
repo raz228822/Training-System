@@ -13,10 +13,12 @@ db.getCollection('excersices_types').insertMany([
 
 const allExercises = db.getCollection('exercises_types').find();
 
-// Iterate over the cursor and print each exercise
-allExercises.forEach(exercise => {
-    printjson(exercise);
-});
+print(allExercises);
+
+// // Iterate over the cursor and print each exercise
+// allExercises.forEach(exercise => {
+//     printjson(exercise);
+// });
 
 /*
 db.getCollection('sales').insertMany([
