@@ -61,6 +61,9 @@ export default function Timer() {
     if(setNum !== 3 && text != "! בואו נתחיל") {
       setNumSet(prevSet => prevSet + 1)
       setText(`סט מספר ${setNum + 1}`)
+      setIsRest(false);
+      setSeconds(4);
+      setIsRunning(false);
     }
   }
 
@@ -68,6 +71,9 @@ export default function Timer() {
     if(setNum !== 1 && text != "! בואו נתחיל") {
       setNumSet(prevSet => prevSet - 1)
       setText(`סט מספר ${setNum - 1}`)
+      setIsRest(false);
+      setSeconds(4);
+      setIsRunning(false);
       }
   }
 
@@ -100,13 +106,13 @@ export default function Timer() {
 
   return (
     <div className="mx-5 flex flex-col justify-center items-center bg-contain bg-center bg-no-repeat">
-      <h1 className="laptop:text-[110px] desktop:text-[192px] font-semibold text-white -mt-40">
+      <h1 className="laptop:text-[110px] desktop:text-[192px] font-semibold text-white desktop:-mt-40">
         {!isRest ? '\u{1F4AA} תנו בראש' : '\u{1F634} מנוחה'}
       </h1>
 
       <div className="flex flex-col items-center">
         <Image src={timerLogo.src} alt="Timer Logo" width={1400} height={100} />
-        <div className={`absolute -mt-32 laptop:text-[150px] laptop:ml-[150px] desktop:text-[480px] desktop:ml-[270px] font-bold ${!isRest ? 'text-green-500' : 'text-red-500'}`}>
+        <div className={`absolute dekstop:-mt-32 laptop:text-[150px] laptop:ml-[150px] desktop:text-[480px] desktop:ml-[270px] font-bold ${!isRest ? 'text-green-500' : 'text-red-500'}`}>
           {formatTime(seconds)}
         </div>
       </div>
@@ -114,42 +120,42 @@ export default function Timer() {
       {/* <h1 className="text-8xl font-semibold mb-5 text-white">{setNum} סט מספר</h1> */}
       <h1 className="laptop:text-[85px] desktop:text-[164px] font-semibold text-white">{text}</h1>
 
-      <div className="flex gap-12 mt-10">
+      <div className="flex gap-12 desktop:mt-10 laptop:mt-5">
         {!isRunning ? (
           <button
             onClick={handleStart}
-            className="w-40 h-24 bg-blue-500 hover:bg-blue-600 text-white rounded-md focus:outline-none font-bold">
+            className="desktop:w-40 deksotp:h-24 laptop:w-20 h-14 bg-blue-500 hover:bg-blue-600 text-white rounded-md focus:outline-none font-bold">
             Start
           </button>
         ) : (
           <button
             onClick={handleStop}
-            className="w-40 h-24 bg-red-500 hover:bg-red-600 text-white rounded-md focus:outline-none font-bold">
+            className="desktop:w-40 deksotp:h-24 laptop:w-20 h-14 bg-red-500 hover:bg-red-600 text-white rounded-md focus:outline-none font-bold">
             Stop
           </button>
         )}
 
         <button
           onClick={handleResetTime}
-          className="w-40 h-24 bg-lime-500 hover:bg-lime-600 text-white rounded-md focus:outline-none font-bold">
+          className="desktop:w-40 deksotp:h-24 laptop:w-20 h-14 bg-lime-500 hover:bg-lime-600 text-white rounded-md focus:outline-none font-bold">
           Reset time
         </button>
 
         <button
           onClick={IncreaseSet}
-          className="w-40 h-24 bg-teal-500 hover:bg-teal-600  text-white rounded-md focus:outline-none font-bold">
+          className="desktop:w-40 dekstop:h-24 laptop:w-20 h-14 bg-teal-500 hover:bg-teal-600  text-white rounded-md focus:outline-none font-bold">
           +
         </button>
 
         <button
           onClick={DecreaseSet}
-          className="w-40 h-24 bg-purple-500 hover:bg-purple-600 text-white rounded-md focus:outline-none font-bold">
+          className="desktop:w-40 deksotp:h-24 laptop:w-20 h-14 bg-purple-500 hover:bg-purple-600 text-white rounded-md focus:outline-none font-bold">
           -
         </button>
 
         <button
           onClick={handleReset}
-          className="w-40 h-24 bg-gray-500 hover:bg-gray-600 text-white rounded-md focus:outline-none font-bold">
+          className="desktop:w-40 deksotp:h-24 laptop:w-20 h-14 bg-gray-500 hover:bg-gray-600 text-white rounded-md focus:outline-none font-bold">
           Reset
         </button>
       </div>

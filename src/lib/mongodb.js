@@ -6,15 +6,15 @@ const uri = 'mongodb+srv://raz228822:123raz123@trainingsystemdb.3whrhyu.mongodb.
 
 const client = new MongoClient(uri);
 
-try {
-  await client.connect();
-}
-catch (error) {
-    console.error("Error connecting to MongoDB:", error);
-    throw error;
-}
+// try {
+//   await client.connect();
+// }
+// catch (error) {
+//     console.error("Error connecting to MongoDB:", error);
+//     throw error;
+// }
 
-export const db = client.db('TrainingSystemDB')
+// export const db = client.db('TrainingSystemDB')
 
 
 // Creating a connection each GET / POST call

@@ -4,20 +4,21 @@
 
 import { NextResponse } from "next/server";
 import connectToMongoDB from "../../../lib/mongodb";
-//import {db} from "@/lib/mongodb"
+import {db} from "@/lib/mongodb"
 
 // Connecting to DB each GET call
 export async function GET(req, res) {
-    try {
-        const client = await connectToMongoDB();
-        const db = client.db('TrainingSystemDB');
-        const exercises = await db.collection("exercises").find().toArray();
-        client.close();
-        return NextResponse.json(exercises, {status : 200})
-    } catch (e) {
-        console.error("Error fetching exercises:", e);
-        res.status(500).json({ error: "Internal server error" });
-    }
+  try {
+      const client = await connectToMongoDB();
+      const db = client.db('TrainingSystemDB');
+      const exercises = await db.collection("exercises").find().toArray();
+      client.close()
+      return NextResponse.json(exercises, {status : 200})
+  } catch (e) {
+      console.error("Error fetching exercises:", e);
+      return NextResponse.json({ error: "Internal server error" }, {status : 500});
+      //res.status(500).json({ error: "Internal server error" });
+  }
 }
 
 // // Calling GET while having db connection on

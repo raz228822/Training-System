@@ -15,7 +15,7 @@ module.exports = {
       // => @media (min-width: 1024px) { ... }
 
       'desktop': '2000px',
-      // => @media (min-width: 1280px) { ... }
+      // => @media (min-width: 2000px) { ... }
     },
     extend: {
       backgroundImage: {
