@@ -17,7 +17,7 @@
 .excType {
   @apply px-2 text-center border font-bold laptop:text-xl desktop:text-4xl truncate laptop:max-w-[170px] desktop:max-w-[300px]
 }
-
+ 
 body {
   background-image: url('/background.png');
   background-size: cover;

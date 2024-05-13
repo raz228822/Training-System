@@ -1,8 +1,8 @@
 // Select the database to use.
-use('mongodbVSCodePlaygroundDB');
+use('testDB');
 
 // Insert a few documents into the sales collection.
-db.getCollection('excersices_types').insertMany([
+db.getCollection('exersices_types').insertMany([
     {type: 'SQUAT'},
     {type: 'PUSH'},
     {type: 'DEADLIFT'},

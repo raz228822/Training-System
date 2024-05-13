@@ -8,7 +8,6 @@ import { useState, useRef } from 'react';
 import EditableCell from '../components/EditableCell'
 
 
-
 export default function Home() {
   const [editingCell, setEditingCell] = useState(null)
   const editNameRef = useRef()
