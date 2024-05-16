@@ -17,6 +17,10 @@
 .excType {
   @apply px-2 text-center border font-bold laptop:text-xl desktop:text-4xl truncate laptop:max-w-[170px] desktop:max-w-[300px]
 }
+
+.button {
+  @apply desktop:w-40 desktop:h-24 laptop:w-20 h-14 text-white rounded-md focus:outline-none font-bold
+}
  
 body {
   background-image: url('/background.png');

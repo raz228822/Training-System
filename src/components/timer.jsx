@@ -36,20 +36,6 @@ export default function Timer() {
   }
 
   const handleReset = () => {
-  /*const handleReset = async () => {
-    try {
-      await fetch('http://127.0.0.1:3000/api/excersices', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ type: 'new exercise' }), // Change 'new exercise' to whatever type you want to add
-        
-      });
-    } catch (error) {
-      console.error('Error adding exercise:', error);
-    }*/
-  
     setNumSet(1)
     setIsRest(false);
     setSeconds(4);
@@ -104,6 +90,43 @@ export default function Timer() {
     return `${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
+  // Assuming this function is called when you want to create a new exercise
+  async function AddExercise() {
+    const exerciseData = {
+      type: 'Push-up', // Example data
+    }
+    console.log(exerciseData)
+  
+    // AddExercise(exerciseData)
+    //   .then(data => {
+    //     console.log('Exercise created successfully:', data);
+    //     // Handle success
+    //   })
+    //   .catch(error => {
+    //     console.error('Failed to create exercise:', error);
+    //     // Handle error
+    //   });
+    try {
+      const response = await fetch('http://localhost:3000/api/exercises', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(exerciseData) // Convert exerciseData to JSON string
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create exercise');
+      }
+
+      const responseData = await response.json();
+      return responseData;
+    } catch (error) {
+      console.error('Error creating exercise:', error);
+      throw error;
+    }
+  }
+
   return (
     <div className="mx-5 flex flex-col justify-center items-center bg-contain bg-center bg-no-repeat">
       <h1 className="laptop:text-[110px] desktop:text-[192px] font-semibold text-white desktop:-mt-40">
@@ -112,7 +135,7 @@ export default function Timer() {
 
       <div className="flex flex-col items-center">
         <Image src={timerLogo.src} alt="Timer Logo" width={1400} height={100} />
-        <div className={`absolute dekstop:-mt-32 laptop:text-[150px] laptop:ml-[150px] desktop:text-[480px] desktop:ml-[270px] font-bold ${!isRest ? 'text-green-500' : 'text-red-500'}`}>
+        <div className={`absolute dekstop: -mt-32 laptop:text-[150px] laptop:ml-[150px] desktop:text-[480px] desktop:ml-[270px] font-bold ${!isRest ? 'text-green-500' : 'text-red-500'}`}>
           {formatTime(seconds)}
         </div>
       </div>
@@ -120,43 +143,51 @@ export default function Timer() {
       {/* <h1 className="text-8xl font-semibold mb-5 text-white">{setNum} סט מספר</h1> */}
       <h1 className="laptop:text-[85px] desktop:text-[164px] font-semibold text-white">{text}</h1>
 
-      <div className="flex gap-12 desktop:mt-10 laptop:mt-5">
+      <div className="flex gap-12 desktop:my-14 laptop:my-5">
         {!isRunning ? (
           <button
             onClick={handleStart}
-            className="desktop:w-40 deksotp:h-24 laptop:w-20 h-14 bg-blue-500 hover:bg-blue-600 text-white rounded-md focus:outline-none font-bold">
+            className="button bg-blue-500 hover:bg-blue-600">
             Start
           </button>
         ) : (
           <button
             onClick={handleStop}
-            className="desktop:w-40 deksotp:h-24 laptop:w-20 h-14 bg-red-500 hover:bg-red-600 text-white rounded-md focus:outline-none font-bold">
+            className="button bg-red-500 hover:bg-red-600">
             Stop
           </button>
         )}
 
         <button
           onClick={handleResetTime}
-          className="desktop:w-40 deksotp:h-24 laptop:w-20 h-14 bg-lime-500 hover:bg-lime-600 text-white rounded-md focus:outline-none font-bold">
+          className="button bg-lime-500 hover:bg-lime-600 text-white">
           Reset time
         </button>
 
         <button
           onClick={IncreaseSet}
-          className="desktop:w-40 dekstop:h-24 laptop:w-20 h-14 bg-teal-500 hover:bg-teal-600  text-white rounded-md focus:outline-none font-bold">
+          className="button bg-teal-500 hover:bg-teal-600 ">
           +
         </button>
 
         <button
           onClick={DecreaseSet}
-          className="desktop:w-40 deksotp:h-24 laptop:w-20 h-14 bg-purple-500 hover:bg-purple-600 text-white rounded-md focus:outline-none font-bold">
+          className="button bg-purple-500 hover:bg-purple-600">
           -
         </button>
 
         <button
           onClick={handleReset}
-          className="desktop:w-40 deksotp:h-24 laptop:w-20 h-14 bg-gray-500 hover:bg-gray-600 text-white rounded-md focus:outline-none font-bold">
+          className="button bg-gray-500 hover:bg-gray-600">
           Reset
+        </button>
+      </div>
+
+      <div className="" >
+      <button
+          onClick={AddExercise}
+          className="button bg-yellow-400 hover:bg-yellow-500">
+          Add Exercise
         </button>
       </div>
     </div>
