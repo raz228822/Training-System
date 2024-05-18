@@ -21,6 +21,10 @@
 .button {
   @apply desktop:w-40 desktop:h-24 laptop:w-20 h-14 text-white rounded-md focus:outline-none font-bold
 }
+
+.form-button {
+  @apply desktop:w-40 desktop:h-24 laptop:w-28 h-10 text-white rounded-md focus:outline-none font-bold
+}
  
 body {
   background-image: url('/background.png');

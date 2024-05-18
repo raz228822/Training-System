@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import timerLogo from 'public/timerLogo.png'
 import Image from 'next/image'
+import AddExerciseForm from './addExerciseForm';
 
 export default function Timer() {
   const [seconds, setSeconds] = useState(4);
@@ -8,6 +9,7 @@ export default function Timer() {
   const [isRest, setIsRest] = useState(false);
   const [setNum, setNumSet] = useState(1);
   const [text, setText] = useState("! בואו נתחיל")
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   useEffect(() => {
     let interval;
@@ -91,21 +93,11 @@ export default function Timer() {
   };
 
   // Assuming this function is called when you want to create a new exercise
-  async function AddExercise() {
-    const exerciseData = {
-      type: 'Push-up', // Example data
-    }
-    console.log(exerciseData)
-  
-    // AddExercise(exerciseData)
-    //   .then(data => {
-    //     console.log('Exercise created successfully:', data);
-    //     // Handle success
-    //   })
-    //   .catch(error => {
-    //     console.error('Failed to create exercise:', error);
-    //     // Handle error
-    //   });
+  async function AddExercise(exerciseData) {
+    // const exerciseData = {
+    //   type: 'Push-up', // Example data
+    // }
+    //console.log(exerciseData)
     try {
       const response = await fetch('http://localhost:3000/api/exercises', {
         method: 'POST',
@@ -115,11 +107,13 @@ export default function Timer() {
         body: JSON.stringify(exerciseData) // Convert exerciseData to JSON string
       });
 
-      if (!response.ok) {
+      //if (!response.ok) {
+      if(response.status === 200) { // ????????
         throw new Error('Failed to create exercise');
       }
 
       const responseData = await response.json();
+      console.log("resData = " + responseData)
       return responseData;
     } catch (error) {
       console.error('Error creating exercise:', error);
@@ -135,7 +129,7 @@ export default function Timer() {
 
       <div className="flex flex-col items-center">
         <Image src={timerLogo.src} alt="Timer Logo" width={1400} height={100} />
-        <div className={`absolute dekstop: -mt-32 laptop:text-[150px] laptop:ml-[150px] desktop:text-[480px] desktop:ml-[270px] font-bold ${!isRest ? 'text-green-500' : 'text-red-500'}`}>
+        <div className={`absolute dekstop:-mt-32 laptop:-mt-14 laptop:text-[215px] laptop:ml-[150px] desktop:text-[480px] desktop:ml-[270px] font-bold ${!isRest ? 'text-green-500' : 'text-red-500'}`}>
           {formatTime(seconds)}
         </div>
       </div>
@@ -184,11 +178,15 @@ export default function Timer() {
       </div>
 
       <div className="" >
-      <button
-          onClick={AddExercise}
-          className="button bg-yellow-400 hover:bg-yellow-500">
-          Add Exercise
+        <button
+            onClick={() => setIsDialogOpen(true)}
+            className="button bg-yellow-400 hover:bg-yellow-500">
+            Add Exercise
         </button>
+        {isDialogOpen && <AddExerciseForm
+          onConfirm={AddExercise}
+          onClose={() => setIsDialogOpen(false)}
+           />}
       </div>
     </div>
   );
