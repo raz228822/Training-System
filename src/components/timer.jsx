@@ -99,7 +99,7 @@ export default function Timer() {
     // }
     //console.log(exerciseData)
     try {
-      const response = await fetch('http://localhost:3000/api/exercises', {
+      const response = await fetch('/api/exercises', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
