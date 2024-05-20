@@ -46,40 +46,68 @@ export default function Timer() {
   };
   
   const IncreaseSet = () => {
+    if(text === "! בואו נתחיל"){
+        setText(`סט מספר ${setNum}`)
+        setIsRest(false);
+        setSeconds(4);
+        setIsRunning(false);
+    }
     if(setNum !== 3 && text != "! בואו נתחיל") {
-      setNumSet(prevSet => prevSet + 1)
-      setText(`סט מספר ${setNum + 1}`)
-      setIsRest(false);
-      setSeconds(4);
+      if(!isRest) { // On green 40 seconds
+        setIsRest(true);
+        setSeconds(3);
+      }
+      else {
+        setNumSet(prevSet => prevSet + 1)
+        setText(`סט מספר ${setNum + 1}`)
+        setIsRest(false);
+        setSeconds(4);
+      }
       setIsRunning(false);
     }
   }
 
   const DecreaseSet = () => {
+    if(text === "סט מספר 1"){
+      setText("! בואו נתחיל")
+    }
     if(setNum !== 1 && text != "! בואו נתחיל") {
-      setNumSet(prevSet => prevSet - 1)
-      setText(`סט מספר ${setNum - 1}`)
-      setIsRest(false);
-      setSeconds(4);
-      setIsRunning(false);
+      if(!isRest) {
+        setIsRest(true)
+        setSeconds(3)
+      }
+      else {
+        setNumSet(prevSet => prevSet - 1)
+        setText(`סט מספר ${setNum - 1}`)
+        setIsRest(false);
+        setSeconds(4);
+        }
+        setIsRunning(false);
       }
   }
 
   useEffect(() => {
     if (seconds === 0) {
-      if(isRest && setNum === 3) {
-        handleReset()
+      if(setNum === 3) {
+        if(text === "\u{1F504} להחליף תחנות") {
+          console.log("im here")
+          handleReset()
+          return
+        }
+        setIsRest(true);
+        setSeconds(3);
         setText("\u{1F504} להחליף תחנות")
         return
+        // handleReset()
+        // setText("\u{1F504} להחליף תחנות")
+        // return
       }
       if(isRest) {
-        console.log("Raz")
-        console.log(setNum)
-        setNumSet(prevSetNum => {
-          const updatedNumSet = prevSetNum + 1;
-          setText(`סט מספר ${updatedNumSet}`);
-          return updatedNumSet;
-          });
+          setNumSet(prevSetNum => {
+            const updatedNumSet = prevSetNum + 1;
+            setText(`סט מספר ${updatedNumSet}`);
+            return updatedNumSet;
+            });
       }
       setIsRest((prev) => !prev); // Toggle between 40 and 30 seconds
       setSeconds(isRest ? 4 : 3); // Reset the timer to the new duration
@@ -92,12 +120,7 @@ export default function Timer() {
     return `${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
-  // Assuming this function is called when you want to create a new exercise
   async function AddExercise(exerciseData) {
-    // const exerciseData = {
-    //   type: 'Push-up', // Example data
-    // }
-    //console.log(exerciseData)
     try {
       const response = await fetch('/api/exercises', {
         method: 'POST',
@@ -123,13 +146,13 @@ export default function Timer() {
 
   return (
     <div className="mx-5 flex flex-col justify-center items-center bg-contain bg-center bg-no-repeat">
-      <h1 className="laptop:text-[110px] desktop:text-[192px] font-semibold text-white desktop:-mt-40">
+      <h1 className="laptop:text-[110px] desktop:text-[192px] font-semibold text-white desktop:-mt-24">
         {!isRest ? '\u{1F4AA} תנו בראש' : '\u{1F634} מנוחה'}
       </h1>
 
       <div className="flex flex-col items-center">
         <Image src={timerLogo.src} alt="Timer Logo" width={1400} height={100} />
-        <div className={`absolute dekstop:-mt-32 laptop:-mt-14 laptop:text-[215px] laptop:ml-[150px] desktop:text-[480px] desktop:ml-[270px] font-bold ${!isRest ? 'text-green-500' : 'text-red-500'}`}>
+        <div className={`absolute desktop:-mt-32 laptop:-mt-14 laptop:text-[215px] laptop:ml-[150px] desktop:text-[450px] desktop:ml-[270px] font-bold ${!isRest ? 'text-green-500' : 'text-red-500'}`}>
           {formatTime(seconds)}
         </div>
       </div>
