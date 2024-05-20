@@ -11,7 +11,7 @@
 }
 
 .exercise {
-  @apply text-center font-bold laptop:text-2xl desktop:text-6xl bg-black h-14 truncate laptop:max-w-[400px] desktop:max-w-[920px]
+  @apply text-center font-bold laptop:text-3xl desktop:text-6xl bg-black h-14 truncate laptop:max-w-[400px] desktop:max-w-[920px]
 }
 
 .excType {
