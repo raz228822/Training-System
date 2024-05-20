@@ -16,6 +16,9 @@ module.exports = {
 
       'desktop': '2000px',
       // => @media (min-width: 2000px) { ... }
+
+      'tv': '3800px'
+      // => @media (min-width: 3800px) { ... }
     },
     extend: {
       backgroundImage: {

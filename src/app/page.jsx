@@ -43,11 +43,20 @@ export default function Home() {
     }
   }
 
+  const switchNames = () => {
+    tableData.map((exercise, index) => {
+      const temp = tableData[index].name1;
+      tableData[index].name1 = tableData[index].name2;
+      tableData[index].name2 = temp;
+    })
+    setTableData([...tableData]); // Trigger re-render
+  };
+
   return(
       <div className="my-8 flex items-center">
         <Image src={logo} alt="logo"  width={180}/>
         <div className="w-[55%]">
-          <table className="bg-white border border-gray-300 laptop:h-[90vh] desktop:h-[95vh] w-full">
+          <table className="bg-white border border-gray-300 tv:h-[97vh] laptop:h-[90vh] desktop:h-[95vh] w-full">
             <thead>
               <tr>
                 <th className="th w-[22%]">בית</th>
@@ -101,7 +110,7 @@ export default function Home() {
                     />
                   </tr>
 
-                <tr className="border-b">
+                <tr className="border-b-2">
                   <EditableCell
                     key={index + "secondExc"}
                     exercise={exercise}
@@ -114,7 +123,6 @@ export default function Home() {
                     tableData={tableData}
                     fieldName={'secondExc'}
                   />
-
                   
                   <EditableCell
                     key={index + "name2"}
@@ -136,7 +144,7 @@ export default function Home() {
           </table>
         </div>
         <div className="w-[45%]">
-          <Timer />
+          <Timer switchNames={switchNames}/>
         </div>
       </div>
     )

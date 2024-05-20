@@ -3,7 +3,7 @@ import timerLogo from 'public/timerLogo.png'
 import Image from 'next/image'
 import AddExerciseForm from './addExerciseForm';
 
-export default function Timer() {
+export default function Timer({switchNames}) {
   const [seconds, setSeconds] = useState(4);
   const [isRunning, setIsRunning] = useState(false);
   const [isRest, setIsRest] = useState(false);
@@ -90,17 +90,14 @@ export default function Timer() {
     if (seconds === 0) {
       if(setNum === 3) {
         if(text === "\u{1F504} להחליף תחנות") {
-          console.log("im here")
           handleReset()
           return
         }
         setIsRest(true);
         setSeconds(3);
         setText("\u{1F504} להחליף תחנות")
+        switchNames()
         return
-        // handleReset()
-        // setText("\u{1F504} להחליף תחנות")
-        // return
       }
       if(isRest) {
           setNumSet(prevSetNum => {
