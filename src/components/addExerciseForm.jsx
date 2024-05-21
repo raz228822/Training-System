@@ -41,7 +41,6 @@ export default function AddExerciseForm({onConfirm, onClose }) {
           </div>
       </form>
     </div>
-
     )
 }
 

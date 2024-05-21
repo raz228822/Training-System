@@ -4,13 +4,14 @@ import Image from 'next/image'
 import logo from 'public/logo.png'
 import Timer from '../components/timer'
 import React from 'react';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import EditableCell from '../components/EditableCell'
 
 
 export default function Home() {
   const [editingCell, setEditingCell] = useState(null)
   const editNameRef = useRef()
+  const [trainings, setTrainings] = useState([]);
 
   const startEditingCell = (index, fieldName) => {
     setEditingCell({ index, fieldName })
@@ -59,27 +60,35 @@ export default function Home() {
     setTableData([...tableData]); // Trigger re-render
   };
 
-  async function loadTrainingFromDB() {
-    try {
-      const response = await fetch('/api/trainings', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
+  useEffect(() => {
+    const fetchTrainings = async () => {
+      try {
+        const response = await fetch('/api/trainings', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.status !== 200) {
+          throw new Error('Failed to load training');
         }
-      })
 
-      if(response.status !== 200) {
-        throw new Error('Failed to load training')
+        const data = await response.json();
+        setTrainings(data); // Directly set the array of training objects
+
+      } catch (error) {
+        console.error('Error loading training:', error);
       }
-      const responseData = await response.json()
-      const training = responseData['0']
-      loadTrainingOnTable(training)
+    };
 
-    } catch (error) {
-      console.error('Error loading training:', error)
-      throw error
-    }
-  }
+    fetchTrainings();
+  }, []);
+
+  // useEffect(() => {
+  //   //loadTrainingFromDB();
+  //   console.log(trainings);
+  // }, [trainings]); // Run this effect whenever 'trainings' state changes
 
   const loadTrainingOnTable = (training) => {
     // Map through the table data and update the corresponding fields with the text from the training object
@@ -100,7 +109,6 @@ export default function Home() {
       }
     });
     // Update the table data with the modified array
-    console.log(updatedTableData)
     setTableData(updatedTableData);
   }
 
@@ -195,7 +203,7 @@ export default function Home() {
           </table>
         </div>
         <div className="w-[45%]">
-          <Timer switchNames={switchNames} getTraining={loadTrainingFromDB}/>
+          <Timer switchNames={switchNames} loadTrainingsOnTable={loadTrainingOnTable} trainings={trainings}/>
         </div>
       </div>
     )

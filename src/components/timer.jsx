@@ -2,14 +2,16 @@ import { useEffect, useState } from 'react';
 import timerLogo from 'public/timerLogo.png'
 import Image from 'next/image'
 import AddExerciseForm from './addExerciseForm';
+import LoadTrainingForm from './LoadTrainingForm'
 
-export default function Timer({switchNames, getTraining}) {
+export default function Timer({switchNames, loadTrainingsOnTable, trainings}) {
   const [seconds, setSeconds] = useState(4);
   const [isRunning, setIsRunning] = useState(false);
   const [isRest, setIsRest] = useState(false);
   const [setNum, setNumSet] = useState(1);
   const [text, setText] = useState("! בואו נתחיל")
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [AddExerciseDialogOpen, setAddExerciseDialogOpen] = useState(false);
+  const [LoadExerciseDialogOpen, setLoadExerciseDialogOpen] = useState(false);
 
   useEffect(() => {
     let interval;
@@ -132,18 +134,12 @@ export default function Timer({switchNames, getTraining}) {
         throw new Error('Failed to create exercise');
       }
       const responseData = await response.json();
-      console.log("Response Data: " + responseData)
-
       return responseData;
     } catch (error) {
       console.error('Error creating exercise:', error);
       throw error;
     }
   }
-
-  const loadTraining = (data) => {
-    getTraining()
-  };
 
   return (
     <div className="mx-5 flex flex-col justify-center items-center bg-contain bg-center bg-no-repeat">
@@ -203,20 +199,34 @@ export default function Timer({switchNames, getTraining}) {
 
       <div className="" >
         <button
-            onClick={() => setIsDialogOpen(true)}
+            onClick={() => setAddExerciseDialogOpen(true)}
             className="button bg-yellow-400 hover:bg-yellow-500">
             Add Exercise
         </button>
         <button
             //onClick={() => setIsDialogOpen(true)}]
-            onClick={loadTraining}
+            onClick={() => setLoadExerciseDialogOpen(true)}
             className="button bg-slate-400 hover:bg-slate-500">
             Load Training
         </button>
-        {isDialogOpen && <AddExerciseForm
+        <button
+            //onClick={() => setIsDialogOpen(true)}]
+            //onClick={createTraining}
+            className="button bg-emerald-400 hover:bg-emerald-500">
+            Create Training
+        </button>
+
+        {AddExerciseDialogOpen && <AddExerciseForm
           onConfirm={addExercise}
-          onClose={() => setIsDialogOpen(false)}
+          onClose={() => setAddExerciseDialogOpen(false)}
            />}
+
+        {LoadExerciseDialogOpen && <LoadTrainingForm
+          onConfirm={loadTrainingsOnTable}
+          onClose={() => setLoadExerciseDialogOpen(false)}
+          trainings={trainings}
+           />}
+
       </div>
     </div>
   );
