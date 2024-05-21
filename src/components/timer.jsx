@@ -143,19 +143,19 @@ export default function Timer({switchNames}) {
 
   return (
     <div className="mx-5 flex flex-col justify-center items-center bg-contain bg-center bg-no-repeat">
-      <h1 className="laptop:text-[110px] desktop:text-[192px] font-semibold text-white desktop:-mt-24">
+      <h1 className="laptop:text-[110px] desktop:text-[192px] tv:text-[295px] font-semibold text-white desktop:-mt-24 tv:-mt-60">
         {!isRest ? '\u{1F4AA} תנו בראש' : '\u{1F634} מנוחה'}
       </h1>
 
       <div className="flex flex-col items-center">
-        <Image src={timerLogo.src} alt="Timer Logo" width={1400} height={100} />
-        <div className={`absolute desktop:-mt-32 laptop:-mt-14 laptop:text-[215px] laptop:ml-[150px] desktop:text-[450px] desktop:ml-[270px] font-bold ${!isRest ? 'text-green-500' : 'text-red-500'}`}>
+        <Image src={timerLogo.src} alt="Timer Logo" width={1600} height={100} />
+        <div className={`absolute tv:-mt-36 desktop:-mt-28 laptop:-mt-14 laptop:text-[215px] laptop:ml-[150px] desktop:text-[420px] desktop:ml-[270px] tv:text-[550px] font-bold ${!isRest ? 'text-green-500' : 'text-red-500'}`}>
           {formatTime(seconds)}
         </div>
       </div>
 
       {/* <h1 className="text-8xl font-semibold mb-5 text-white">{setNum} סט מספר</h1> */}
-      <h1 className="laptop:text-[85px] desktop:text-[164px] font-semibold text-white">{text}</h1>
+      <h1 className="laptop:text-[85px] desktop:text-[164px] tv:text-[210px] font-semibold text-white">{text}</h1>
 
       <div className="flex gap-12 desktop:my-14 laptop:my-5">
         {!isRunning ? (

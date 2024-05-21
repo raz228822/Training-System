@@ -54,7 +54,7 @@ export default function Home() {
 
   return(
       <div className="my-8 flex items-center">
-        <Image src={logo} alt="logo"  width={180}/>
+        <Image src={logo} alt="logo" width={300}/>
         <div className="w-[55%]">
           <table className="bg-white border border-gray-300 tv:h-[97vh] laptop:h-[90vh] desktop:h-[95vh] w-full">
             <thead>
@@ -68,8 +68,7 @@ export default function Home() {
             <tbody>
               {tableData.map((exercise, index) => (
                 <React.Fragment key={index}>
-                  <tr className="h-22">
-
+                  <tr>
                     <EditableCell
                     key={index + "excType"}
                     exercise={exercise}

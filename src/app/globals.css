@@ -7,19 +7,19 @@
 }
 
 .name {
-  @apply px-2 text-center font-bold border-b border-l tv:text-[76px] desktop:text-5xl laptop:text-xl max-h-12 bg-black text-white truncate max-w-[95%] tv:h-36
+  @apply px-4 text-center font-bold border-b border-l tv:text-[76px] desktop:text-5xl laptop:text-xl bg-black text-white truncate desktop:max-w-[250px] tv:max-w-[330px] h-16 tv:h-24
 }
 
 .exercise {
-  @apply tv:h-24 text-center border-b font-bold laptop:text-3xl tv:text-[76px] desktop:text-5xl bg-black truncate max-w-[95%] max-h-12
+  @apply px-4 text-center font-bold border-b laptop:text-3xl tv:text-[76px] desktop:text-5xl bg-black truncate desktop:max-w-[900px] tv:max-w-[1200px] h-16 tv:h-24
 }
 
 .excType {
-  @apply px-2 text-center font-bold tv:h-36 h-14 tv:text-6xl laptop:text-xl desktop:text-5xl truncate max-w-[99%]
+  @apply text-center font-bold tv:h-24 tv:text-6xl laptop:text-xl desktop:text-5xl truncate desktop:max-w-[320px] tv:max-w-[400px]
 }
 
 .button {
-  @apply desktop:w-40 desktop:h-24 laptop:w-20 h-14 text-white rounded-md focus:outline-none font-bold
+  @apply tv:w-60 tv:h-32 tv:text-5xl desktop:w-40 desktop:h-24 desktop:text-4xl laptop:w-20 text-white rounded-md focus:outline-none font-bold h-14
 }
 
 .form-button {
