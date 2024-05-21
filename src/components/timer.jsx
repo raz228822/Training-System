@@ -3,7 +3,7 @@ import timerLogo from 'public/timerLogo.png'
 import Image from 'next/image'
 import AddExerciseForm from './addExerciseForm';
 
-export default function Timer({switchNames}) {
+export default function Timer({switchNames, getTraining}) {
   const [seconds, setSeconds] = useState(4);
   const [isRunning, setIsRunning] = useState(false);
   const [isRest, setIsRest] = useState(false);
@@ -117,7 +117,7 @@ export default function Timer({switchNames}) {
     return `${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
-  async function AddExercise(exerciseData) {
+  async function addExercise(exerciseData) {
     try {
       const response = await fetch('/api/exercises', {
         method: 'POST',
@@ -128,18 +128,22 @@ export default function Timer({switchNames}) {
       });
 
       //if (!response.ok) {
-      if(response.status === 200) { // ????????
+      if(response.status !== 200) { // ????????
         throw new Error('Failed to create exercise');
       }
-
       const responseData = await response.json();
-      console.log("resData = " + responseData)
+      console.log("Response Data: " + responseData)
+
       return responseData;
     } catch (error) {
       console.error('Error creating exercise:', error);
       throw error;
     }
   }
+
+  const loadTraining = (data) => {
+    getTraining()
+  };
 
   return (
     <div className="mx-5 flex flex-col justify-center items-center bg-contain bg-center bg-no-repeat">
@@ -203,8 +207,14 @@ export default function Timer({switchNames}) {
             className="button bg-yellow-400 hover:bg-yellow-500">
             Add Exercise
         </button>
+        <button
+            //onClick={() => setIsDialogOpen(true)}]
+            onClick={loadTraining}
+            className="button bg-slate-400 hover:bg-slate-500">
+            Load Training
+        </button>
         {isDialogOpen && <AddExerciseForm
-          onConfirm={AddExercise}
+          onConfirm={addExercise}
           onClose={() => setIsDialogOpen(false)}
            />}
       </div>

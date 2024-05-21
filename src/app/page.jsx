@@ -19,12 +19,19 @@ export default function Home() {
   const stopEditingCell = () =>  setEditingCell(null)
 
   const [tableData, setTableData] = useState([
-    {excType: 'SQUAT(1)', bgColor: 'bg-gray-100', firstExc: 'סקוואט הטחות \u2190 קפיצה על תיבה', secondExc: 'בטן סטטית(הולו הולד) + ראשן טויסט', name1: '', name2: ''},
-    {excType: 'PUSH(2)', bgColor: 'bg-pink-300', firstExc: 'לחיצות חזה + כפיפת ירך', secondExc: 'הפיכת צמיג', name1: '', name2: ''},
-    {excType: 'DEADLIFT(3)', bgColor: 'bg-red-500', firstExc: 'דדליפט עם רגל אחת', secondExc: 'חבלי ניעור (באטל רופ)', name1: '', name2: ''},
-    {excType: 'PULL(4)', bgColor: 'bg-blue-500', firstExc: 'HOIST מתח', secondExc: 'בטן כפיפת ירך בשכיבה(ידיות)', name1: '', name2: ''},
-    {excType: 'LUNGE(5)', bgColor: 'bg-gray-300', firstExc: 'לאנג׳ \u2190 סקואט \u2190 לאנג׳', secondExc: 'פלאנק עליות על כפות ידיים', name1: '', name2: ''},
-    {excType: 'TWIST(6)', bgColor: 'bg-yellow-300', firstExc: 'כפיפות צד', secondExc: 'חבל קפיצה על רגל אחת', name1: '', name2: ''}
+    {excType: 'SQUAT(1)', bgColor: 'bg-gray-100', firstExc: '', secondExc: '', name1: '', name2: ''},
+    {excType: 'PUSH(2)', bgColor: 'bg-red-500', firstExc: '', secondExc: '', name1: '', name2: ''},
+    {excType: 'DEADLIFT(3)', bgColor: 'bg-blue-500', firstExc: '', secondExc: '', name1: '', name2: ''},
+    {excType: 'PULL(4)', bgColor: 'bg-gray-300', firstExc: '', secondExc: '', name1: '', name2: ''},
+    {excType: 'LUNGE(5)', bgColor: 'bg-yellow-300', firstExc: '', secondExc: '', name1: '', name2: ''},
+    {excType: 'TWIST(6)', bgColor: 'bg-gray-100', firstExc: '', secondExc: '', name1: '', name2: ''},
+
+    //{excType: 'SQUAT(1)', bgColor: 'bg-gray-100', firstExc: 'סקוואט הטחות \u2190 קפיצה על תיבה', secondExc: 'בטן סטטית(הולו הולד) + ראשן טויסט', name1: '', name2: ''},
+    // {excType: 'PUSH(2)', bgColor: 'bg-pink-300', firstExc: 'לחיצות חזה + כפיפת ירך', secondExc: 'הפיכת צמיג', name1: '', name2: ''},
+    // {excType: 'DEADLIFT(3)', bgColor: 'bg-red-500', firstExc: 'דדליפט עם רגל אחת', secondExc: 'חבלי ניעור (באטל רופ)', name1: '', name2: ''},
+    // {excType: 'PULL(4)', bgColor: 'bg-blue-500', firstExc: 'HOIST מתח', secondExc: 'בטן כפיפת ירך בשכיבה(ידיות)', name1: '', name2: ''},
+    // {excType: 'LUNGE(5)', bgColor: 'bg-gray-300', firstExc: 'לאנג׳ \u2190 סקואט \u2190 לאנג׳', secondExc: 'פלאנק עליות על כפות ידיים', name1: '', name2: ''},
+    // {excType: 'TWIST(6)', bgColor: 'bg-yellow-300', firstExc: 'כפיפות צד', secondExc: 'חבל קפיצה על רגל אחת', name1: '', name2: ''}
   ])
 
   const updateTableData = (index, fieldName) => {
@@ -51,6 +58,51 @@ export default function Home() {
     })
     setTableData([...tableData]); // Trigger re-render
   };
+
+  async function loadTrainingFromDB() {
+    try {
+      const response = await fetch('/api/trainings', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+
+      if(response.status !== 200) {
+        throw new Error('Failed to load training')
+      }
+      const responseData = await response.json()
+      const training = responseData['0']
+      loadTrainingOnTable(training)
+
+    } catch (error) {
+      console.error('Error loading training:', error)
+      throw error
+    }
+  }
+
+  const loadTrainingOnTable = (training) => {
+    // Map through the table data and update the corresponding fields with the text from the training object
+    const updatedTableData = tableData.map((exercise, index) => {
+      switch (index) {
+        case 0: // Update the first exercise type
+          return { ...exercise, firstExc: training.exercise_1, secondExc: training.exercise_2 };
+        case 1: // Update the second exercise type
+          return { ...exercise, firstExc: training.exercise_3, secondExc: training.exercise_4 };
+        case 2: // Update the second exercise type
+          return { ...exercise, firstExc: training.exercise_5, secondExc: training.exercise_6 };
+        case 3: // Update the second exercise type
+          return { ...exercise, firstExc: training.exercise_7, secondExc: training.exercise_8 };
+        case 4: // Update the second exercise type
+          return { ...exercise, firstExc: training.exercise_9, secondExc: training.exercise_10 };
+        case 5: // Update the second exercise type
+          return { ...exercise, firstExc: training.exercise_11, secondExc: training.exercise_12 };
+      }
+    });
+    // Update the table data with the modified array
+    console.log(updatedTableData)
+    setTableData(updatedTableData);
+  }
 
   return(
       <div className="my-8 flex items-center">
@@ -143,7 +195,7 @@ export default function Home() {
           </table>
         </div>
         <div className="w-[45%]">
-          <Timer switchNames={switchNames}/>
+          <Timer switchNames={switchNames} getTraining={loadTrainingFromDB}/>
         </div>
       </div>
     )
