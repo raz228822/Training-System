@@ -20,12 +20,12 @@ export default function Home() {
   const stopEditingCell = () =>  setEditingCell(null)
 
   const [tableData, setTableData] = useState([
-    {excType: 'SQUAT(1)', bgColor: 'bg-gray-100', firstExc: '', secondExc: '', name1: '', name2: ''},
-    {excType: 'PUSH(2)', bgColor: 'bg-red-500', firstExc: '', secondExc: '', name1: '', name2: ''},
-    {excType: 'DEADLIFT(3)', bgColor: 'bg-blue-500', firstExc: '', secondExc: '', name1: '', name2: ''},
-    {excType: 'PULL(4)', bgColor: 'bg-gray-300', firstExc: '', secondExc: '', name1: '', name2: ''},
-    {excType: 'LUNGE(5)', bgColor: 'bg-yellow-300', firstExc: '', secondExc: '', name1: '', name2: ''},
-    {excType: 'TWIST(6)', bgColor: 'bg-gray-100', firstExc: '', secondExc: '', name1: '', name2: ''},
+    {excType: 'SQUAT(1)', bgColor: 'bg-yellow-400', firstExc: '', secondExc: '', name1: '', name2: ''},
+    {excType: 'PUSH(2)', bgColor: 'bg-pink-500', firstExc: '', secondExc: '', name1: '', name2: ''},
+    {excType: 'DEADLIFT(3)', bgColor: 'bg-red-500', firstExc: '', secondExc: '', name1: '', name2: ''},
+    {excType: 'PULL(4)', bgColor: 'bg-blue-500', firstExc: '', secondExc: '', name1: '', name2: ''},
+    {excType: 'LUNGE(5)', bgColor: 'bg-gray-500', firstExc: '', secondExc: '', name1: '', name2: ''},
+    {excType: 'TWIST(6)', bgColor: 'bg-white', firstExc: '', secondExc: '', name1: '', name2: ''},
 
     //{excType: 'SQUAT(1)', bgColor: 'bg-gray-100', firstExc: 'סקוואט הטחות \u2190 קפיצה על תיבה', secondExc: 'בטן סטטית(הולו הולד) + ראשן טויסט', name1: '', name2: ''},
     // {excType: 'PUSH(2)', bgColor: 'bg-pink-300', firstExc: 'לחיצות חזה + כפיפת ירך', secondExc: 'הפיכת צמיג', name1: '', name2: ''},

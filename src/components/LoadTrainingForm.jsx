@@ -5,14 +5,16 @@ export default function LoadTrainingForm({onConfirm, onClose, trainings }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const selected = trainings.find((training) => training.training === selectedTraining);
-      if (selected) {
-        onConfirm(selected); // Call the loadTrainingOnTable function with the selected training
-      }
-    } catch (error) {
-      console.error('Error loading training:', error);
-    }
+    onClose();
+    // try {
+    //   const selected = trainings.find((training) => training.training === selectedTraining);
+    //   if (selected) {
+    //     onConfirm(selected); // Call the loadTrainingOnTable function with the selected training
+    //     onClose();
+    //   }
+    // } catch (error) {
+    //   console.error('Error loading training:', error);
+    // }
   };
   
   const handleSelectChange = (e) => {
@@ -20,8 +22,15 @@ export default function LoadTrainingForm({onConfirm, onClose, trainings }) {
   };
 
   useEffect(() => {
-    console.log(trainings);
-  }, [trainings]); // Run this effect whenever 'trainings' state changes
+    try {
+    const selected = trainings.find((training) => training.training === selectedTraining);
+      if (selected) {
+        onConfirm(selected);
+      }
+    } catch (error) {
+      console.error('Error loading training:', error);
+    }
+  }, [selectedTraining]); // Run this effect whenever 'trainings' state changes
 
   const handleCancel = () => {
     // Call the onCancel callback

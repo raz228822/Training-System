@@ -3,6 +3,7 @@ import timerLogo from 'public/timerLogo.png'
 import Image from 'next/image'
 import AddExerciseForm from './addExerciseForm';
 import LoadTrainingForm from './LoadTrainingForm'
+import AddTrainingForm from './addTrainingForm';
 
 export default function Timer({switchNames, loadTrainingsOnTable, trainings}) {
   const [seconds, setSeconds] = useState(4);
@@ -10,8 +11,10 @@ export default function Timer({switchNames, loadTrainingsOnTable, trainings}) {
   const [isRest, setIsRest] = useState(false);
   const [setNum, setNumSet] = useState(1);
   const [text, setText] = useState("! בואו נתחיל")
-  const [AddExerciseDialogOpen, setAddExerciseDialogOpen] = useState(false);
-  const [LoadExerciseDialogOpen, setLoadExerciseDialogOpen] = useState(false);
+  const [title, setTitle] = useState('\u{1F4AA} תנו בראש')
+  const [AddExerciseDialogOpen, setIsAddExerciseDialogOpen] = useState(false);
+  const [LoadExerciseDialogOpen, setIsLoadExerciseDialogOpen] = useState(false);
+  const [AddTrainingDialogOpen, setIsAddTrainingDialogOpen] = useState(false);
 
   useEffect(() => {
     let interval;
@@ -42,6 +45,7 @@ export default function Timer({switchNames, loadTrainingsOnTable, trainings}) {
   const handleReset = () => {
     setNumSet(1)
     setIsRest(false);
+    setTitle('\u{1F4AA} תנו בראש')
     setSeconds(4);
     setIsRunning(false);
     setText("! בואו נתחיל");
@@ -51,18 +55,21 @@ export default function Timer({switchNames, loadTrainingsOnTable, trainings}) {
     if(text === "! בואו נתחיל"){
         setText(`סט מספר ${setNum}`)
         setIsRest(false);
+        setTitle('\u{1F4AA} תנו בראש')
         setSeconds(4);
         setIsRunning(false);
     }
     if(setNum !== 3 && text != "! בואו נתחיל") {
       if(!isRest) { // On green 40 seconds
         setIsRest(true);
+        setTitle('\u{1F634} מנוחה')
         setSeconds(3);
       }
       else {
         setNumSet(prevSet => prevSet + 1)
         setText(`סט מספר ${setNum + 1}`)
         setIsRest(false);
+        setTitle('\u{1F4AA} תנו בראש')
         setSeconds(4);
       }
       setIsRunning(false);
@@ -70,23 +77,44 @@ export default function Timer({switchNames, loadTrainingsOnTable, trainings}) {
   }
 
   const DecreaseSet = () => {
-    if(text === "סט מספר 1"){
+    if(text === "! בואו נתחיל")
+      return
+    if(setNum === 1 && !isRest) {
       setText("! בואו נתחיל")
+      return
     }
-    if(setNum !== 1 && text != "! בואו נתחיל") {
-      if(!isRest) {
-        setIsRest(true)
-        setSeconds(3)
-      }
-      else {
-        setNumSet(prevSet => prevSet - 1)
-        setText(`סט מספר ${setNum - 1}`)
-        setIsRest(false);
-        setSeconds(4);
-        }
-        setIsRunning(false);
-      }
-  }
+    if(!isRest) {
+      setNumSet(prevSet => prevSet - 1)
+      setText(`סט מספר ${setNum - 1}`)
+      setIsRest(true)
+      setTitle('\u{1F634} מנוחה')
+      setSeconds(3)
+    }
+    else {
+      setIsRest(false);
+      setTitle('\u{1F4AA} תנו בראש')
+      setSeconds(4);
+    }
+    setIsRunning(false);
+    
+    // if(setNum !== 1 && text != "! בואו נתחיל") {
+    //   if(!isRest) {
+    //     setIsRest(true)
+    //     setSeconds(3)
+    //   }
+    //   else {
+    //     setNumSet(prevSet => prevSet - 1)
+    //     setText(`סט מספר ${setNum - 1}`)
+    //     setIsRest(false);
+    //     setSeconds(4);
+    //     }
+    //     setIsRunning(false);
+    //   }
+    }
+
+  useEffect(() => {
+    console.log(setNum)
+  },[setNum])
 
   useEffect(() => {
     if (seconds === 0) {
@@ -96,20 +124,22 @@ export default function Timer({switchNames, loadTrainingsOnTable, trainings}) {
           return
         }
         setIsRest(true);
+        setTitle('\u{1F389}\u{1F389}\u{1F389}')
         setSeconds(3);
         setText("\u{1F504} להחליף תחנות")
         switchNames()
         return
       }
       if(isRest) {
-          setNumSet(prevSetNum => {
-            const updatedNumSet = prevSetNum + 1;
-            setText(`סט מספר ${updatedNumSet}`);
-            return updatedNumSet;
-            });
+        setNumSet(prevSetNum => {
+          const updatedNumSet = prevSetNum + 1;
+          setText(`סט מספר ${updatedNumSet}`);
+          return updatedNumSet;
+          });
       }
       setIsRest((prev) => !prev); // Toggle between 40 and 30 seconds
       setSeconds(isRest ? 4 : 3); // Reset the timer to the new duration
+      setTitle(isRest ? '\u{1F4AA} תנו בראש' : '\u{1F634} מנוחה')
       setIsRunning(true); // Start the timer again
     }
   }, [seconds, isRest]);
@@ -129,8 +159,7 @@ export default function Timer({switchNames, loadTrainingsOnTable, trainings}) {
         body: JSON.stringify(exerciseData) // Convert exerciseData to JSON string
       });
 
-      //if (!response.ok) {
-      if(response.status !== 200) { // ????????
+      if (!response.ok) {
         throw new Error('Failed to create exercise');
       }
       const responseData = await response.json();
@@ -141,10 +170,16 @@ export default function Timer({switchNames, loadTrainingsOnTable, trainings}) {
     }
   }
 
+  async function addTraining(training) {
+      console.log("addTraining function here")
+  }
+
   return (
     <div className="mx-5 flex flex-col justify-center items-center bg-contain bg-center bg-no-repeat">
       <h1 className="laptop:text-[110px] desktop:text-[192px] tv:text-[295px] font-semibold text-white desktop:-mt-24 tv:-mt-60">
-        {!isRest ? '\u{1F4AA} תנו בראש' : '\u{1F634} מנוחה'}
+        {title}
+        {/* {!isRest ? '\u{1F4AA} תנו בראש' : '\u{1F634} מנוחה'} */}
+        {/* 1F389 */}
       </h1>
 
       <div className="flex flex-col items-center">
@@ -199,18 +234,18 @@ export default function Timer({switchNames, loadTrainingsOnTable, trainings}) {
 
       <div className="" >
         <button
-            onClick={() => setAddExerciseDialogOpen(true)}
+            onClick={() => setIsAddExerciseDialogOpen(true)}
             className="button bg-yellow-400 hover:bg-yellow-500">
             Add Exercise
         </button>
         <button
             //onClick={() => setIsDialogOpen(true)}]
-            onClick={() => setLoadExerciseDialogOpen(true)}
+            onClick={() => setIsLoadExerciseDialogOpen(true)}
             className="button bg-slate-400 hover:bg-slate-500">
             Load Training
         </button>
         <button
-            //onClick={() => setIsDialogOpen(true)}]
+            onClick={() => setIsAddTrainingDialogOpen(true)}
             //onClick={createTraining}
             className="button bg-emerald-400 hover:bg-emerald-500">
             Create Training
@@ -218,13 +253,18 @@ export default function Timer({switchNames, loadTrainingsOnTable, trainings}) {
 
         {AddExerciseDialogOpen && <AddExerciseForm
           onConfirm={addExercise}
-          onClose={() => setAddExerciseDialogOpen(false)}
+          onClose={() => setIsAddExerciseDialogOpen(false)}
            />}
 
         {LoadExerciseDialogOpen && <LoadTrainingForm
           onConfirm={loadTrainingsOnTable}
-          onClose={() => setLoadExerciseDialogOpen(false)}
+          onClose={() => setIsLoadExerciseDialogOpen(false)}
           trainings={trainings}
+           />}
+
+        {AddTrainingDialogOpen && <AddTrainingForm
+          onConfirm={addTraining}
+          onClose={() => setIsAddTrainingDialogOpen(false)}
            />}
 
       </div>
