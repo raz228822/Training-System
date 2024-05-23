@@ -12,6 +12,7 @@ export default function Home() {
   const [editingCell, setEditingCell] = useState(null)
   const editNameRef = useRef()
   const [trainings, setTrainings] = useState([]);
+  const [exercises, setExercises] = useState([]);
 
   const startEditingCell = (index, fieldName) => {
     setEditingCell({ index, fieldName })
@@ -60,30 +61,44 @@ export default function Home() {
     setTableData([...tableData]); // Trigger re-render
   };
 
-  useEffect(() => {
-    const fetchTrainings = async () => {
-      try {
-        const response = await fetch('/api/trainings', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+  const fetchData = async () => {
+    try {
+      const trainingResponse = await fetch('/api/trainings', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-        if (response.status !== 200) {
-          throw new Error('Failed to load training');
-        }
-
-        const data = await response.json();
-        setTrainings(data); // Directly set the array of training objects
-
-      } catch (error) {
-        console.error('Error loading training:', error);
+      if (trainingResponse.status !== 200) {
+        throw new Error('Failed to load training');
       }
-    };
 
-    fetchTrainings();
-  }, []);
+      const trainingData = await trainingResponse.json();
+      setTrainings(trainingData);
+
+      const exerciseResponse = await fetch('/api/exercises', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (exerciseResponse.status !== 200) {
+        throw new Error('Failed to load exercises');
+      }
+
+      const exerciseData = await exerciseResponse.json();
+      setExercises(exerciseData);
+    } catch (error) {
+      console.error('Error loading data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []); // This useEffect will trigger once on component mount
+  
 
   // useEffect(() => {
   //   //loadTrainingFromDB();
@@ -203,7 +218,7 @@ export default function Home() {
           </table>
         </div>
         <div className="w-[45%]">
-          <Timer switchNames={switchNames} loadTrainingsOnTable={loadTrainingOnTable} trainings={trainings}/>
+          <Timer switchNames={switchNames} loadTrainingsOnTable={loadTrainingOnTable} trainings={trainings} exercises={exercises}/>
         </div>
       </div>
     )

@@ -1,13 +1,35 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-export default function AddTrainingForm({onConfirm, onClose }) {
-    const [trainingName, setTrainingName] = useState('');
-    const [selectedTraining, setSelectedTraining] = useState('');
-    const trainigs = ['']
+export default function AddTrainingForm({onConfirm, onClose, exercises }) {
+  const [trainingName, setTrainingName] = useState('');
+  const [selectedTraining, setSelectedTraining] = useState('');
+//   const [categorizedExercises, setCategorizedExercises] = useState({
+//     squat: [],
+//     push: [],
+//     deadlift: [],
+//     pull: [],
+//     lunge: [],
+//     twist: [],
+//   });
+    console.log(exercises)
 
-    const handleSelectChange = (e) => {
-        setSelectedTraining(e.target.value);
-      };
+  const exerciseCategories = [
+    { name: 'Squat House', key: 'squat' },
+    { name: 'Push House', key: 'push' },
+    { name: 'Deadlift House', key: 'deadlift' },
+    { name: 'Pull House', key: 'pull' },
+    { name: 'Lunge House', key: 'lunge' },
+    { name: 'Twist House', key: 'twist' },
+  ];
+
+  const categorizedExercises = exerciseCategories.reduce((acc, category) => {
+    acc[category.key] = exercises.filter(exercise => exercise.house === category.key);
+    return acc;
+  }, {});
+
+  const handleSelectChange = (e) => {
+    setSelectedTraining(e.target.value);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -20,6 +42,36 @@ export default function AddTrainingForm({onConfirm, onClose }) {
     // Call the onCancel callback
     onClose();
   };
+
+//   useEffect(() => {
+//     const fetchExercises = async () => {
+//       try {
+//         const response = await fetch('/api/exercises', {
+//           method: 'GET',
+//           headers: {
+//             'Content-Type': 'application/json',
+//           },
+//         });
+
+//         if (response.status !== 200) {
+//           throw new Error('Failed to load exercises');
+//         }
+
+//         const data = await response.json();
+//         console.log(data)
+//         const categorizedExercises = await exerciseCategories.reduce((acc, category) => {
+//             acc[category.key] = data.filter(exercise => exercise.house === category.key);
+//             return acc;
+//           }, {});
+//         console.log(categorizedExercises.squat)
+//         setCategorizedExercises(categorizedExercises)
+//         //setExercises(data); // Directly set the array of training objects
+//       } catch (error) {
+//         console.error('Error loading exercises:', error);
+//       }
+//     };
+//     fetchExercises();
+//   }, []);
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
@@ -34,16 +86,16 @@ export default function AddTrainingForm({onConfirm, onClose }) {
                 className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
             />
             <label className="block text-gray-700">Squat House:</label>
-            <div className="flex flex-col">
+            <div className="select-trainings">
                 <select
                     value={selectedTraining}
                     onChange={handleSelectChange}
                     className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
                 >
                     <option value="">Select a training</option>
-                    {/* {trainings.map((training, index) => (
-                    <option key={index} value={training.training}>{training.training}</option>
-                    ))} */}
+                    {categorizedExercises.squat && categorizedExercises.squat.map((exercise, index) => (
+                    <option key={index} value={exercise.name}>{exercise.name}</option>
+                    ))}
                 </select>
                 <select
                     value={selectedTraining}
@@ -51,22 +103,22 @@ export default function AddTrainingForm({onConfirm, onClose }) {
                     className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
                 >
                     <option value="">Select a training</option>
-                    {/* {trainings.map((training, index) => (
-                    <option key={index} value={training.training}>{training.training}</option>
-                    ))} */}
+                    {categorizedExercises.squat && categorizedExercises.squat.map((exercise, index) => (
+                    <option key={index} value={exercise.name}>{exercise.name}</option>
+                    ))}
                 </select>
              </div>
              <label className="block text-gray-700">Push House:</label>
-             <div className="flex flex-col">
+             <div className="select-trainings">
              <select
                     value={selectedTraining}
                     onChange={handleSelectChange}
                     className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
                 >
                     <option value="">Select a training</option>
-                    {/* {trainings.map((training, index) => (
-                    <option key={index} value={training.training}>{training.training}</option>
-                    ))} */}
+                    {categorizedExercises.push && categorizedExercises.push.map((exercise, index) => (
+                    <option key={index} value={exercise.name}>{exercise.name}</option>
+                    ))}
                 </select>
                 <select
                     value={selectedTraining}
@@ -74,22 +126,22 @@ export default function AddTrainingForm({onConfirm, onClose }) {
                     className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
                 >
                     <option value="">Select a training</option>
-                    {/* {trainings.map((training, index) => (
-                    <option key={index} value={training.training}>{training.training}</option>
-                    ))} */}
+                    {categorizedExercises.push && categorizedExercises.push.map((exercise, index) => (
+                    <option key={index} value={exercise.name}>{exercise.name}</option>
+                    ))}
                 </select>
              </div>
              <label className="block text-gray-700">Deadlift House:</label>
-             <div className="flex flex-col">
+             <div className="select-trainings">
              <select
                     value={selectedTraining}
                     onChange={handleSelectChange}
                     className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
                 >
                     <option value="">Select a training</option>
-                    {/* {trainings.map((training, index) => (
-                    <option key={index} value={training.training}>{training.training}</option>
-                    ))} */}
+                    {categorizedExercises.deadlift && categorizedExercises.deadlift.map((exercise, index) => (
+                    <option key={index} value={exercise.name}>{exercise.name}</option>
+                    ))}
                 </select>
                 <select
                     value={selectedTraining}
@@ -97,22 +149,22 @@ export default function AddTrainingForm({onConfirm, onClose }) {
                     className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
                 >
                     <option value="">Select a training</option>
-                    {/* {trainings.map((training, index) => (
-                    <option key={index} value={training.training}>{training.training}</option>
-                    ))} */}
+                    {categorizedExercises.deadlift && categorizedExercises.deadlift.map((exercise, index) => (
+                    <option key={index} value={exercise.name}>{exercise.name}</option>
+                    ))}
                 </select>
              </div>
              <label className="block text-gray-700">Pull House:</label>
-             <div className="flex flex-col">
+             <div className="select-trainings">
                 <select
                     value={selectedTraining}
                     onChange={handleSelectChange}
                     className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
                 >
                     <option value="">Select a training</option>
-                    {/* {trainings.map((training, index) => (
-                    <option key={index} value={training.training}>{training.training}</option>
-                    ))} */}
+                    {categorizedExercises.pull && categorizedExercises.pull.map((exercise, index) => (
+                    <option key={index} value={exercise.name}>{exercise.name}</option>
+                    ))}
                 </select>
                 <select
                     value={selectedTraining}
@@ -120,22 +172,22 @@ export default function AddTrainingForm({onConfirm, onClose }) {
                     className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
                 >
                     <option value="">Select a training</option>
-                    {/* {trainings.map((training, index) => (
-                    <option key={index} value={training.training}>{training.training}</option>
-                    ))} */}
+                    {categorizedExercises.pull && categorizedExercises.pull.map((exercise, index) => (
+                    <option key={index} value={exercise.name}>{exercise.name}</option>
+                    ))}
                 </select>
              </div>
              <label className="block text-gray-700">Lunge House:</label>
-             <div className="flex flex-col">
+             <div className="select-trainings">
                 <select
                     value={selectedTraining}
                     onChange={handleSelectChange}
                     className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
                 >
                     <option value="">Select a training</option>
-                    {/* {trainings.map((training, index) => (
-                    <option key={index} value={training.training}>{training.training}</option>
-                    ))} */}
+                    {categorizedExercises.lunge && categorizedExercises.lunge.map((exercise, index) => (
+                    <option key={index} value={exercise.name}>{exercise.name}</option>
+                    ))}
                 </select>
                 <select
                     value={selectedTraining}
@@ -143,22 +195,22 @@ export default function AddTrainingForm({onConfirm, onClose }) {
                     className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
                 >
                     <option value="">Select a training</option>
-                    {/* {trainings.map((training, index) => (
-                    <option key={index} value={training.training}>{training.training}</option>
-                    ))} */}
+                    {categorizedExercises.lunge && categorizedExercises.lunge.map((exercise, index) => (
+                    <option key={index} value={exercise.name}>{exercise.name}</option>
+                    ))}
                 </select>
              </div>
              <label className="block text-gray-700">Twist House:</label>
-             <div className="flex flex-col">
+             <div className="select-trainings">
                 <select
                     value={selectedTraining}
                     onChange={handleSelectChange}
                     className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
                 >
                     <option value="">Select a training</option>
-                    {/* {trainings.map((training, index) => (
-                    <option key={index} value={training.training}>{training.training}</option>
-                    ))} */}
+                    {categorizedExercises.twist && categorizedExercises.twist.map((exercise, index) => (
+                    <option key={index} value={exercise.name}>{exercise.name}</option>
+                    ))}
                 </select>
                 <select
                     value={selectedTraining}
@@ -166,9 +218,9 @@ export default function AddTrainingForm({onConfirm, onClose }) {
                     className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
                 >
                     <option value="">Select a training</option>
-                    {/* {trainings.map((training, index) => (
-                    <option key={index} value={training.training}>{training.training}</option>
-                    ))} */}
+                    {categorizedExercises.twist && categorizedExercises.twist.map((exercise, index) => (
+                    <option key={index} value={exercise.name}>{exercise.name}</option>
+                    ))}
                 </select>
              </div>
 

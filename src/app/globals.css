@@ -25,6 +25,10 @@
 .form-button {
   @apply desktop:w-40 desktop:h-24 laptop:w-28 h-10 text-white rounded-md focus:outline-none font-bold
 }
+
+.select-trainings {
+  @apply flex flex-row space-x-5
+}
  
 body {
   background-image: url('/background.png');

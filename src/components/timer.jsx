@@ -5,7 +5,7 @@ import AddExerciseForm from './addExerciseForm';
 import LoadTrainingForm from './LoadTrainingForm'
 import AddTrainingForm from './addTrainingForm';
 
-export default function Timer({switchNames, loadTrainingsOnTable, trainings}) {
+export default function Timer({switchNames, loadTrainingsOnTable, trainings, exercises}) {
   const [seconds, setSeconds] = useState(4);
   const [isRunning, setIsRunning] = useState(false);
   const [isRest, setIsRest] = useState(false);
@@ -265,6 +265,7 @@ export default function Timer({switchNames, loadTrainingsOnTable, trainings}) {
         {AddTrainingDialogOpen && <AddTrainingForm
           onConfirm={addTraining}
           onClose={() => setIsAddTrainingDialogOpen(false)}
+          exercises={exercises}
            />}
 
       </div>
