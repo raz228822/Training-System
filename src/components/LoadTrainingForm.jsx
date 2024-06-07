@@ -27,6 +27,9 @@ export default function LoadTrainingForm({onConfirm, onClose, trainings }) {
       if (selected) {
         onConfirm(selected);
       }
+      else {
+        onConfirm(NULL)
+      }
     } catch (error) {
       console.error('Error loading training:', error);
     }

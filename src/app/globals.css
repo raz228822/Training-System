@@ -3,15 +3,15 @@
 @tailwind utilities;
 
 .th {
-  @apply py-6 bg-yellow-300 font-bold tv:text-6xl laptop:text-2xl desktop:text-4xl
+  @apply laptop:py-2 desktop:py-6 bg-yellow-300 font-bold tv:text-6xl laptop:text-2xl desktop:text-4xl
 }
 
 .name {
-  @apply px-4 text-center font-bold border-b border-l tv:text-[76px] desktop:text-5xl laptop:text-xl bg-black text-white truncate desktop:max-w-[250px] tv:max-w-[330px] h-16 tv:h-24
+  @apply px-4 text-center font-bold border-b border-l tv:text-[76px] desktop:text-5xl laptop:text-3xl bg-black text-white truncate desktop:max-w-[250px] tv:max-w-[330px] h-16 tv:h-24
 }
 
 .exercise {
-  @apply px-4 text-center font-bold border-b laptop:text-3xl tv:text-[76px] desktop:text-5xl bg-black truncate desktop:max-w-[900px] tv:max-w-[1200px] h-16 tv:h-24
+  @apply px-4 text-center font-bold border-b laptop:text-3xl tv:text-[76px] desktop:text-5xl bg-black truncate desktop:max-w-[900px] tv:max-w-[1200px] tv:h-24
 }
 
 .excType {

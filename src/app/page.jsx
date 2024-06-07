@@ -108,19 +108,20 @@ export default function Home() {
   const loadTrainingOnTable = (training) => {
     // Map through the table data and update the corresponding fields with the text from the training object
     const updatedTableData = tableData.map((exercise, index) => {
+
       switch (index) {
-        case 0: // Update the first exercise type
-          return { ...exercise, firstExc: training.exercise_1, secondExc: training.exercise_2 };
-        case 1: // Update the second exercise type
-          return { ...exercise, firstExc: training.exercise_3, secondExc: training.exercise_4 };
-        case 2: // Update the second exercise type
-          return { ...exercise, firstExc: training.exercise_5, secondExc: training.exercise_6 };
-        case 3: // Update the second exercise type
-          return { ...exercise, firstExc: training.exercise_7, secondExc: training.exercise_8 };
-        case 4: // Update the second exercise type
-          return { ...exercise, firstExc: training.exercise_9, secondExc: training.exercise_10 };
-        case 5: // Update the second exercise type
-          return { ...exercise, firstExc: training.exercise_11, secondExc: training.exercise_12 };
+        case 0:
+          return { ...exercise, firstExc: training.squat_1, secondExc: training.squat_2 };
+        case 1:
+          return { ...exercise, firstExc: training.push_1, secondExc: training.push_2 };
+        case 2: 
+          return { ...exercise, firstExc: training.deadlift_1, secondExc: training.deadlift_2 };
+        case 3:
+          return { ...exercise, firstExc: training.pull_1, secondExc: training.pull_2 };
+        case 4: 
+          return { ...exercise, firstExc: training.lunge_1, secondExc: training.lunge_2 };
+        case 5:
+          return { ...exercise, firstExc: training.twist_1, secondExc: training.twist_2 };
       }
     });
     // Update the table data with the modified array
@@ -129,7 +130,7 @@ export default function Home() {
 
   return(
       <div className="my-8 flex items-center">
-        <Image src={logo} alt="logo" width={300}/>
+        <Image src={logo} alt="logo"className="laptop:w-[100px] desktop:w-[300px]"/>
         <div className="w-[55%]">
           <table className="bg-white border border-gray-300 tv:h-[97vh] laptop:h-[90vh] desktop:h-[95vh] w-full">
             <thead>
@@ -218,7 +219,7 @@ export default function Home() {
           </table>
         </div>
         <div className="w-[45%]">
-          <Timer switchNames={switchNames} loadTrainingsOnTable={loadTrainingOnTable} trainings={trainings} exercises={exercises}/>
+          <Timer switchNames={switchNames} loadTrainingsOnTable={loadTrainingOnTable} trainings={trainings} exercises={exercises} fetchData={fetchData}/>
         </div>
       </div>
     )

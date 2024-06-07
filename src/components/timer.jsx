@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import timerLogo from 'public/timerLogo.png'
 import Image from 'next/image'
 import AddExerciseForm from './addExerciseForm';
-import LoadTrainingForm from './LoadTrainingForm'
+import LoadTrainingForm from './LoadTrainingForm';
 import AddTrainingForm from './addTrainingForm';
 
-export default function Timer({switchNames, loadTrainingsOnTable, trainings, exercises}) {
+export default function Timer({switchNames, loadTrainingsOnTable, trainings, exercises, fetchData}) {
   const [seconds, setSeconds] = useState(4);
   const [isRunning, setIsRunning] = useState(false);
   const [isRest, setIsRest] = useState(false);
@@ -162,6 +162,7 @@ export default function Timer({switchNames, loadTrainingsOnTable, trainings, exe
       if (!response.ok) {
         throw new Error('Failed to create exercise');
       }
+      fetchData()
       const responseData = await response.json();
       return responseData;
     } catch (error) {
@@ -170,13 +171,32 @@ export default function Timer({switchNames, loadTrainingsOnTable, trainings, exe
     }
   }
 
-  async function addTraining(training) {
-      console.log("addTraining function here")
+  async function addTraining(trainingData) {
+    try {
+      const response = await fetch('/api/trainings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(trainingData) // Convert trainingData to JSON string
+      });
+
+      if (!response.ok) {
+        console.log(trainingData)
+        throw new Error('Failed to create exercise');
+      }
+      fetchData()
+      const responseData = await response.json();
+      return responseData;
+    } catch (error) {
+      console.error('Error creating exercise:', error);
+      throw error;
+    }
   }
 
   return (
     <div className="mx-5 flex flex-col justify-center items-center bg-contain bg-center bg-no-repeat">
-      <h1 className="laptop:text-[110px] desktop:text-[192px] tv:text-[295px] font-semibold text-white desktop:-mt-24 tv:-mt-60">
+      <h1 className="laptop:text-[110px] desktop:text-[192px] tv:text-[290px] font-semibold text-white desktop:-mt-24 tv:-mt-60">
         {title}
         {/* {!isRest ? '\u{1F4AA} תנו בראש' : '\u{1F634} מנוחה'} */}
         {/* 1F389 */}
@@ -190,7 +210,7 @@ export default function Timer({switchNames, loadTrainingsOnTable, trainings, exe
       </div>
 
       {/* <h1 className="text-8xl font-semibold mb-5 text-white">{setNum} סט מספר</h1> */}
-      <h1 className="laptop:text-[85px] desktop:text-[164px] tv:text-[210px] font-semibold text-white">{text}</h1>
+      <h1 className="laptop:text-[80px] desktop:text-[164px] tv:text-[210px] font-semibold text-white">{text}</h1>
 
       <div className="flex gap-12 desktop:my-14 laptop:my-5">
         {!isRunning ? (

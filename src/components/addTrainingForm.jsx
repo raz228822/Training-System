@@ -2,16 +2,19 @@ import { useState, useEffect } from 'react';
 
 export default function AddTrainingForm({onConfirm, onClose, exercises }) {
   const [trainingName, setTrainingName] = useState('');
-  const [selectedTraining, setSelectedTraining] = useState('');
-//   const [categorizedExercises, setCategorizedExercises] = useState({
-//     squat: [],
-//     push: [],
-//     deadlift: [],
-//     pull: [],
-//     lunge: [],
-//     twist: [],
-//   });
-    console.log(exercises)
+  const [selectedSquat1, setSelectedSquat1] = useState('');
+  const [selectedSquat2, setSelectedSquat2] = useState('');
+  const [selectedPush1, setSelectedPush1] = useState('');
+  const [selectedPush2, setSelectedPush2] = useState('');
+  const [selectedDeadlift1, setSelectedDeadlift1] = useState('');
+  const [selectedDeadlift2, setSelectedDeadlift2] = useState('');
+  const [selectedPull1, setSelectedPull1] = useState('');
+  const [selectedPull2, setSelectedPull2] = useState('');
+  const [selectedLunge1, setSelectedLunge1] = useState('');
+  const [selectedLunge2, setSelectedLunge2] = useState('');
+  const [selectedTwist1, setSelectedTwist1] = useState('');
+  const [selectedTwist2, setSelectedTwist2] = useState('');
+  console.log(exercises)
 
   const exerciseCategories = [
     { name: 'Squat House', key: 'squat' },
@@ -26,15 +29,24 @@ export default function AddTrainingForm({onConfirm, onClose, exercises }) {
     acc[category.key] = exercises.filter(exercise => exercise.house === category.key);
     return acc;
   }, {});
-
-  const handleSelectChange = (e) => {
-    setSelectedTraining(e.target.value);
-  };
+  console.log(categorizedExercises)
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // // Call the function to add exercise and pass the exercise name
-    // onConfirm({'type' : exerciseName});
+    onConfirm({'training': trainingName,
+                'squat_1' : selectedSquat1,
+                'squat_2' : selectedSquat2,
+                'push_1' : selectedPush1,
+                'push_2' : selectedPush2,
+                'deadlift_1' : selectedDeadlift1,
+                'deadlift_2' : selectedDeadlift2,
+                'pull_1' : selectedPull1,
+                'pull_2' : selectedPull2,
+                'lunge_1' : selectedLunge1,
+                'lunge_2' : selectedLunge2,
+                'twist_1' : selectedTwist1,
+                'twist_2' : selectedTwist2})
     onClose();
   };
 
@@ -42,36 +54,6 @@ export default function AddTrainingForm({onConfirm, onClose, exercises }) {
     // Call the onCancel callback
     onClose();
   };
-
-//   useEffect(() => {
-//     const fetchExercises = async () => {
-//       try {
-//         const response = await fetch('/api/exercises', {
-//           method: 'GET',
-//           headers: {
-//             'Content-Type': 'application/json',
-//           },
-//         });
-
-//         if (response.status !== 200) {
-//           throw new Error('Failed to load exercises');
-//         }
-
-//         const data = await response.json();
-//         console.log(data)
-//         const categorizedExercises = await exerciseCategories.reduce((acc, category) => {
-//             acc[category.key] = data.filter(exercise => exercise.house === category.key);
-//             return acc;
-//           }, {});
-//         console.log(categorizedExercises.squat)
-//         setCategorizedExercises(categorizedExercises)
-//         //setExercises(data); // Directly set the array of training objects
-//       } catch (error) {
-//         console.error('Error loading exercises:', error);
-//       }
-//     };
-//     fetchExercises();
-//   }, []);
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
@@ -85,7 +67,36 @@ export default function AddTrainingForm({onConfirm, onClose, exercises }) {
                 onInput={(e) => setTrainingName(e.target.value)}
                 className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
             />
-            <label className="block text-gray-700">Squat House:</label>
+
+            {exerciseCategories.map((category, i) => (
+            <div key={i}>
+              <label className="block text-gray-700">{category.name}:</label>
+              <div className="select-trainings">
+                <select
+                  value={i === 0 ? selectedSquat1 : i === 1 ? selectedPush1 : i === 2 ? selectedDeadlift1 : i === 3 ? selectedPull1 : i === 4 ? selectedLunge1 : selectedTwist1}
+                  onChange={e => i === 0 ? setSelectedSquat1(e.target.value) : i === 1 ? setSelectedPush1(e.target.value) : i === 2 ? setSelectedDeadlift1(e.target.value) : i === 3 ? setSelectedPull1(e.target.value) : i === 4 ? setSelectedLunge1(e.target.value) : setSelectedTwist1(e.target.value)}
+                  className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
+                >
+                  <option value="">Select a training</option>
+                  {categorizedExercises[category.key].map((exercise, index) => (
+                    <option key={index} value={exercise.name}>{exercise.name}</option>
+                  ))}
+                </select>
+
+                <select
+                  value={i === 0 ? selectedSquat2 : i === 1 ? selectedPush2 : i === 2 ? selectedDeadlift2 : i === 3 ? selectedPull2 : i === 4 ? selectedLunge2 : selectedTwist2}
+                  onChange={e => i === 0 ? setSelectedSquat2(e.target.value) : i === 1 ? setSelectedPush2(e.target.value) : i === 2 ? setSelectedDeadlift2(e.target.value) : i === 3 ? setSelectedPull2(e.target.value) : i === 4 ? setSelectedLunge2(e.target.value) : setSelectedTwist2(e.target.value)}
+                  className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
+                >
+                  <option value="">Select a training</option>
+                  {categorizedExercises[category.key].map((exercise, index) => (
+                    <option key={index} value={exercise.name}>{exercise.name}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          ))}
+            {/* <label className="block text-gray-700">Squat House:</label>
             <div className="select-trainings">
                 <select
                     value={selectedTraining}
@@ -222,7 +233,7 @@ export default function AddTrainingForm({onConfirm, onClose, exercises }) {
                     <option key={index} value={exercise.name}>{exercise.name}</option>
                     ))}
                 </select>
-             </div>
+             </div> */}
 
 
             
