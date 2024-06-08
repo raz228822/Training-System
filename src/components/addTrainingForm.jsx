@@ -2,18 +2,18 @@ import { useState, useEffect } from 'react';
 
 export default function AddTrainingForm({onConfirm, onClose, exercises }) {
   const [trainingName, setTrainingName] = useState('');
-  const [selectedSquat1, setSelectedSquat1] = useState('');
-  const [selectedSquat2, setSelectedSquat2] = useState('');
-  const [selectedPush1, setSelectedPush1] = useState('');
-  const [selectedPush2, setSelectedPush2] = useState('');
-  const [selectedDeadlift1, setSelectedDeadlift1] = useState('');
-  const [selectedDeadlift2, setSelectedDeadlift2] = useState('');
-  const [selectedPull1, setSelectedPull1] = useState('');
-  const [selectedPull2, setSelectedPull2] = useState('');
-  const [selectedLunge1, setSelectedLunge1] = useState('');
-  const [selectedLunge2, setSelectedLunge2] = useState('');
-  const [selectedTwist1, setSelectedTwist1] = useState('');
-  const [selectedTwist2, setSelectedTwist2] = useState('');
+  const [selectedSquat, setSelectedSquat] = useState('');
+  const [selectedSquatAerobicAbs, setSelectedSquatAerobicAbs] = useState('');
+  const [selectedPush, setSelectedPush] = useState('');
+  const [selectedPushAerobicAbs, setSelectedPushAerobicAbs] = useState('');
+  const [selectedDeadlift, setSelectedDeadlift] = useState('');
+  const [selectedDeadliftAerobicAbs, setSelectedDeadliftAerobicAbs] = useState('');
+  const [selectedPull, setSelectedPull] = useState('');
+  const [selectedPullAerobicAbs, setSelectedPullAerobicAbs] = useState('');
+  const [selectedLunge, setSelectedLunge] = useState('');
+  const [selectedLungeAerobicAbs, setSelectedLungeAerobicAbs] = useState('');
+  const [selectedTwist, setSelectedTwist] = useState('');
+  const [selectedTwistAerobicAbs, setSelectedTwistAerobicAbs] = useState('');
   console.log(exercises)
 
   const exerciseCategories = [
@@ -23,6 +23,7 @@ export default function AddTrainingForm({onConfirm, onClose, exercises }) {
     { name: 'Pull House', key: 'pull' },
     { name: 'Lunge House', key: 'lunge' },
     { name: 'Twist House', key: 'twist' },
+    { name: 'Aerobic_Abs House', key: 'aerobic_abs'}
   ];
 
   const categorizedExercises = exerciseCategories.reduce((acc, category) => {
@@ -35,18 +36,18 @@ export default function AddTrainingForm({onConfirm, onClose, exercises }) {
     e.preventDefault();
     // // Call the function to add exercise and pass the exercise name
     onConfirm({'training': trainingName,
-                'squat_1' : selectedSquat1,
-                'squat_2' : selectedSquat2,
-                'push_1' : selectedPush1,
-                'push_2' : selectedPush2,
-                'deadlift_1' : selectedDeadlift1,
-                'deadlift_2' : selectedDeadlift2,
-                'pull_1' : selectedPull1,
-                'pull_2' : selectedPull2,
-                'lunge_1' : selectedLunge1,
-                'lunge_2' : selectedLunge2,
-                'twist_1' : selectedTwist1,
-                'twist_2' : selectedTwist2})
+                'squat' : selectedSquat,
+                'squat_aerobic_abs' : selectedSquatAerobicAbs,
+                'push' : selectedPush,
+                'push_aerobic_abs' : selectedPushAerobicAbs,
+                'deadlift' : selectedDeadlift,
+                'deadlift_aerobic_abs' : selectedDeadliftAerobicAbs,
+                'pull' : selectedPull,
+                'pull_aerobic_abs' : selectedPullAerobicAbs,
+                'lunge' : selectedLunge,
+                'lunge_aerobic_abs' : selectedLungeAerobicAbs,
+                'twist' : selectedTwist,
+                'twist_aerobic_abs' : selectedTwistAerobicAbs})
     onClose();
   };
 
@@ -68,28 +69,28 @@ export default function AddTrainingForm({onConfirm, onClose, exercises }) {
                 className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
             />
 
-            {exerciseCategories.map((category, i) => (
+            {exerciseCategories.slice(0,6).map((category, i) => (
             <div key={i}>
               <label className="block text-gray-700">{category.name}:</label>
               <div className="select-trainings">
                 <select
-                  value={i === 0 ? selectedSquat1 : i === 1 ? selectedPush1 : i === 2 ? selectedDeadlift1 : i === 3 ? selectedPull1 : i === 4 ? selectedLunge1 : selectedTwist1}
-                  onChange={e => i === 0 ? setSelectedSquat1(e.target.value) : i === 1 ? setSelectedPush1(e.target.value) : i === 2 ? setSelectedDeadlift1(e.target.value) : i === 3 ? setSelectedPull1(e.target.value) : i === 4 ? setSelectedLunge1(e.target.value) : setSelectedTwist1(e.target.value)}
+                  value={i === 0 ? selectedSquat : i === 1 ? selectedPush : i === 2 ? selectedDeadlift : i === 3 ? selectedPull : i === 4 ? selectedLunge : selectedTwist}
+                  onChange={e => i === 0 ? setSelectedSquat(e.target.value) : i === 1 ? setSelectedPush(e.target.value) : i === 2 ? setSelectedDeadlift(e.target.value) : i === 3 ? setSelectedPull(e.target.value) : i === 4 ? setSelectedLunge(e.target.value) : setSelectedTwist(e.target.value)}
                   className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
                 >
-                  <option value="">Select a training</option>
+                  <option value="">Select an exercise</option>
                   {categorizedExercises[category.key].map((exercise, index) => (
                     <option key={index} value={exercise.name}>{exercise.name}</option>
                   ))}
                 </select>
 
                 <select
-                  value={i === 0 ? selectedSquat2 : i === 1 ? selectedPush2 : i === 2 ? selectedDeadlift2 : i === 3 ? selectedPull2 : i === 4 ? selectedLunge2 : selectedTwist2}
-                  onChange={e => i === 0 ? setSelectedSquat2(e.target.value) : i === 1 ? setSelectedPush2(e.target.value) : i === 2 ? setSelectedDeadlift2(e.target.value) : i === 3 ? setSelectedPull2(e.target.value) : i === 4 ? setSelectedLunge2(e.target.value) : setSelectedTwist2(e.target.value)}
+                  value={i === 0 ? selectedSquatAerobicAbs : i === 1 ? selectedPushAerobicAbs : i === 2 ? selectedDeadliftAerobicAbs : i === 3 ? selectedPullAerobicAbs : i === 4 ? selectedLungeAerobicAbs : selectedTwistAerobicAbs}
+                  onChange={e => i === 0 ? setSelectedSquatAerobicAbs(e.target.value) : i === 1 ? setSelectedPushAerobicAbs(e.target.value) : i === 2 ? setSelectedDeadliftAerobicAbs(e.target.value) : i === 3 ? setSelectedPullAerobicAbs(e.target.value) : i === 4 ? setSelectedLungeAerobicAbs(e.target.value) : setSelectedTwistAerobicAbs(e.target.value)}
                   className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
                 >
-                  <option value="">Select a training</option>
-                  {categorizedExercises[category.key].map((exercise, index) => (
+                  <option value="">Select an exercise</option>
+                  {categorizedExercises['aerobic_abs'].map((exercise, index) => (
                     <option key={index} value={exercise.name}>{exercise.name}</option>
                   ))}
                 </select>

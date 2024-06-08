@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 export default function AddExerciseForm({onConfirm, onClose }) {
   const [exerciseName, setExerciseName] = useState('');
   const [selectedHouse, setSelectedHouse] = useState('');
-  const houses = ['Squat','Push','Deadlift','Pull','Lunge','Twist']
+  const houses = ['Squat','Push','Deadlift','Pull','Lunge','Twist', 'Aerobic_Abs']
 
   const handleSelectChange = (e) => {
     setSelectedHouse(e.target.value);
@@ -41,7 +41,7 @@ export default function AddExerciseForm({onConfirm, onClose }) {
             >
                 <option value="">Select a house</option>
                 {houses.map((house, index) => (
-                <option key={index} value={house}>{house}</option>
+                <option key={index} value={house}>{house === 'Aerobic_Abs' ? 'Aerobic/Abs' : house}</option>
                 ))}
             </select>
           <label className="block text-gray-700">Exercise Name:</label>

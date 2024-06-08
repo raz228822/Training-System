@@ -106,22 +106,23 @@ export default function Home() {
   // }, [trainings]); // Run this effect whenever 'trainings' state changes
 
   const loadTrainingOnTable = (training) => {
+    console.log(training)
     // Map through the table data and update the corresponding fields with the text from the training object
     const updatedTableData = tableData.map((exercise, index) => {
 
       switch (index) {
         case 0:
-          return { ...exercise, firstExc: training.squat_1, secondExc: training.squat_2 };
+          return { ...exercise, firstExc: training.squat, secondExc: training.squat_aerobic_abs };
         case 1:
-          return { ...exercise, firstExc: training.push_1, secondExc: training.push_2 };
+          return { ...exercise, firstExc: training.push, secondExc: training.push_aerobic_abs };
         case 2: 
-          return { ...exercise, firstExc: training.deadlift_1, secondExc: training.deadlift_2 };
+          return { ...exercise, firstExc: training.deadlift, secondExc: training.deadlift_aerobic_abs };
         case 3:
-          return { ...exercise, firstExc: training.pull_1, secondExc: training.pull_2 };
+          return { ...exercise, firstExc: training.pull, secondExc: training.pull_aerobic_abs };
         case 4: 
-          return { ...exercise, firstExc: training.lunge_1, secondExc: training.lunge_2 };
+          return { ...exercise, firstExc: training.lunge, secondExc: training.lunge_aerobic_abs };
         case 5:
-          return { ...exercise, firstExc: training.twist_1, secondExc: training.twist_2 };
+          return { ...exercise, firstExc: training.twist, secondExc: training.twist_aerobic_abs };
       }
     });
     // Update the table data with the modified array
