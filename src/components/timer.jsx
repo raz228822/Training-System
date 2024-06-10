@@ -17,7 +17,7 @@ export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
   const [AddTrainingDialogOpen, setIsAddTrainingDialogOpen] = useState(false);
   const [trainings, setTrainings] = useState([]);
   const [exercises, setExercises] = useState([]);
-  const [housesSwitch, setHousesSwitch] = useState(true);
+  const [housesSwitch, setHousesSwitch] = useState(false);
 
   useEffect(() => {
     let interval;
@@ -117,6 +117,10 @@ export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
         setSeconds(3);
         setText("\u{1F504} להחליף תחנות")
         switchNames()
+        setHousesSwitch(!housesSwitch)
+        if(housesSwitch) {
+          switchHouses()
+        }
         return
       }
       if(isRest) {
@@ -139,36 +143,32 @@ export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
   };
 
   const switchNames = () => {
-    setHousesSwitch(prevHousesSwitch => {
-        const newHousesSwitch = !prevHousesSwitch;
-
-        if (newHousesSwitch) {
-            // Store the name1 and name2 of the last object
-            let lastName1 = tableData[tableData.length - 1].name1;
-            let lastName2 = tableData[tableData.length - 1].name2;
-
-            // Shift name1 and name2 from each object to the next
-            for (let i = tableData.length - 1; i > 0; i--) {
-                tableData[i].name1 = tableData[i - 1].name1;
-                tableData[i].name2 = tableData[i - 1].name2;
-            }
-
-            // Set the name1 and name2 of the first object to the stored values
-            tableData[0].name1 = lastName1;
-            tableData[0].name2 = lastName2;
-        }
-
-        // Reverse the name1 and name2 in each exercise
-        const updatedTableData = tableData.map((exercise) => {
-            const temp = exercise.name1;
-            exercise.name1 = exercise.name2;
-            exercise.name2 = temp;
-            return exercise;
-        });
-        setTableData([...updatedTableData]); // Trigger re-render
-        return newHousesSwitch;
+    // Reverse the name1 and name2 in each exercise
+    const updatedTableData = tableData.map((exercise) => {
+      const temp = exercise.name1;
+      exercise.name1 = exercise.name2;
+      exercise.name2 = temp;
+      return exercise;
     });
-};
+  
+    setTableData([...updatedTableData]); // Trigger re-render
+  };
+  
+  const switchHouses = () => {
+      // Store the last name of house 1
+      let lastName1 = tableData[tableData.length - 1].name1;
+      let lastName2 = tableData[tableData.length - 1].name2;
+
+      // Shift names inside the houses from each object to the next
+      for (let i = tableData.length - 1; i > 0; i--) {
+        tableData[i].name1 = tableData[i - 1].name1;
+        tableData[i].name2 = tableData[i - 1].name2;
+      }
+
+      // Set the last names to the first object
+      tableData[0].name1 = lastName1;
+      tableData[0].name2 = lastName2;
+    }
 
 useEffect(() => {
   // Function to fetch data
