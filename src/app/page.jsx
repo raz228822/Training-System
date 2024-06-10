@@ -11,8 +11,6 @@ import EditableCell from '../components/EditableCell'
 export default function Home() {
   const [editingCell, setEditingCell] = useState(null)
   const editNameRef = useRef()
-  const [trainings, setTrainings] = useState([]);
-  const [exercises, setExercises] = useState([]);
 
   const startEditingCell = (index, fieldName) => {
     setEditingCell({ index, fieldName })
@@ -27,13 +25,6 @@ export default function Home() {
     {excType: 'PULL(4)', bgColor: 'bg-blue-500', firstExc: '', secondExc: '', name1: '', name2: ''},
     {excType: 'LUNGE(5)', bgColor: 'bg-gray-500', firstExc: '', secondExc: '', name1: '', name2: ''},
     {excType: 'TWIST(6)', bgColor: 'bg-white', firstExc: '', secondExc: '', name1: '', name2: ''},
-
-    //{excType: 'SQUAT(1)', bgColor: 'bg-gray-100', firstExc: 'סקוואט הטחות \u2190 קפיצה על תיבה', secondExc: 'בטן סטטית(הולו הולד) + ראשן טויסט', name1: '', name2: ''},
-    // {excType: 'PUSH(2)', bgColor: 'bg-pink-300', firstExc: 'לחיצות חזה + כפיפת ירך', secondExc: 'הפיכת צמיג', name1: '', name2: ''},
-    // {excType: 'DEADLIFT(3)', bgColor: 'bg-red-500', firstExc: 'דדליפט עם רגל אחת', secondExc: 'חבלי ניעור (באטל רופ)', name1: '', name2: ''},
-    // {excType: 'PULL(4)', bgColor: 'bg-blue-500', firstExc: 'HOIST מתח', secondExc: 'בטן כפיפת ירך בשכיבה(ידיות)', name1: '', name2: ''},
-    // {excType: 'LUNGE(5)', bgColor: 'bg-gray-300', firstExc: 'לאנג׳ \u2190 סקואט \u2190 לאנג׳', secondExc: 'פלאנק עליות על כפות ידיים', name1: '', name2: ''},
-    // {excType: 'TWIST(6)', bgColor: 'bg-yellow-300', firstExc: 'כפיפות צד', secondExc: 'חבל קפיצה על רגל אחת', name1: '', name2: ''}
   ])
 
   const updateTableData = (index, fieldName) => {
@@ -51,53 +42,6 @@ export default function Home() {
       updateTableData(index, fieldName);
     }
   }
-
-  const switchNames = () => {
-    tableData.map((exercise, index) => {
-      const temp = tableData[index].name1;
-      tableData[index].name1 = tableData[index].name2;
-      tableData[index].name2 = temp;
-    })
-    setTableData([...tableData]); // Trigger re-render
-  };
-
-  const fetchData = async () => {
-    try {
-      const trainingResponse = await fetch('/api/trainings', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (trainingResponse.status !== 200) {
-        throw new Error('Failed to load training');
-      }
-
-      const trainingData = await trainingResponse.json();
-      setTrainings(trainingData);
-
-      const exerciseResponse = await fetch('/api/exercises', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (exerciseResponse.status !== 200) {
-        throw new Error('Failed to load exercises');
-      }
-
-      const exerciseData = await exerciseResponse.json();
-      setExercises(exerciseData);
-    } catch (error) {
-      console.error('Error loading data:', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []); // This useEffect will trigger once on component mount
   
 
   // useEffect(() => {
@@ -220,7 +164,7 @@ export default function Home() {
           </table>
         </div>
         <div className="w-[45%]">
-          <Timer switchNames={switchNames} loadTrainingsOnTable={loadTrainingOnTable} trainings={trainings} exercises={exercises} fetchData={fetchData}/>
+          <Timer tableData={tableData} setTableData={setTableData} loadTrainingsOnTable={loadTrainingOnTable}/>
         </div>
       </div>
     )

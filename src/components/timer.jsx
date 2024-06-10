@@ -5,7 +5,7 @@ import AddExerciseForm from './addExerciseForm';
 import LoadTrainingForm from './LoadTrainingForm';
 import AddTrainingForm from './addTrainingForm';
 
-export default function Timer({switchNames, loadTrainingsOnTable, trainings, exercises, fetchData}) {
+export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
   const [seconds, setSeconds] = useState(4);
   const [isRunning, setIsRunning] = useState(false);
   const [isRest, setIsRest] = useState(false);
@@ -15,6 +15,9 @@ export default function Timer({switchNames, loadTrainingsOnTable, trainings, exe
   const [AddExerciseDialogOpen, setIsAddExerciseDialogOpen] = useState(false);
   const [LoadExerciseDialogOpen, setIsLoadExerciseDialogOpen] = useState(false);
   const [AddTrainingDialogOpen, setIsAddTrainingDialogOpen] = useState(false);
+  const [trainings, setTrainings] = useState([]);
+  const [exercises, setExercises] = useState([]);
+  const [housesSwitch, setHousesSwitch] = useState(true);
 
   useEffect(() => {
     let interval;
@@ -96,20 +99,6 @@ export default function Timer({switchNames, loadTrainingsOnTable, trainings, exe
       setSeconds(4);
     }
     setIsRunning(false);
-    
-    // if(setNum !== 1 && text != "! בואו נתחיל") {
-    //   if(!isRest) {
-    //     setIsRest(true)
-    //     setSeconds(3)
-    //   }
-    //   else {
-    //     setNumSet(prevSet => prevSet - 1)
-    //     setText(`סט מספר ${setNum - 1}`)
-    //     setIsRest(false);
-    //     setSeconds(4);
-    //     }
-    //     setIsRunning(false);
-    //   }
     }
 
   useEffect(() => {
@@ -149,8 +138,73 @@ export default function Timer({switchNames, loadTrainingsOnTable, trainings, exe
     return `${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
+  const switchNames = () => {
+    setHousesSwitch(prevHousesSwitch => {
+        const newHousesSwitch = !prevHousesSwitch;
+
+        if (newHousesSwitch) {
+            // Store the name1 and name2 of the last object
+            let lastName1 = tableData[tableData.length - 1].name1;
+            let lastName2 = tableData[tableData.length - 1].name2;
+
+            // Shift name1 and name2 from each object to the next
+            for (let i = tableData.length - 1; i > 0; i--) {
+                tableData[i].name1 = tableData[i - 1].name1;
+                tableData[i].name2 = tableData[i - 1].name2;
+            }
+
+            // Set the name1 and name2 of the first object to the stored values
+            tableData[0].name1 = lastName1;
+            tableData[0].name2 = lastName2;
+        }
+
+        // Reverse the name1 and name2 in each exercise
+        const updatedTableData = tableData.map((exercise) => {
+            const temp = exercise.name1;
+            exercise.name1 = exercise.name2;
+            exercise.name2 = temp;
+            return exercise;
+        });
+        setTableData([...updatedTableData]); // Trigger re-render
+        return newHousesSwitch;
+    });
+};
+
+useEffect(() => {
+  // Function to fetch data
+  const fetchData = async () => {
+    try {
+      const trainingResponse = await fetch('/api/trainings');
+      if (!trainingResponse.ok) {
+        throw new Error('Failed to load trainings');
+      }
+      const trainingData = await trainingResponse.json();
+      setTrainings(trainingData);
+
+      const exerciseResponse = await fetch('/api/exercises');
+      if (!exerciseResponse.ok) {
+        throw new Error('Failed to load exercises');
+      }
+      const exerciseData = await exerciseResponse.json();
+      setExercises(exerciseData);
+    } catch (error) {
+      console.error('Error loading data:', error);
+    }
+  };
+
+  // Fetch data when component mounts
+  fetchData();
+}, []); // Empty dependency array ensures this effect runs only once on mount
+
   async function addExercise(exerciseData) {
     try {
+      // Check if the exercise already exists in the state
+      const isExerciseExist = exercises.some(exercise => exercise.name === exerciseData.name);
+
+      if (isExerciseExist) {
+        console.log('Exercise already exists.');
+        return; // Exit the function if exercise already exists
+      }
       const response = await fetch('/api/exercises', {
         method: 'POST',
         headers: {
@@ -162,7 +216,9 @@ export default function Timer({switchNames, loadTrainingsOnTable, trainings, exe
       if (!response.ok) {
         throw new Error('Failed to create exercise');
       }
-      fetchData()
+      setExercises(prevExercises => [...prevExercises, exerciseData]);
+      console.log(exercises)
+      //fetchData()
       const responseData = await response.json();
       return responseData;
     } catch (error) {
@@ -198,8 +254,6 @@ export default function Timer({switchNames, loadTrainingsOnTable, trainings, exe
     <div className="mx-5 flex flex-col justify-center items-center bg-contain bg-center bg-no-repeat">
       <h1 className="laptop:text-[110px] desktop:text-[192px] tv:text-[290px] font-semibold text-white desktop:-mt-24 tv:-mt-60">
         {title}
-        {/* {!isRest ? '\u{1F4AA} תנו בראש' : '\u{1F634} מנוחה'} */}
-        {/* 1F389 */}
       </h1>
 
       <div className="flex flex-col items-center">
@@ -209,7 +263,6 @@ export default function Timer({switchNames, loadTrainingsOnTable, trainings, exe
         </div>
       </div>
 
-      {/* <h1 className="text-8xl font-semibold mb-5 text-white">{setNum} סט מספר</h1> */}
       <h1 className="laptop:text-[80px] desktop:text-[164px] tv:text-[210px] font-semibold text-white">{text}</h1>
 
       <div className="flex gap-12 desktop:my-14 laptop:my-5">
