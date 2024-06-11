@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export default function AddExerciseForm({onConfirm, onClose }) {
+export default function AddExerciseForm({onConfirm, onClose, exercises }) {
   const [exerciseName, setExerciseName] = useState('');
   const [selectedHouse, setSelectedHouse] = useState('');
   const houses = ['Squat','Push','Deadlift','Pull','Lunge','Twist', 'Aerobic_Abs']
@@ -13,6 +13,13 @@ export default function AddExerciseForm({onConfirm, onClose }) {
     e.preventDefault();
     if (selectedHouse === '') {
       return;
+    }
+    // Check if the exercise already exists in the state
+    const isExerciseExist = exercises.some(exercise => exercise.name === exerciseName);
+
+    if (isExerciseExist) {
+      console.log('Exercise already exists.');
+      return; // Exit the function if exercise already exists
     }
     // Call the function to add exercise and pass the exercise name
     onConfirm({'house': selectedHouse.toLowerCase() ,'name' : exerciseName});

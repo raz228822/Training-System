@@ -18,6 +18,7 @@ export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
   const [trainings, setTrainings] = useState([]);
   const [exercises, setExercises] = useState([]);
   const [housesSwitch, setHousesSwitch] = useState(false);
+  const [houseGroupSwitch, setHouseGroupSwitch] = useState(0);
 
   useEffect(() => {
     let interval;
@@ -108,18 +109,24 @@ export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
   useEffect(() => {
     if (seconds === 0) {
       if(setNum === 3) {
-        if(text === "\u{1F504} להחליף תחנות") {
+        if(text === "\u{1F504} החלפה") {
           handleReset()
           return
         }
         setIsRest(true);
         setTitle('\u{1F389}\u{1F389}\u{1F389}')
         setSeconds(3);
-        setText("\u{1F504} להחליף תחנות")
+        setText("\u{1F504} החלפה")
         switchNames()
         setHousesSwitch(!housesSwitch)
         if(housesSwitch) {
-          switchHouses()
+          switchFirstThreeHouses()
+          switchLastThreeHouses()
+          setHouseGroupSwitch(prevHouseGroupSwitch => prevHouseGroupSwitch + 1);
+          if(houseGroupSwitch === 2)  {
+            setHouseGroupSwitch(0);
+            switchBetweenGroups()
+          }
         }
         return
       }
@@ -154,57 +161,136 @@ export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
     setTableData([...updatedTableData]); // Trigger re-render
   };
   
-  const switchHouses = () => {
-      // Store the last name of house 1
-      let lastName1 = tableData[tableData.length - 1].name1;
-      let lastName2 = tableData[tableData.length - 1].name2;
-
-      // Shift names inside the houses from each object to the next
-      for (let i = tableData.length - 1; i > 0; i--) {
-        tableData[i].name1 = tableData[i - 1].name1;
-        tableData[i].name2 = tableData[i - 1].name2;
-      }
-
-      // Set the last names to the first object
-      tableData[0].name1 = lastName1;
-      tableData[0].name2 = lastName2;
+  // Switch houses 1-3
+  const switchFirstThreeHouses = () => {
+    // Store the last names of the first group of houses
+    const lastNames = [];
+    for (let i = 0; i < 3; i++) {
+      lastNames.push({ name1: tableData[i].name1, name2: tableData[i].name2 });
     }
 
-useEffect(() => {
-  // Function to fetch data
-  const fetchData = async () => {
-    try {
-      const trainingResponse = await fetch('/api/trainings');
-      if (!trainingResponse.ok) {
-        throw new Error('Failed to load trainings');
-      }
-      const trainingData = await trainingResponse.json();
-      setTrainings(trainingData);
+    // Shift names inside the houses from each object to the next within the group
+    for (let i = 2; i > 0; i--) {
+      tableData[i].name1 = tableData[i - 1].name1;
+      tableData[i].name2 = tableData[i - 1].name2;
+    }
 
-      const exerciseResponse = await fetch('/api/exercises');
-      if (!exerciseResponse.ok) {
-        throw new Error('Failed to load exercises');
-      }
-      const exerciseData = await exerciseResponse.json();
-      setExercises(exerciseData);
-    } catch (error) {
-      console.error('Error loading data:', error);
+    // Set the last names to the first object within the group
+    tableData[0].name1 = lastNames[2].name1;
+    tableData[0].name2 = lastNames[2].name2;
+  };
+
+  // Switch houses 4-6
+  const switchLastThreeHouses = () => {
+    // Store the last names of the second group of houses
+    const lastNames = [];
+    for (let i = 3; i < tableData.length; i++) {
+      lastNames.push({ name1: tableData[i].name1, name2: tableData[i].name2 });
+    }
+
+    // Shift names inside the houses from each object to the next within the group
+    for (let i = tableData.length - 1; i > 3; i--) {
+      tableData[i].name1 = tableData[i - 1].name1;
+      tableData[i].name2 = tableData[i - 1].name2;
+    }
+
+    // Set the last names to the first object within the group
+    tableData[3].name1 = lastNames[lastNames.length - 1].name1;
+    tableData[3].name2 = lastNames[lastNames.length - 1].name2;
+  };
+
+  // Switch houses 1-3 with houses 4-6
+  const switchBetweenGroups = () => {
+    // Store the names of the first group of houses
+    const firstGroupNames = [];
+    for (let i = 0; i < 3; i++) {
+      firstGroupNames.push({ name1: tableData[i].name1, name2: tableData[i].name2 });
+    }
+
+    // Store the names of the second group of houses
+    const secondGroupNames = [];
+    for (let i = 3; i < tableData.length; i++) {
+      secondGroupNames.push({ name1: tableData[i].name1, name2: tableData[i].name2 });
+    }
+
+    // Switch names between the groups
+    for (let i = 0; i < 3; i++) {
+      tableData[i].name1 = secondGroupNames[i].name1;
+      tableData[i].name2 = secondGroupNames[i].name2;
+      tableData[i + 3].name1 = firstGroupNames[i].name1;
+      tableData[i + 3].name2 = firstGroupNames[i].name2;
     }
   };
 
-  // Fetch data when component mounts
-  fetchData();
-}, []); // Empty dependency array ensures this effect runs only once on mount
+
+  // original
+  // const switchHouses = () => {
+  //     // Store the last name of house 1
+  //     let lastName1 = tableData[tableData.length - 1].name1;
+  //     let lastName2 = tableData[tableData.length - 1].name2;
+
+  //     // Shift names inside the houses from each object to the next
+  //     for (let i = tableData.length - 1; i > 0; i--) {
+  //       tableData[i].name1 = tableData[i - 1].name1;
+  //       tableData[i].name2 = tableData[i - 1].name2;
+  //     }
+
+  //     // Set the last names to the first object
+  //     tableData[0].name1 = lastName1;
+  //     tableData[0].name2 = lastName2;
+  //   }
+
+  // work only for 3 first houses
+  //   const switchHouses = () => {
+  //     // Check if we are switching houses 1-3 or houses 4-6 based on the switch
+  //     const startIndex = housesSwitch ? 0 : 3;
+  //     const endIndex = housesSwitch ? 3 : tableData.length;
+    
+  //     // Store the last names of the group of houses
+  //     const lastNames = [];
+  //     for (let i = startIndex; i < endIndex; i++) {
+  //       lastNames.push({ name1: tableData[i].name1, name2: tableData[i].name2 });
+  //     }
+    
+  //     // Shift names inside the houses from each object to the next within the group
+  //     for (let i = endIndex - 1; i > startIndex; i--) {
+  //       tableData[i].name1 = tableData[i - 1].name1;
+  //       tableData[i].name2 = tableData[i - 1].name2;
+  //     }
+    
+  //     // Set the last names to the first object within the group
+  //     tableData[startIndex].name1 = lastNames[lastNames.length - 1].name1;
+  //     tableData[startIndex].name2 = lastNames[lastNames.length - 1].name2;
+  //   };
+
+  useEffect(() => {
+        // Function to fetch data
+        const fetchData = async () => {
+          try {
+            const trainingResponse = await fetch('/api/trainings');
+            if (!trainingResponse.ok) {
+              throw new Error('Failed to load trainings');
+            }
+            const trainingData = await trainingResponse.json();
+            setTrainings(trainingData);
+
+            const exerciseResponse = await fetch('/api/exercises');
+            if (!exerciseResponse.ok) {
+              throw new Error('Failed to load exercises');
+            }
+            const exerciseData = await exerciseResponse.json();
+            setExercises(exerciseData);
+          } catch (error) {
+            console.error('Error loading data:', error);
+          }
+        };
+
+      // Fetch data when component mounts
+      fetchData();
+    }, []); // Empty dependency array ensures this effect runs only once on mount
 
   async function addExercise(exerciseData) {
     try {
-      // Check if the exercise already exists in the state
-      const isExerciseExist = exercises.some(exercise => exercise.name === exerciseData.name);
-
-      if (isExerciseExist) {
-        console.log('Exercise already exists.');
-        return; // Exit the function if exercise already exists
-      }
       const response = await fetch('/api/exercises', {
         method: 'POST',
         headers: {
@@ -241,7 +327,7 @@ useEffect(() => {
         console.log(trainingData)
         throw new Error('Failed to create exercise');
       }
-      fetchData()
+      setTrainings(prevTrainings => [...prevTrainings, trainingData]);
       const responseData = await response.json();
       return responseData;
     } catch (error) {
@@ -327,6 +413,7 @@ useEffect(() => {
         {AddExerciseDialogOpen && <AddExerciseForm
           onConfirm={addExercise}
           onClose={() => setIsAddExerciseDialogOpen(false)}
+          exercises={exercises}
            />}
 
         {LoadExerciseDialogOpen && <LoadTrainingForm
@@ -338,6 +425,7 @@ useEffect(() => {
         {AddTrainingDialogOpen && <AddTrainingForm
           onConfirm={addTraining}
           onClose={() => setIsAddTrainingDialogOpen(false)}
+          trainings={trainings}
           exercises={exercises}
            />}
 

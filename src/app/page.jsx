@@ -19,12 +19,12 @@ export default function Home() {
   const stopEditingCell = () =>  setEditingCell(null)
 
   const [tableData, setTableData] = useState([
-    {excType: 'SQUAT(1)', bgColor: 'bg-yellow-400', firstExc: '', secondExc: '', name1: '', name2: ''},
-    {excType: 'PUSH(2)', bgColor: 'bg-pink-500', firstExc: '', secondExc: '', name1: '', name2: ''},
-    {excType: 'DEADLIFT(3)', bgColor: 'bg-red-500', firstExc: '', secondExc: '', name1: '', name2: ''},
-    {excType: 'PULL(4)', bgColor: 'bg-blue-500', firstExc: '', secondExc: '', name1: '', name2: ''},
-    {excType: 'LUNGE(5)', bgColor: 'bg-gray-500', firstExc: '', secondExc: '', name1: '', name2: ''},
-    {excType: 'TWIST(6)', bgColor: 'bg-white', firstExc: '', secondExc: '', name1: '', name2: ''},
+    {excType: 'SQUAT(1)', bgColor: 'bg-yellow-400', firstExc: '', secondExc: '', name1: '1', name2: '2'},
+    {excType: 'PUSH(2)', bgColor: 'bg-pink-500', firstExc: '', secondExc: '', name1: '3', name2: '4'},
+    {excType: 'DEADLIFT(3)', bgColor: 'bg-red-500', firstExc: '', secondExc: '', name1: '5', name2: '6'},
+    {excType: 'PULL(4)', bgColor: 'bg-blue-500', firstExc: '', secondExc: '', name1: '7', name2: '8'},
+    {excType: 'LUNGE(5)', bgColor: 'bg-gray-500', firstExc: '', secondExc: '', name1: '9', name2: '10'},
+    {excType: 'TWIST(6)', bgColor: 'bg-white', firstExc: '', secondExc: '', name1: '11', name2: '12'},
   ])
 
   const updateTableData = (index, fieldName) => {

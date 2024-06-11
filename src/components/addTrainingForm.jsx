@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default function AddTrainingForm({onConfirm, onClose, exercises }) {
+export default function AddTrainingForm({onConfirm, onClose, trainings, exercises }) {
   const [trainingName, setTrainingName] = useState('');
   const [selectedSquat, setSelectedSquat] = useState('');
   const [selectedSquatAerobicAbs, setSelectedSquatAerobicAbs] = useState('');
@@ -34,8 +34,15 @@ export default function AddTrainingForm({onConfirm, onClose, exercises }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Check if the training already exists in the state
+    const isTrainingExist = trainings.some(training => training.name === trainingName);
+
+    if (isTrainingExist) {
+      console.log('Training already exists.');
+      return; // Exit the function if exercise already exists
+    }
     // // Call the function to add exercise and pass the exercise name
-    onConfirm({'training': trainingName,
+    onConfirm({'name': trainingName,
                 'squat' : selectedSquat,
                 'squat_aerobic_abs' : selectedSquatAerobicAbs,
                 'push' : selectedPush,

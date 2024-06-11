@@ -23,13 +23,13 @@ export default function LoadTrainingForm({onConfirm, onClose, trainings }) {
 
   useEffect(() => {
     try {
-    const selected = trainings.find((training) => training.training === selectedTraining);
+    const selected = trainings.find((training) => training.name === selectedTraining);
       if (selected) {
         onConfirm(selected);
       }
-      else {
-        onConfirm(NULL)
-      }
+      // else {
+      //   onConfirm(NULL)
+      // }
     } catch (error) {
       console.error('Error loading training:', error);
     }
@@ -52,7 +52,7 @@ export default function LoadTrainingForm({onConfirm, onClose, trainings }) {
             >
                 <option value="">Select a training</option>
                 {trainings.map((training, index) => (
-                <option key={index} value={training.training}>{training.training}</option>
+                <option key={index} value={training.name}>{training.name}</option>
                 ))}
             </select>
             <div className="flex justify-between">
