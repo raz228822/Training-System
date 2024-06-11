@@ -42,12 +42,6 @@ export default function Home() {
       updateTableData(index, fieldName);
     }
   }
-  
-
-  // useEffect(() => {
-  //   //loadTrainingFromDB();
-  //   console.log(trainings);
-  // }, [trainings]); // Run this effect whenever 'trainings' state changes
 
   const loadTrainingOnTable = (training) => {
     console.log(training)

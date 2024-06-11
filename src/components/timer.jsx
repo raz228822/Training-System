@@ -4,9 +4,12 @@ import Image from 'next/image'
 import AddExerciseForm from './addExerciseForm';
 import LoadTrainingForm from './LoadTrainingForm';
 import AddTrainingForm from './addTrainingForm';
+import Confetti from 'react-confetti';
+import { useAudio } from "react-use";
+
 
 export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
-  const [seconds, setSeconds] = useState(4);
+  const [seconds, setSeconds] = useState(7);
   const [isRunning, setIsRunning] = useState(false);
   const [isRest, setIsRest] = useState(false);
   const [setNum, setNumSet] = useState(1);
@@ -19,6 +22,11 @@ export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
   const [exercises, setExercises] = useState([]);
   const [housesSwitch, setHousesSwitch] = useState(false);
   const [houseGroupSwitch, setHouseGroupSwitch] = useState(0);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [fiveTOoneGo, fiveTOoneGoState, fiveTOoneGoControls, fiveTOoneGoRef] = useAudio({ src: "/5to1go.mp3", autoPlay: false });
+  const [fiveTOoneRest, fiveTOoneRestState, fiveTOoneRestControls, fiveTOoneRestRef] = useAudio({ src: "/5to1rest.mp3", autoPlay: false });
+
+
 
   useEffect(() => {
     let interval;
@@ -42,7 +50,7 @@ export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
   };
 
   const handleResetTime = () => {
-    setSeconds(isRest ? 3 : 4);
+    setSeconds(isRest ? 6 : 7);
     setIsRunning(false)
   }
 
@@ -92,12 +100,12 @@ export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
       setText(`סט מספר ${setNum - 1}`)
       setIsRest(true)
       setTitle('\u{1F634} מנוחה')
-      setSeconds(3)
+      setSeconds(6)
     }
     else {
       setIsRest(false);
       setTitle('\u{1F4AA} תנו בראש')
-      setSeconds(4);
+      setSeconds(7);
     }
     setIsRunning(false);
     }
@@ -116,6 +124,7 @@ export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
         setIsRest(true);
         setTitle('\u{1F389}\u{1F389}\u{1F389}')
         setSeconds(3);
+        triggerConfetti();
         setText("\u{1F504} החלפה")
         switchNames()
         setHousesSwitch(!housesSwitch)
@@ -138,11 +147,29 @@ export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
           });
       }
       setIsRest((prev) => !prev); // Toggle between 40 and 30 seconds
-      setSeconds(isRest ? 4 : 3); // Reset the timer to the new duration
+      setSeconds(isRest ? 7 : 6); // Reset the timer to the new duration
       setTitle(isRest ? '\u{1F4AA} תנו בראש' : '\u{1F634} מנוחה')
       setIsRunning(true); // Start the timer again
     }
   }, [seconds, isRest]);
+
+  // Function to trigger confetti
+  const triggerConfetti = () => {
+    setShowConfetti(true);
+    setTimeout(() => {
+      setShowConfetti(false);
+    }, 5000); // Stop confetti after 5 seconds
+  };
+
+  const handleAudio = () => {
+    if(text !== '\u{1F4AA} תנו בראש' && seconds === 5) {
+      isRest ? fiveTOoneGoControls.play() : fiveTOoneRestControls.play()
+    }
+  }
+
+  useEffect(() => {
+      handleAudio();
+  }, [seconds]);
 
   const formatTime = (seconds) => {
     const remainingSeconds = seconds % 60;
@@ -222,47 +249,6 @@ export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
     }
   };
 
-
-  // original
-  // const switchHouses = () => {
-  //     // Store the last name of house 1
-  //     let lastName1 = tableData[tableData.length - 1].name1;
-  //     let lastName2 = tableData[tableData.length - 1].name2;
-
-  //     // Shift names inside the houses from each object to the next
-  //     for (let i = tableData.length - 1; i > 0; i--) {
-  //       tableData[i].name1 = tableData[i - 1].name1;
-  //       tableData[i].name2 = tableData[i - 1].name2;
-  //     }
-
-  //     // Set the last names to the first object
-  //     tableData[0].name1 = lastName1;
-  //     tableData[0].name2 = lastName2;
-  //   }
-
-  // work only for 3 first houses
-  //   const switchHouses = () => {
-  //     // Check if we are switching houses 1-3 or houses 4-6 based on the switch
-  //     const startIndex = housesSwitch ? 0 : 3;
-  //     const endIndex = housesSwitch ? 3 : tableData.length;
-    
-  //     // Store the last names of the group of houses
-  //     const lastNames = [];
-  //     for (let i = startIndex; i < endIndex; i++) {
-  //       lastNames.push({ name1: tableData[i].name1, name2: tableData[i].name2 });
-  //     }
-    
-  //     // Shift names inside the houses from each object to the next within the group
-  //     for (let i = endIndex - 1; i > startIndex; i--) {
-  //       tableData[i].name1 = tableData[i - 1].name1;
-  //       tableData[i].name2 = tableData[i - 1].name2;
-  //     }
-    
-  //     // Set the last names to the first object within the group
-  //     tableData[startIndex].name1 = lastNames[lastNames.length - 1].name1;
-  //     tableData[startIndex].name2 = lastNames[lastNames.length - 1].name2;
-  //   };
-
   useEffect(() => {
         // Function to fetch data
         const fetchData = async () => {
@@ -336,100 +322,104 @@ export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
     }
   }
 
-  return (
-    <div className="mx-5 flex flex-col justify-center items-center bg-contain bg-center bg-no-repeat">
-      <h1 className="laptop:text-[110px] desktop:text-[192px] tv:text-[290px] font-semibold text-white desktop:-mt-24 tv:-mt-60">
-        {title}
-      </h1>
+      return (
+        <div className="mx-5 flex flex-col justify-center items-center bg-contain bg-center bg-no-repeat">
+          {showConfetti && <Confetti />}
+          {fiveTOoneGo}
+          {fiveTOoneRest}
+          
+          <h1 className="laptop:text-[110px] desktop:text-[192px] tv:text-[290px] font-semibold text-white desktop:-mt-24 tv:-mt-60">
+            {title}
+          </h1>
 
-      <div className="flex flex-col items-center">
-        <Image src={timerLogo.src} alt="Timer Logo" width={1600} height={100} />
-        <div className={`absolute tv:-mt-36 desktop:-mt-28 laptop:-mt-14 laptop:text-[215px] laptop:ml-[150px] desktop:text-[420px] desktop:ml-[270px] tv:text-[550px] font-bold ${!isRest ? 'text-green-500' : 'text-red-500'}`}>
-          {formatTime(seconds)}
+          <div className="flex flex-col items-center">
+            <Image src={timerLogo.src} alt="Timer Logo" width={1600} height={100} />
+            <div className={`absolute tv:-mt-36 desktop:-mt-28 laptop:-mt-14 laptop:text-[215px] laptop:ml-[150px] desktop:text-[420px] desktop:ml-[270px] tv:text-[550px] font-bold ${!isRest ? 'text-green-500' : 'text-red-500'}`}>
+              {formatTime(seconds)}
+            </div>
+          </div>
+
+          <h1 className="laptop:text-[80px] desktop:text-[164px] tv:text-[210px] font-semibold text-white">{text}</h1>
+
+          <div className="flex gap-12 desktop:my-14 laptop:my-5">
+            {!isRunning ? (
+              <button
+                onClick={handleStart}
+                className="button bg-blue-500 hover:bg-blue-600">
+                Start
+              </button>
+            ) : (
+              <button
+                onClick={handleStop}
+                className="button bg-red-500 hover:bg-red-600">
+                Stop
+              </button>
+            )}
+
+            <button
+              onClick={handleResetTime}
+              className="button bg-lime-500 hover:bg-lime-600 text-white">
+              Reset time
+            </button>
+
+            <button
+              onClick={IncreaseSet}
+              className="button bg-teal-500 hover:bg-teal-600 ">
+              +
+            </button>
+
+            <button
+              onClick={DecreaseSet}
+              className="button bg-purple-500 hover:bg-purple-600">
+              -
+            </button>
+
+            <button
+              onClick={handleReset}
+              className="button bg-gray-500 hover:bg-gray-600">
+              Reset
+            </button>
+          </div>
+
+          <div className="" >
+            <button
+                onClick={() => setIsAddExerciseDialogOpen(true)}
+                className="button bg-yellow-400 hover:bg-yellow-500">
+                Add Exercise
+            </button>
+            <button
+                //onClick={() => setIsDialogOpen(true)}]
+                onClick={() => setIsLoadExerciseDialogOpen(true)}
+                className="button bg-slate-400 hover:bg-slate-500">
+                Load Training
+            </button>
+            <button
+                onClick={() => setIsAddTrainingDialogOpen(true)}
+                //onClick={createTraining}
+                className="button bg-emerald-400 hover:bg-emerald-500">
+                Create Training
+            </button>
+
+            {AddExerciseDialogOpen && <AddExerciseForm
+              onConfirm={addExercise}
+              onClose={() => setIsAddExerciseDialogOpen(false)}
+              exercises={exercises}
+              />}
+
+            {LoadExerciseDialogOpen && <LoadTrainingForm
+              onConfirm={loadTrainingsOnTable}
+              onClose={() => setIsLoadExerciseDialogOpen(false)}
+              trainings={trainings}
+              />}
+
+            {AddTrainingDialogOpen && <AddTrainingForm
+              onConfirm={addTraining}
+              onClose={() => setIsAddTrainingDialogOpen(false)}
+              trainings={trainings}
+              exercises={exercises}
+              />}
+
+          </div>
         </div>
-      </div>
-
-      <h1 className="laptop:text-[80px] desktop:text-[164px] tv:text-[210px] font-semibold text-white">{text}</h1>
-
-      <div className="flex gap-12 desktop:my-14 laptop:my-5">
-        {!isRunning ? (
-          <button
-            onClick={handleStart}
-            className="button bg-blue-500 hover:bg-blue-600">
-            Start
-          </button>
-        ) : (
-          <button
-            onClick={handleStop}
-            className="button bg-red-500 hover:bg-red-600">
-            Stop
-          </button>
-        )}
-
-        <button
-          onClick={handleResetTime}
-          className="button bg-lime-500 hover:bg-lime-600 text-white">
-          Reset time
-        </button>
-
-        <button
-          onClick={IncreaseSet}
-          className="button bg-teal-500 hover:bg-teal-600 ">
-          +
-        </button>
-
-        <button
-          onClick={DecreaseSet}
-          className="button bg-purple-500 hover:bg-purple-600">
-          -
-        </button>
-
-        <button
-          onClick={handleReset}
-          className="button bg-gray-500 hover:bg-gray-600">
-          Reset
-        </button>
-      </div>
-
-      <div className="" >
-        <button
-            onClick={() => setIsAddExerciseDialogOpen(true)}
-            className="button bg-yellow-400 hover:bg-yellow-500">
-            Add Exercise
-        </button>
-        <button
-            //onClick={() => setIsDialogOpen(true)}]
-            onClick={() => setIsLoadExerciseDialogOpen(true)}
-            className="button bg-slate-400 hover:bg-slate-500">
-            Load Training
-        </button>
-        <button
-            onClick={() => setIsAddTrainingDialogOpen(true)}
-            //onClick={createTraining}
-            className="button bg-emerald-400 hover:bg-emerald-500">
-            Create Training
-        </button>
-
-        {AddExerciseDialogOpen && <AddExerciseForm
-          onConfirm={addExercise}
-          onClose={() => setIsAddExerciseDialogOpen(false)}
-          exercises={exercises}
-           />}
-
-        {LoadExerciseDialogOpen && <LoadTrainingForm
-          onConfirm={loadTrainingsOnTable}
-          onClose={() => setIsLoadExerciseDialogOpen(false)}
-          trainings={trainings}
-           />}
-
-        {AddTrainingDialogOpen && <AddTrainingForm
-          onConfirm={addTraining}
-          onClose={() => setIsAddTrainingDialogOpen(false)}
-          trainings={trainings}
-          exercises={exercises}
-           />}
-
-      </div>
-    </div>
-  );
+      );
 }
