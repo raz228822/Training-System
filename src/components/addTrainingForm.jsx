@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
+import AddExerciseForm from './addExerciseForm';
 
-export default function AddTrainingForm({onConfirm, onClose, trainings, exercises }) {
+export default function AddTrainingForm({onConfirm, onClose, trainings, fetched_exercises }) {
   const [trainingName, setTrainingName] = useState('');
   const [selectedSquat, setSelectedSquat] = useState('');
   const [selectedSquatAerobicAbs, setSelectedSquatAerobicAbs] = useState('');
@@ -14,7 +15,13 @@ export default function AddTrainingForm({onConfirm, onClose, trainings, exercise
   const [selectedLungeAerobicAbs, setSelectedLungeAerobicAbs] = useState('');
   const [selectedTwist, setSelectedTwist] = useState('');
   const [selectedTwistAerobicAbs, setSelectedTwistAerobicAbs] = useState('');
-  console.log(exercises)
+  const [AddExerciseDialogOpen, setIsAddExerciseDialogOpen] = useState(false);
+  const [exercises, setExercises] = useState(fetched_exercises);
+
+  // useEffect to update exercises when fetched_exercises changes
+  useEffect(() => {
+    setExercises(fetched_exercises);
+  }, [fetched_exercises]);
 
   const exerciseCategories = [
     { name: 'Squat House', key: 'squat' },
@@ -63,6 +70,52 @@ export default function AddTrainingForm({onConfirm, onClose, trainings, exercise
     onClose();
   };
 
+  const getRandomExercise = (category) => {
+    const exercises = categorizedExercises[category];
+    if (exercises.length > 0) {
+      return exercises[Math.floor(Math.random() * exercises.length)].name;
+    }
+    return
+  };
+
+  const shuffleExercises = () => {
+    setSelectedSquat(getRandomExercise('squat'));
+    setSelectedSquatAerobicAbs(getRandomExercise('aerobic_abs'));
+    setSelectedPush(getRandomExercise('push'));
+    setSelectedPushAerobicAbs(getRandomExercise('aerobic_abs'));
+    setSelectedDeadlift(getRandomExercise('deadlift'));
+    setSelectedDeadliftAerobicAbs(getRandomExercise('aerobic_abs'));
+    setSelectedPull(getRandomExercise('pull'));
+    setSelectedPullAerobicAbs(getRandomExercise('aerobic_abs'));
+    setSelectedLunge(getRandomExercise('lunge'));
+    setSelectedLungeAerobicAbs(getRandomExercise('aerobic_abs'));
+    setSelectedTwist(getRandomExercise('twist'));
+    setSelectedTwistAerobicAbs(getRandomExercise('aerobic_abs'));
+  };
+
+  async function addExercise(exerciseData) {
+    try {
+      const response = await fetch('/api/exercises', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(exerciseData) // Convert exerciseData to JSON string
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create exercise');
+      }
+      setExercises(prevExercises => [...prevExercises, exerciseData]);
+      console.log(exercises)
+      const responseData = await response.json();
+      return responseData;
+    } catch (error) {
+      console.error('Error creating exercise:', error);
+      throw error;
+    }
+  }
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
       <form onSubmit={handleSubmit}>
@@ -103,213 +156,50 @@ export default function AddTrainingForm({onConfirm, onClose, trainings, exercise
                 </select>
               </div>
             </div>
-          ))}
-            {/* <label className="block text-gray-700">Squat House:</label>
-            <div className="select-trainings">
-                <select
-                    value={selectedTraining}
-                    onChange={handleSelectChange}
-                    className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
-                >
-                    <option value="">Select a training</option>
-                    {categorizedExercises.squat && categorizedExercises.squat.map((exercise, index) => (
-                    <option key={index} value={exercise.name}>{exercise.name}</option>
-                    ))}
-                </select>
-                <select
-                    value={selectedTraining}
-                    onChange={handleSelectChange}
-                    className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
-                >
-                    <option value="">Select a training</option>
-                    {categorizedExercises.squat && categorizedExercises.squat.map((exercise, index) => (
-                    <option key={index} value={exercise.name}>{exercise.name}</option>
-                    ))}
-                </select>
-             </div>
-             <label className="block text-gray-700">Push House:</label>
-             <div className="select-trainings">
-             <select
-                    value={selectedTraining}
-                    onChange={handleSelectChange}
-                    className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
-                >
-                    <option value="">Select a training</option>
-                    {categorizedExercises.push && categorizedExercises.push.map((exercise, index) => (
-                    <option key={index} value={exercise.name}>{exercise.name}</option>
-                    ))}
-                </select>
-                <select
-                    value={selectedTraining}
-                    onChange={handleSelectChange}
-                    className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
-                >
-                    <option value="">Select a training</option>
-                    {categorizedExercises.push && categorizedExercises.push.map((exercise, index) => (
-                    <option key={index} value={exercise.name}>{exercise.name}</option>
-                    ))}
-                </select>
-             </div>
-             <label className="block text-gray-700">Deadlift House:</label>
-             <div className="select-trainings">
-             <select
-                    value={selectedTraining}
-                    onChange={handleSelectChange}
-                    className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
-                >
-                    <option value="">Select a training</option>
-                    {categorizedExercises.deadlift && categorizedExercises.deadlift.map((exercise, index) => (
-                    <option key={index} value={exercise.name}>{exercise.name}</option>
-                    ))}
-                </select>
-                <select
-                    value={selectedTraining}
-                    onChange={handleSelectChange}
-                    className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
-                >
-                    <option value="">Select a training</option>
-                    {categorizedExercises.deadlift && categorizedExercises.deadlift.map((exercise, index) => (
-                    <option key={index} value={exercise.name}>{exercise.name}</option>
-                    ))}
-                </select>
-             </div>
-             <label className="block text-gray-700">Pull House:</label>
-             <div className="select-trainings">
-                <select
-                    value={selectedTraining}
-                    onChange={handleSelectChange}
-                    className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
-                >
-                    <option value="">Select a training</option>
-                    {categorizedExercises.pull && categorizedExercises.pull.map((exercise, index) => (
-                    <option key={index} value={exercise.name}>{exercise.name}</option>
-                    ))}
-                </select>
-                <select
-                    value={selectedTraining}
-                    onChange={handleSelectChange}
-                    className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
-                >
-                    <option value="">Select a training</option>
-                    {categorizedExercises.pull && categorizedExercises.pull.map((exercise, index) => (
-                    <option key={index} value={exercise.name}>{exercise.name}</option>
-                    ))}
-                </select>
-             </div>
-             <label className="block text-gray-700">Lunge House:</label>
-             <div className="select-trainings">
-                <select
-                    value={selectedTraining}
-                    onChange={handleSelectChange}
-                    className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
-                >
-                    <option value="">Select a training</option>
-                    {categorizedExercises.lunge && categorizedExercises.lunge.map((exercise, index) => (
-                    <option key={index} value={exercise.name}>{exercise.name}</option>
-                    ))}
-                </select>
-                <select
-                    value={selectedTraining}
-                    onChange={handleSelectChange}
-                    className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
-                >
-                    <option value="">Select a training</option>
-                    {categorizedExercises.lunge && categorizedExercises.lunge.map((exercise, index) => (
-                    <option key={index} value={exercise.name}>{exercise.name}</option>
-                    ))}
-                </select>
-             </div>
-             <label className="block text-gray-700">Twist House:</label>
-             <div className="select-trainings">
-                <select
-                    value={selectedTraining}
-                    onChange={handleSelectChange}
-                    className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
-                >
-                    <option value="">Select a training</option>
-                    {categorizedExercises.twist && categorizedExercises.twist.map((exercise, index) => (
-                    <option key={index} value={exercise.name}>{exercise.name}</option>
-                    ))}
-                </select>
-                <select
-                    value={selectedTraining}
-                    onChange={handleSelectChange}
-                    className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
-                >
-                    <option value="">Select a training</option>
-                    {categorizedExercises.twist && categorizedExercises.twist.map((exercise, index) => (
-                    <option key={index} value={exercise.name}>{exercise.name}</option>
-                    ))}
-                </select>
-             </div> */}
+            ))}        
 
-
-            
             <div className="flex justify-between">
                 <button
                 type="submit"
                 className="form-button bg-lime-400 hover:bg-lime-500">
                 Confirm
                 </button>
+
                 <button
-                onClick={handleCancel}
-                className="form-button bg-gray-400 hover:bg-gray-500">
-                Cancel
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setIsAddExerciseDialogOpen(true);
+                  }}
+                  className="button bg-yellow-400 hover:bg-yellow-500">
+                  Add Exercise
                 </button>
+
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    shuffleExercises()
+                  }}
+                  className="form-button bg-pink-400 hover:bg-pink-500">
+                  Shuffle
+                </button>
+
+                <button
+                  onClick={handleCancel}
+                  className="form-button bg-gray-400 hover:bg-gray-500">
+                  Cancel
+                </button>
+
+                
             </div>
           </div>
       </form>
+
+      {AddExerciseDialogOpen && <AddExerciseForm
+        onConfirm={addExercise}
+        onClose={() => setIsAddExerciseDialogOpen(false)}
+        exercises={fetched_exercises}
+      />}
+
     </div>
     )
-
-    // <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
-    //   <form onSubmit={handleSubmit}>
-    //     <div className="bg-white p-6 rounded-lg">
-    //       <h2 className="text-xl font-semibold mb-4">Enter Guest Details</h2>
-    //       <div className="mb-4">
-    //         <label className="block text-gray-700">Name:</label>
-    //         <input
-    //           type="text"
-    //           value={name}
-    //           onInput={(e) => setName(e.target.value)}
-    //           required
-    //           className="w-full border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
-    //         />
-    //       </div>
-    //       <div className="mb-4">
-    //         <label className="block text-gray-700">Amount:</label>
-    //         <input
-    //           type="number"
-    //           //value={amount}
-    //           onInput={(e) => setAmount(e.target.value)}
-    //           className="w-full border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
-    //         />
-    //       </div>
-    //       <div className="mb-4">
-    //         <label className="block text-gray-700">Category:</label>
-    //         <input
-    //           type="text"
-    //           //value={category}
-    //           onInput={(e) => setCategory(e.target.value)}
-    //           required
-    //           className="w-full border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
-    //         />
-    //       </div>
-    //       <div className="flex justify-end">
-    //       <button
-    //           type="submit"
-    //           //className={styles.button}
-    //         >
-    //           Confirm
-    //         </button>
-    //         <button
-    //           onClick={handleCancel}
-    //           className="px-4 py-2 bg-gray-300 text-gray-700 hover:bg-gray-200 rounded ml-9"
-    //         >
-    //           Cancel
-    //         </button>
-    //       </div>
-    //       </div>
-    //   </form>
-    // </div>
 }

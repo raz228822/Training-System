@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import timerLogo from 'public/timerLogo.png'
 import Image from 'next/image'
-import AddExerciseForm from './addExerciseForm';
 import LoadTrainingForm from './LoadTrainingForm';
 import AddTrainingForm from './addTrainingForm';
 import Confetti from 'react-confetti';
@@ -9,14 +8,13 @@ import { useAudio } from "react-use";
 
 
 export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
-  const [seconds, setSeconds] = useState(7);
+  const [seconds, setSeconds] = useState(23);
   const [isRunning, setIsRunning] = useState(false);
   const [isRest, setIsRest] = useState(false);
   const [setNum, setNumSet] = useState(1);
   const [text, setText] = useState("! בואו נתחיל")
   const [title, setTitle] = useState('\u{1F4AA} תנו בראש')
-  const [AddExerciseDialogOpen, setIsAddExerciseDialogOpen] = useState(false);
-  const [LoadExerciseDialogOpen, setIsLoadExerciseDialogOpen] = useState(false);
+  const [LoadTrainingDialogOpen, setIsLoadTrainingDialogOpen] = useState(false);
   const [AddTrainingDialogOpen, setIsAddTrainingDialogOpen] = useState(false);
   const [trainings, setTrainings] = useState([]);
   const [exercises, setExercises] = useState([]);
@@ -25,7 +23,7 @@ export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
   const [showConfetti, setShowConfetti] = useState(false);
   const [fiveTOoneGo, fiveTOoneGoState, fiveTOoneGoControls, fiveTOoneGoRef] = useAudio({ src: "/5to1go.mp3", autoPlay: false });
   const [fiveTOoneRest, fiveTOoneRestState, fiveTOoneRestControls, fiveTOoneRestRef] = useAudio({ src: "/5to1rest.mp3", autoPlay: false });
-
+  const [half, halftState, halfControls, halfRef] = useAudio({ src: "/half.mp3", autoPlay: false });
 
 
   useEffect(() => {
@@ -165,6 +163,8 @@ export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
     if(text !== '\u{1F4AA} תנו בראש' && seconds === 5) {
       isRest ? fiveTOoneGoControls.play() : fiveTOoneRestControls.play()
     }
+    if(seconds === 20)
+      halfControls.play();
   }
 
   useEffect(() => {
@@ -275,30 +275,6 @@ export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
       fetchData();
     }, []); // Empty dependency array ensures this effect runs only once on mount
 
-  async function addExercise(exerciseData) {
-    try {
-      const response = await fetch('/api/exercises', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(exerciseData) // Convert exerciseData to JSON string
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to create exercise');
-      }
-      setExercises(prevExercises => [...prevExercises, exerciseData]);
-      console.log(exercises)
-      //fetchData()
-      const responseData = await response.json();
-      return responseData;
-    } catch (error) {
-      console.error('Error creating exercise:', error);
-      throw error;
-    }
-  }
-
   async function addTraining(trainingData) {
     try {
       const response = await fetch('/api/trainings', {
@@ -327,6 +303,7 @@ export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
           {showConfetti && <Confetti />}
           {fiveTOoneGo}
           {fiveTOoneRest}
+          {half}
           
           <h1 className="laptop:text-[110px] desktop:text-[192px] tv:text-[290px] font-semibold text-white desktop:-mt-24 tv:-mt-60">
             {title}
@@ -382,17 +359,15 @@ export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
           </div>
 
           <div className="" >
-            <button
-                onClick={() => setIsAddExerciseDialogOpen(true)}
-                className="button bg-yellow-400 hover:bg-yellow-500">
-                Add Exercise
-            </button>
+            
+
             <button
                 //onClick={() => setIsDialogOpen(true)}]
-                onClick={() => setIsLoadExerciseDialogOpen(true)}
+                onClick={() => setIsLoadTrainingDialogOpen(true)}
                 className="button bg-slate-400 hover:bg-slate-500">
                 Load Training
             </button>
+
             <button
                 onClick={() => setIsAddTrainingDialogOpen(true)}
                 //onClick={createTraining}
@@ -400,15 +375,9 @@ export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
                 Create Training
             </button>
 
-            {AddExerciseDialogOpen && <AddExerciseForm
-              onConfirm={addExercise}
-              onClose={() => setIsAddExerciseDialogOpen(false)}
-              exercises={exercises}
-              />}
-
-            {LoadExerciseDialogOpen && <LoadTrainingForm
+            {LoadTrainingDialogOpen && <LoadTrainingForm
               onConfirm={loadTrainingsOnTable}
-              onClose={() => setIsLoadExerciseDialogOpen(false)}
+              onClose={() => setIsLoadTrainingDialogOpen(false)}
               trainings={trainings}
               />}
 
@@ -416,7 +385,7 @@ export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
               onConfirm={addTraining}
               onClose={() => setIsAddTrainingDialogOpen(false)}
               trainings={trainings}
-              exercises={exercises}
+              fetched_exercises={exercises}
               />}
 
           </div>
