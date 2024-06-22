@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import timerLogo from 'public/timerLogo.png'
 import Image from 'next/image'
 import LoadTrainingForm from './LoadTrainingForm';
-import AddTrainingForm from './addTrainingForm';
+import CreateTrainingForm from './createTrainingForm';
 import Confetti from 'react-confetti';
 import { useAudio } from "react-use";
 
@@ -15,7 +15,7 @@ export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
   const [text, setText] = useState("! בואו נתחיל")
   const [title, setTitle] = useState('\u{1F4AA} תנו בראש')
   const [LoadTrainingDialogOpen, setIsLoadTrainingDialogOpen] = useState(false);
-  const [AddTrainingDialogOpen, setIsAddTrainingDialogOpen] = useState(false);
+  const [CreateTrainingDialogOpen, setIsCreateTrainingDialogOpen] = useState(false);
   const [trainings, setTrainings] = useState([]);
   const [exercises, setExercises] = useState([]);
   const [housesSwitch, setHousesSwitch] = useState(false);
@@ -275,7 +275,7 @@ export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
       fetchData();
     }, []); // Empty dependency array ensures this effect runs only once on mount
 
-  async function addTraining(trainingData) {
+  async function createTraining(trainingData) {
     try {
       const response = await fetch('/api/trainings', {
         method: 'POST',
@@ -358,18 +358,15 @@ export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
             </button>
           </div>
 
-          <div className="" >
-            
-
+          <div>
             <button
-                //onClick={() => setIsDialogOpen(true)}]
                 onClick={() => setIsLoadTrainingDialogOpen(true)}
                 className="button bg-slate-400 hover:bg-slate-500">
                 Load Training
             </button>
 
             <button
-                onClick={() => setIsAddTrainingDialogOpen(true)}
+                onClick={() => setIsCreateTrainingDialogOpen(true)}
                 //onClick={createTraining}
                 className="button bg-emerald-400 hover:bg-emerald-500">
                 Create Training
@@ -381,13 +378,12 @@ export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
               trainings={trainings}
               />}
 
-            {AddTrainingDialogOpen && <AddTrainingForm
-              onConfirm={addTraining}
-              onClose={() => setIsAddTrainingDialogOpen(false)}
+            {CreateTrainingDialogOpen && <CreateTrainingForm
+              onConfirm={createTraining}
+              onClose={() => setIsCreateTrainingDialogOpen(false)}
               trainings={trainings}
               fetched_exercises={exercises}
               />}
-
           </div>
         </div>
       );

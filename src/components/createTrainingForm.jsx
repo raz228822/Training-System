@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import AddExerciseForm from './addExerciseForm';
 
-export default function AddTrainingForm({onConfirm, onClose, trainings, fetched_exercises }) {
+export default function CreateTrainingForm({onConfirm, onClose, trainings, fetched_exercises }) {
   const [trainingName, setTrainingName] = useState('');
   const [selectedSquat, setSelectedSquat] = useState('');
   const [selectedSquatAerobicAbs, setSelectedSquatAerobicAbs] = useState('');
@@ -120,7 +120,7 @@ export default function AddTrainingForm({onConfirm, onClose, trainings, fetched_
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
       <form onSubmit={handleSubmit}>
         <div className="bg-white p-6 rounded-lg">
-          <h2 className="text-xl font-semibold mb-4 flex justify-center">Add Training</h2>
+          <h2 className="text-xl font-semibold mb-4 flex justify-center">Create Training</h2>
             <label className="block text-gray-700">Training Name:</label>
             <input
                 type="text"
@@ -158,7 +158,7 @@ export default function AddTrainingForm({onConfirm, onClose, trainings, fetched_
             </div>
             ))}        
 
-            <div className="flex justify-between">
+            <div className="flex justify-between gap-8">
                 <button
                 type="submit"
                 className="form-button bg-lime-400 hover:bg-lime-500">
@@ -170,7 +170,7 @@ export default function AddTrainingForm({onConfirm, onClose, trainings, fetched_
                     e.preventDefault();
                     setIsAddExerciseDialogOpen(true);
                   }}
-                  className="button bg-yellow-400 hover:bg-yellow-500">
+                  className="form-button bg-yellow-400 hover:bg-yellow-500">
                   Add Exercise
                 </button>
 
