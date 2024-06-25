@@ -26,24 +26,24 @@
   @apply desktop:w-32 desktop:h-12 laptop:w-28 text-white rounded-md focus:outline-none font-bold
 }
 
-.select-trainings {
+.select-exercises {
   @apply flex flex-row justify-between
 }
 
 .sidepanel {
-  @apply h-[25%] fixed top-0 right-0 bg-black overflow-hidden transition-all duration-500;
+  @apply h-[32%] tv:h-[25%] fixed top-0 right-0 z-10 bg-black overflow-hidden transition-all duration-500;
 }
 
 .sidepanel-button {
-  @apply p-[8px] pl-[32px] text-[25px] text-gray-400 hover:text-gray-500 block whitespace-nowrap;
+  @apply p-[8px] pl-[32px] text-[25px] tv:text-[75px] text-gray-400 hover:text-gray-500 block whitespace-nowrap;
 }
 
 .sidepanel-close-button {
-  @apply absolute right-5 text-[30px] text-gray-400 hover:text-gray-500;
+  @apply absolute right-10 text-gray-400 hover:text-gray-500 text-[30px] tv:text-[80px];
 }
 
 .hamburger {
-  @apply fixed top-0 right-5 text-white hover:text-gray-300 text-[30px]
+  @apply fixed top-0 right-10 text-white hover:text-gray-300 laptop:text-[30px] tv:text-[80px]
 }
  
 body {

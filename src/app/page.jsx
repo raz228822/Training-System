@@ -12,6 +12,37 @@ import Sidebar from '@/components/sidebar';
 export default function Home() {
   const [editingCell, setEditingCell] = useState(null)
   const editNameRef = useRef()
+  const [trainings, setTrainings] = useState([]);
+  const [exercises, setExercises] = useState([]);
+
+  useEffect(() => {
+    // Function to fetch data
+    const fetchData = async () => {
+      try {
+        const trainingResponse = await fetch('/api/trainings');
+        if (!trainingResponse.ok) {
+          throw new Error('Failed to load trainings');
+        }
+        const trainingData = await trainingResponse.json();
+        setTrainings(trainingData);
+
+        const exerciseResponse = await fetch('/api/exercises');
+        if (!exerciseResponse.ok) {
+          throw new Error('Failed to load exercises');
+        }
+        const exerciseData = await exerciseResponse.json();
+        setExercises(exerciseData);
+        console.log(exercises)
+
+      } catch (error) {
+        console.error('Error loading data:', error);
+      }
+    };
+
+  // Fetch data when component mounts
+  fetchData();
+}, []); // Empty dependency array ensures this effect runs only once on mount
+
 
   const startEditingCell = (index, fieldName) => {
     setEditingCell({ index, fieldName })
@@ -73,7 +104,7 @@ export default function Home() {
 
   return(
       <div className="my-8 flex items-center">
-        <Sidebar  />
+        <Sidebar loadTrainingsOnTable={loadTrainingOnTable} trainings={trainings} exercises={exercises}/>
         <Image src={logo} alt="logo"className="laptop:w-[100px] desktop:w-[300px]"/>
         <div className="w-[55%]">
           <table className="bg-white border border-gray-300 tv:h-[97vh] laptop:h-[90vh] desktop:h-[95vh] w-full">
@@ -163,7 +194,7 @@ export default function Home() {
           </table>
         </div>
         <div className="w-[45%]">
-          <Timer tableData={tableData} setTableData={setTableData} loadTrainingsOnTable={loadTrainingOnTable}/>
+          <Timer tableData={tableData} setTableData={setTableData} loadTrainingsOnTable={loadTrainingOnTable} trainings={trainings} exercises={exercises}/>
         </div>
       </div>
     )

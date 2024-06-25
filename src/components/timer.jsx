@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import timerLogo from 'public/timerLogo.png'
 import Image from 'next/image'
-import LoadTrainingForm from './LoadTrainingForm';
-import CreateTrainingForm from './createTrainingForm';
+// import LoadTrainingForm from './LoadTrainingForm';
+// import CreateTrainingForm from './createTrainingForm';
 import Confetti from 'react-confetti';
 import { useAudio } from "react-use";
 
@@ -14,10 +14,10 @@ export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
   const [setNum, setNumSet] = useState(1);
   const [text, setText] = useState("! בואו נתחיל")
   const [title, setTitle] = useState('\u{1F4AA} תנו בראש')
-  const [LoadTrainingDialogOpen, setIsLoadTrainingDialogOpen] = useState(false);
-  const [CreateTrainingDialogOpen, setIsCreateTrainingDialogOpen] = useState(false);
-  const [trainings, setTrainings] = useState([]);
-  const [exercises, setExercises] = useState([]);
+  // const [LoadTrainingDialogOpen, setIsLoadTrainingDialogOpen] = useState(false);
+  // const [CreateTrainingDialogOpen, setIsCreateTrainingDialogOpen] = useState(false);
+  // const [trainings, setTrainings] = useState([]);
+  // const [exercises, setExercises] = useState([]);
   const [housesSwitch, setHousesSwitch] = useState(false);
   const [houseGroupSwitch, setHouseGroupSwitch] = useState(0);
   const [showConfetti, setShowConfetti] = useState(false);
@@ -249,54 +249,54 @@ export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
     }
   };
 
-  useEffect(() => {
-        // Function to fetch data
-        const fetchData = async () => {
-          try {
-            const trainingResponse = await fetch('/api/trainings');
-            if (!trainingResponse.ok) {
-              throw new Error('Failed to load trainings');
-            }
-            const trainingData = await trainingResponse.json();
-            setTrainings(trainingData);
+  // useEffect(() => {
+  //       // Function to fetch data
+  //       const fetchData = async () => {
+  //         try {
+  //           const trainingResponse = await fetch('/api/trainings');
+  //           if (!trainingResponse.ok) {
+  //             throw new Error('Failed to load trainings');
+  //           }
+  //           const trainingData = await trainingResponse.json();
+  //           setTrainings(trainingData);
 
-            const exerciseResponse = await fetch('/api/exercises');
-            if (!exerciseResponse.ok) {
-              throw new Error('Failed to load exercises');
-            }
-            const exerciseData = await exerciseResponse.json();
-            setExercises(exerciseData);
-          } catch (error) {
-            console.error('Error loading data:', error);
-          }
-        };
+  //           const exerciseResponse = await fetch('/api/exercises');
+  //           if (!exerciseResponse.ok) {
+  //             throw new Error('Failed to load exercises');
+  //           }
+  //           const exerciseData = await exerciseResponse.json();
+  //           setExercises(exerciseData);
+  //         } catch (error) {
+  //           console.error('Error loading data:', error);
+  //         }
+  //       };
 
-      // Fetch data when component mounts
-      fetchData();
-    }, []); // Empty dependency array ensures this effect runs only once on mount
+  //     // Fetch data when component mounts
+  //     fetchData();
+  //   }, []); // Empty dependency array ensures this effect runs only once on mount
 
-  async function createTraining(trainingData) {
-    try {
-      const response = await fetch('/api/trainings', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(trainingData) // Convert trainingData to JSON string
-      });
+  // async function createTraining(trainingData) {
+  //   try {
+  //     const response = await fetch('/api/trainings', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       },
+  //       body: JSON.stringify(trainingData) // Convert trainingData to JSON string
+  //     });
 
-      if (!response.ok) {
-        console.log(trainingData)
-        throw new Error('Failed to create exercise');
-      }
-      setTrainings(prevTrainings => [...prevTrainings, trainingData]);
-      const responseData = await response.json();
-      return responseData;
-    } catch (error) {
-      console.error('Error creating exercise:', error);
-      throw error;
-    }
-  }
+  //     if (!response.ok) {
+  //       console.log(trainingData)
+  //       throw new Error('Failed to create exercise');
+  //     }
+  //     setTrainings(prevTrainings => [...prevTrainings, trainingData]);
+  //     const responseData = await response.json();
+  //     return responseData;
+  //   } catch (error) {
+  //     console.error('Error creating exercise:', error);
+  //     throw error;
+  //   }
+  // }
 
       return (
         <div className="mx-5 flex flex-col justify-center items-center bg-contain bg-center bg-no-repeat">
@@ -359,7 +359,7 @@ export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
           </div>
 
           <div>
-            <button
+            {/* <button
                 onClick={() => setIsLoadTrainingDialogOpen(true)}
                 className="button bg-slate-400 hover:bg-slate-500">
                 Load Training
@@ -367,12 +367,11 @@ export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
 
             <button
                 onClick={() => setIsCreateTrainingDialogOpen(true)}
-                //onClick={createTraining}
                 className="button bg-emerald-400 hover:bg-emerald-500">
                 Create Training
-            </button>
+            </button> */}
 
-            {LoadTrainingDialogOpen && <LoadTrainingForm
+            {/* {LoadTrainingDialogOpen && <LoadTrainingForm
               onConfirm={loadTrainingsOnTable}
               onClose={() => setIsLoadTrainingDialogOpen(false)}
               trainings={trainings}
@@ -383,7 +382,7 @@ export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
               onClose={() => setIsCreateTrainingDialogOpen(false)}
               trainings={trainings}
               fetched_exercises={exercises}
-              />}
+              />} */}
           </div>
         </div>
       );

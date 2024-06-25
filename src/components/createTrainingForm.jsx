@@ -126,17 +126,17 @@ export default function CreateTrainingForm({onConfirm, onClose, trainings, fetch
                 type="text"
                 value={trainingName}
                 onInput={(e) => setTrainingName(e.target.value)}
-                className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
+                className="mb-4 w-[47%] border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
             />
 
             {exerciseCategories.slice(0,6).map((category, i) => (
             <div key={i}>
               <label className="block text-gray-700">{category.name}:</label>
-              <div className="select-trainings">
+              <div className="select-exercises">
                 <select
                   value={i === 0 ? selectedSquat : i === 1 ? selectedPush : i === 2 ? selectedDeadlift : i === 3 ? selectedPull : i === 4 ? selectedLunge : selectedTwist}
                   onChange={e => i === 0 ? setSelectedSquat(e.target.value) : i === 1 ? setSelectedPush(e.target.value) : i === 2 ? setSelectedDeadlift(e.target.value) : i === 3 ? setSelectedPull(e.target.value) : i === 4 ? setSelectedLunge(e.target.value) : setSelectedTwist(e.target.value)}
-                  className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
+                  className="mb-4 w-[47%] border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
                 >
                   <option value="">Select an exercise</option>
                   {categorizedExercises[category.key].map((exercise, index) => (
@@ -147,7 +147,7 @@ export default function CreateTrainingForm({onConfirm, onClose, trainings, fetch
                 <select
                   value={i === 0 ? selectedSquatAerobicAbs : i === 1 ? selectedPushAerobicAbs : i === 2 ? selectedDeadliftAerobicAbs : i === 3 ? selectedPullAerobicAbs : i === 4 ? selectedLungeAerobicAbs : selectedTwistAerobicAbs}
                   onChange={e => i === 0 ? setSelectedSquatAerobicAbs(e.target.value) : i === 1 ? setSelectedPushAerobicAbs(e.target.value) : i === 2 ? setSelectedDeadliftAerobicAbs(e.target.value) : i === 3 ? setSelectedPullAerobicAbs(e.target.value) : i === 4 ? setSelectedLungeAerobicAbs(e.target.value) : setSelectedTwistAerobicAbs(e.target.value)}
-                  className="mb-4 w-72 border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
+                  className="mb-4 w-[47%] border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
                 >
                   <option value="">Select an exercise</option>
                   {categorizedExercises['aerobic_abs'].map((exercise, index) => (
