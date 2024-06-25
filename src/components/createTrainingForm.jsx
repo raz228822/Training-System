@@ -119,19 +119,19 @@ export default function CreateTrainingForm({onConfirm, onClose, trainings, fetch
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
       <form onSubmit={handleSubmit}>
-        <div className="bg-white p-6 rounded-lg">
-          <h2 className="text-xl font-semibold mb-4 flex justify-center">Create Training</h2>
-            <label className="block text-gray-700">Training Name:</label>
+        <div className="bg-white p-6 tv:p-12 rounded-lg tv:w-[130%]">
+          <h2 className="text-3xl tv:text-7xl font-semibold mb-4 flex justify-center">Create Training</h2>
+            <label className="text-xl tv:text-5xl block text-gray-700">Training Name:</label>
             <input
                 type="text"
                 value={trainingName}
                 onInput={(e) => setTrainingName(e.target.value)}
-                className="mb-4 w-[47%] border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
+                className="tv:text-4xl mb-4 tv:my-8 w-[47%] border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
             />
 
             {exerciseCategories.slice(0,6).map((category, i) => (
             <div key={i}>
-              <label className="block text-gray-700">{category.name}:</label>
+              <label className="text-xl tv:text-5xl block text-gray-700">{category.name}:</label>
               <div className="select-exercises">
                 <select
                   value={i === 0 ? selectedSquat : i === 1 ? selectedPush : i === 2 ? selectedDeadlift : i === 3 ? selectedPull : i === 4 ? selectedLunge : selectedTwist}
@@ -158,7 +158,7 @@ export default function CreateTrainingForm({onConfirm, onClose, trainings, fetch
             </div>
             ))}        
 
-            <div className="flex justify-between gap-8">
+            <div className="flex justify-between gap-8 tv:mt-6">
                 <button
                 type="submit"
                 className="form-button bg-lime-400 hover:bg-lime-500">

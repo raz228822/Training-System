@@ -7,7 +7,7 @@
 }
 
 .name {
-  @apply px-4 text-center font-bold border-b border-l tv:text-[76px] desktop:text-5xl laptop:text-3xl bg-black text-white truncate desktop:max-w-[250px] tv:max-w-[330px] h-16 tv:h-24
+  @apply px-4 text-center font-bold border-b border-l tv:text-[76px] desktop:text-5xl laptop:text-3xl bg-black text-white truncate desktop:max-w-[250px] tv:max-w-[330px] h-12 tv:h-24
 }
 
 .exercise {
@@ -23,11 +23,11 @@
 }
 
 .form-button {
-  @apply desktop:w-32 desktop:h-12 laptop:w-28 text-white rounded-md focus:outline-none font-bold
+  @apply tv:text-2xl tv:w-56 tv:h-20 desktop:w-32 h-12 laptop:w-28 text-white rounded-md focus:outline-none font-bold
 }
 
 .select-exercises {
-  @apply flex flex-row justify-between
+  @apply flex flex-row justify-between tv:text-4xl tv:my-6
 }
 
 .sidepanel {

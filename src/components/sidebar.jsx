@@ -38,8 +38,12 @@ export default function Sidebar({loadTrainingsOnTable, trainings, exercises}) {
         <>
             <div className={`sidepanel ${!sidebarOpen ? 'w-0' : 'w-[20%]'}`}>
                 <button onClick={handleViewSidebar} className="sidepanel-close-button">&#215;</button>
-                <button onClick={() => setIsLoadTrainingDialogOpen(true)} className="sidepanel-button mt-2">Load Training</button>
-                <button onClick={() => setIsCreateTrainingDialogOpen(true)} className="sidepanel-button" >Create Training</button>
+                <button onClick={() => {
+                  setSideBarOpen(false)
+                  setIsLoadTrainingDialogOpen(true)}} className="sidepanel-button mt-2">Load Training</button>
+                <button onClick={() => {
+                  setSideBarOpen(false)
+                  setIsCreateTrainingDialogOpen(true)}} className="sidepanel-button" >Create Training</button>
                 <button className="sidepanel-button">Edit/Delete Exercise</button>
                 <button className="sidepanel-button">Edit/Delete Training</button>
             </div>
