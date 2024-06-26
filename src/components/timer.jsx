@@ -249,55 +249,6 @@ export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
     }
   };
 
-  // useEffect(() => {
-  //       // Function to fetch data
-  //       const fetchData = async () => {
-  //         try {
-  //           const trainingResponse = await fetch('/api/trainings');
-  //           if (!trainingResponse.ok) {
-  //             throw new Error('Failed to load trainings');
-  //           }
-  //           const trainingData = await trainingResponse.json();
-  //           setTrainings(trainingData);
-
-  //           const exerciseResponse = await fetch('/api/exercises');
-  //           if (!exerciseResponse.ok) {
-  //             throw new Error('Failed to load exercises');
-  //           }
-  //           const exerciseData = await exerciseResponse.json();
-  //           setExercises(exerciseData);
-  //         } catch (error) {
-  //           console.error('Error loading data:', error);
-  //         }
-  //       };
-
-  //     // Fetch data when component mounts
-  //     fetchData();
-  //   }, []); // Empty dependency array ensures this effect runs only once on mount
-
-  // async function createTraining(trainingData) {
-  //   try {
-  //     const response = await fetch('/api/trainings', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json'
-  //       },
-  //       body: JSON.stringify(trainingData) // Convert trainingData to JSON string
-  //     });
-
-  //     if (!response.ok) {
-  //       console.log(trainingData)
-  //       throw new Error('Failed to create exercise');
-  //     }
-  //     setTrainings(prevTrainings => [...prevTrainings, trainingData]);
-  //     const responseData = await response.json();
-  //     return responseData;
-  //   } catch (error) {
-  //     console.error('Error creating exercise:', error);
-  //     throw error;
-  //   }
-  // }
-
       return (
         <div className="mx-5 flex flex-col justify-center items-center bg-contain bg-center bg-no-repeat">
           {showConfetti && <Confetti />}
@@ -356,33 +307,6 @@ export default function Timer({tableData, setTableData, loadTrainingsOnTable}) {
               className="button bg-gray-500 hover:bg-gray-600">
               Reset
             </button>
-          </div>
-
-          <div>
-            {/* <button
-                onClick={() => setIsLoadTrainingDialogOpen(true)}
-                className="button bg-slate-400 hover:bg-slate-500">
-                Load Training
-            </button>
-
-            <button
-                onClick={() => setIsCreateTrainingDialogOpen(true)}
-                className="button bg-emerald-400 hover:bg-emerald-500">
-                Create Training
-            </button> */}
-
-            {/* {LoadTrainingDialogOpen && <LoadTrainingForm
-              onConfirm={loadTrainingsOnTable}
-              onClose={() => setIsLoadTrainingDialogOpen(false)}
-              trainings={trainings}
-              />}
-
-            {CreateTrainingDialogOpen && <CreateTrainingForm
-              onConfirm={createTraining}
-              onClose={() => setIsCreateTrainingDialogOpen(false)}
-              trainings={trainings}
-              fetched_exercises={exercises}
-              />} */}
           </div>
         </div>
       );

@@ -1,15 +1,21 @@
 import { useState, useEffect } from 'react';
 import LoadTrainingForm from './LoadTrainingForm';
 import CreateTrainingForm from './createTrainingForm';
+import EditDeleteExerciseForm from './editDeleteExerciseForm'
 
 export default function Sidebar({loadTrainingsOnTable, trainings, exercises}) {
     const [sidebarOpen, setSideBarOpen] = useState(false)
     const [LoadTrainingDialogOpen, setIsLoadTrainingDialogOpen] = useState(false);
     const [CreateTrainingDialogOpen, setIsCreateTrainingDialogOpen] = useState(false);
+    const [EditDeleteExerciseDialogOpen, setIsEditDeleteExerciseDialogOpen] = useState(false);
 
     const handleViewSidebar = () => {
         setSideBarOpen(!sidebarOpen)
     };
+
+    useEffect(() => {
+      console.log(exercises)
+    }, [exercises])
 
     async function createTraining(trainingData) {
         try {
@@ -36,7 +42,7 @@ export default function Sidebar({loadTrainingsOnTable, trainings, exercises}) {
 
     return(
         <>
-            <div className={`sidepanel ${!sidebarOpen ? 'w-0' : 'w-[20%]'}`}>
+            <div className={`sidepanel ${!sidebarOpen ? 'w-0' : 'w-[20%] desktop:w-[11%] tv:w-[20%]'}`}>
                 <button onClick={handleViewSidebar} className="sidepanel-close-button">&#215;</button>
                 <button onClick={() => {
                   setSideBarOpen(false)
@@ -44,7 +50,9 @@ export default function Sidebar({loadTrainingsOnTable, trainings, exercises}) {
                 <button onClick={() => {
                   setSideBarOpen(false)
                   setIsCreateTrainingDialogOpen(true)}} className="sidepanel-button" >Create Training</button>
-                <button className="sidepanel-button">Edit/Delete Exercise</button>
+                <button onClick={() => {
+                  setSideBarOpen(false)
+                  setIsEditDeleteExerciseDialogOpen(true)}} className="sidepanel-button">Edit/Delete Exercise</button>
                 <button className="sidepanel-button">Edit/Delete Training</button>
             </div>
 
@@ -67,6 +75,13 @@ export default function Sidebar({loadTrainingsOnTable, trainings, exercises}) {
                 trainings={trainings}
                 fetched_exercises={exercises}
               />}
+              
+            {EditDeleteExerciseDialogOpen && <EditDeleteExerciseForm
+              // onConfirm={createTraining}
+              onClose={() => setIsEditDeleteExerciseDialogOpen(false)}
+              trainings={trainings}
+              fetched_exercises={exercises}
+            />}
         </>
     )
 }

@@ -31,7 +31,7 @@
 }
 
 .sidepanel {
-  @apply h-[32%] tv:h-[25%] fixed top-0 right-0 z-10 bg-black overflow-hidden transition-all duration-500;
+  @apply h-[30%] desktop:h-[16%] tv:h-[25%] fixed top-0 right-0 z-10 bg-black overflow-hidden transition-all duration-500;
 }
 
 .sidepanel-button {
