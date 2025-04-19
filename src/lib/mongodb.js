@@ -2,7 +2,7 @@
 
 import { MongoClient } from 'mongodb';
 
-const uri = 'mongodb+srv://raz228822:123raz123@trainingsystemdb.3whrhyu.mongodb.net/?retryWrites=true&w=majority&appName=TrainingSystemDB';
+const uri = 'mongodb+srv://raz228822:HExVRihlqdwXbAjh@trainingsystemdb.3whrhyu.mongodb.net/?retryWrites=true&w=majority&appName=TrainingSystemDB';
 
 const client = new MongoClient(uri);
 

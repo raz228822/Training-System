@@ -101,10 +101,14 @@ export default function Home() {
     }
   }
 
+  const updateExercisesInPage = (updatedExercises) => {
+    setExercises(updatedExercises);
+  };
+
 
   return(
       <div className="my-8 flex items-center">
-        <Sidebar loadTrainingsOnTable={loadTrainingOnTable} trainings={trainings} exercises={exercises}/>
+        <Sidebar loadTrainingsOnTable={loadTrainingOnTable} trainings={trainings} exercises={exercises} updateExercises={updateExercisesInPage}/>
         <Image src={logo} alt="logo"className="laptop:w-[100px] desktop:w-[300px]"/>
         <div className="w-[55%]">
           <table className="bg-white border border-gray-300 tv:h-[97vh] laptop:h-[90vh] desktop:h-[95vh] w-full">

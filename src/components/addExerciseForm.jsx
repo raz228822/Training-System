@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export default function AddExerciseForm({onConfirm, onClose, exercises }) {
+export default function AddExerciseForm({onConfirm, onClose, exercises}) {
   const [exerciseName, setExerciseName] = useState('');
   const [selectedHouse, setSelectedHouse] = useState('');
   const houses = ['Squat','Push','Deadlift','Pull','Lunge','Twist', 'Aerobic_Abs']
@@ -40,7 +40,7 @@ export default function AddExerciseForm({onConfirm, onClose, exercises }) {
             <select
                 value={selectedHouse}
                 onChange={handleSelectChange}
-                className="tv:text-3xl mb-4 tv:my-4 w-[75%] border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
+                className="tv:text-3xl mb-4 tv:my-4 w-full border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
             >
                 <option value="">Select a house</option>
                 {houses.map((house, index) => (
@@ -52,7 +52,7 @@ export default function AddExerciseForm({onConfirm, onClose, exercises }) {
                 type="text"
                 value={exerciseName}
                 onInput={(e) => setExerciseName(e.target.value)}
-                className="tv:my-4 tv:text-3xl mb-4 w-[75%] border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
+                className="tv:my-4 tv:text-3xl mb-4 w-full border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
             />
           <div className="flex justify-between gap-8">
               <button

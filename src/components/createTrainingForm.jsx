@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import AddExerciseForm from './addExerciseForm';
 
-export default function CreateTrainingForm({onConfirm, onClose, trainings, fetched_exercises }) {
+export default function CreateTrainingForm({onConfirm, onClose, trainings, fetched_exercises, updateExercises }) {
   const [trainingName, setTrainingName] = useState('');
   const [selectedSquat, setSelectedSquat] = useState('');
   const [selectedSquatAerobicAbs, setSelectedSquatAerobicAbs] = useState('');
@@ -23,6 +23,10 @@ export default function CreateTrainingForm({onConfirm, onClose, trainings, fetch
     setExercises(fetched_exercises);
   }, [fetched_exercises]);
 
+  useEffect(() => {
+    updateExercises(exercises);
+  }, [exercises])
+
   const exerciseCategories = [
     { name: 'Squat House', key: 'squat' },
     { name: 'Push House', key: 'push' },
@@ -37,7 +41,6 @@ export default function CreateTrainingForm({onConfirm, onClose, trainings, fetch
     acc[category.key] = exercises.filter(exercise => exercise.house === category.key);
     return acc;
   }, {});
-  console.log(categorizedExercises)
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -107,7 +110,7 @@ export default function CreateTrainingForm({onConfirm, onClose, trainings, fetch
         throw new Error('Failed to create exercise');
       }
       setExercises(prevExercises => [...prevExercises, exerciseData]);
-      console.log(exercises)
+      //add exercises update to the main page
       const responseData = await response.json();
       return responseData;
     } catch (error) {

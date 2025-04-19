@@ -39,25 +39,20 @@ import { ObjectId } from "mongodb";
   export async function PATCH(req, res) {
     try {
       const { id, exerciseNewName } = await req.json();
-      
+
       if (!id) {
         return res.status(400).json({ error: "Exercise ID is required" });
       }
-  
+      
       const client = await connectToMongoDB();
       const db = client.db('TrainingSystemDB');
-      
       const objectId = new ObjectId(id); // Convert id to ObjectId type
-      
       const result = await db.collection("exercises").updateOne(
         { "_id": objectId },
         { $set: { "name": exerciseNewName } }
       );
-  
       console.log("Update result:", result);
-      
       client.close();
-  
       if (result.modifiedCount === 1) {
         return NextResponse.json({ message: "Exercise changed successfully" }, { status: 200 })
       } else {
@@ -68,40 +63,6 @@ import { ObjectId } from "mongodb";
       return NextResponse.json({ error: "Error creating exercise" }, { status: 500 });
     }
   }
-
-  // export async function PATCH(req, res) {
-  //   try {
-  //     const { id, exerciseNewName } = await req.json();
-      
-  //     if (!id) {
-  //       return res.status(400).json({ error: "Exercise ID is required" });
-  //     }
-  
-  //     const client = await connectToMongoDB();
-  //     const db = client.db('TrainingSystemDB');
-      
-  //     const objectId = ObjectId(id); // Convert id to ObjectId type
-      
-  //     const result = await db.collection("exercises").updateOne(
-  //       { "_id": objectId },
-  //       { $set: { "name": exerciseNewName } }
-  //     );
-  
-  //     console.log("Update result:", result);
-      
-  //     client.close();
-  
-  //     if (result.modifiedCount === 1) {
-  //       return res.status(200).json({ message: "Exercise updated successfully" });
-  //     } else {
-  //       return res.status(404).json({ error: "Failed to update exercise" });
-  //     }
-  //   } catch (e) {
-  //     console.error("Error updating exercise:", e);
-  //     return res.status(500).json({ error: "Internal server error" });
-  //   }
-  // }
-
 
   // DELETE Method for deleting an exercise
   export async function DELETE(req, res) {

@@ -1,21 +1,11 @@
 import { useEffect, useState } from 'react';
 
-export default function EditDeleteExerciseForm({ onClose, fetched_exercises }) {
+export default function EditDeleteExerciseForm({ onClose, fetched_exercises, updateExercises }) {
   const [exerciseName, setExerciseName] = useState('');
   const [selectedHouse, setSelectedHouse] = useState('');
   const [selectedExercise, setSelectedExercise] = useState('');
   const houses = ['Squat', 'Push', 'Deadlift', 'Pull', 'Lunge', 'Twist', 'Aerobic_Abs'];
   const [exercises, setExercises] = useState(fetched_exercises);
-
-  // const exerciseCategories = [
-  //   { name: 'Squat House', key: 'squat' },
-  //   { name: 'Push House', key: 'push' },
-  //   { name: 'Deadlift House', key: 'deadlift' },
-  //   { name: 'Pull House', key: 'pull' },
-  //   { name: 'Lunge House', key: 'lunge' },
-  //   { name: 'Twist House', key: 'twist' },
-  //   { name: 'Aerobic/Abs House', key: 'aerobic_abs' }
-  // ];
 
   // useEffect to update exercises when fetched_exercises changes
   useEffect(() => {
@@ -23,7 +13,7 @@ export default function EditDeleteExerciseForm({ onClose, fetched_exercises }) {
   }, [fetched_exercises]);
 
   useEffect(() => {
-    console.log(exercises)
+    updateExercises(exercises);
   }, [exercises])
 
   const handleHouseSelectChange = (e) => {
@@ -33,43 +23,15 @@ export default function EditDeleteExerciseForm({ onClose, fetched_exercises }) {
 
   const handleExerciseSelectChange = (e) => {
     setSelectedExercise(e.target.value);
-    console.log(findExerciseIdByName(selectedExercise))
   };
 
   // Function to find exercise ID by name
   function findExerciseIdByName(exerciseName) {
-  const exercise = exercises.find(exercise => exercise.name === exerciseName);
-  return exercise ? exercise._id : null;
-}
-
-
-
-  const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (selectedHouse === '' || selectedExercise === '') {
-    return;
+    const exercise = exercises.find(exercise => exercise.name === exerciseName);
+    return exercise ? exercise._id : null;
   }
-  const exerciseId = findExerciseIdByName(selectedExercise);
-  if (!exerciseId) {
-    console.error(`Exercise with name "${selectedExercise}" not found.`);
-    return;
-  }
-  try {
-    const response = await fetch('/api/exercises', {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ id: exerciseId, exerciseNewName: exerciseName }),
-    });
 
-    if (!response.ok) {
-      throw new Error('Failed to update exercise');
-    }
-    const responseData = await response.json();
-    console.log(responseData); // Handle success response as needed
-
-    // Update local state with the new exercise name
+  const handleExerciseUpdate = (exerciseId) => {
     setExercises(prevExercises => (
       prevExercises.map(exercise => {
         if (exercise._id === exerciseId) {
@@ -78,58 +40,80 @@ export default function EditDeleteExerciseForm({ onClose, fetched_exercises }) {
         return exercise; // Return unchanged exercise if not updated
       })
     ));
+  };
 
-    onClose(); // Close the form after successful update
-  } catch (error) {
-    console.error('Error updating exercise:', error);
-    // Handle error state or show error message to the user
-  }
-};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (selectedHouse === '' || selectedExercise === '') {
+      return;
+    }
+    const exerciseId = findExerciseIdByName(selectedExercise);
+    if (!exerciseId) {
+      console.error(`Exercise with name "${selectedExercise}" not found.`);
+      return;
+    }
+    try {
+      const response = await fetch('/api/exercises', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: exerciseId, exerciseNewName: exerciseName }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update exercise');
+      }
+      const responseData = await response.json();
+      console.log(responseData); // Handle success response as needed
+
+      setExerciseName('')
+      handleExerciseUpdate(exerciseId)
+
+      // onClose(); // Close the form after successful update
+    } catch (error) {
+      console.error('Error updating exercise:', error);
+      // Handle error state or show error message to the user
+    }
+  };
+
+  const handleExerciseDelete = async () => {
+    const exerciseId = findExerciseIdByName(selectedExercise);
+    if (!exerciseId) {
+      console.error(`Exercise with name "${selectedExercise}" not found.`);
+      return;
+    }
+    try {
+      const response = await fetch('/api/exercises', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: exerciseId }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete exercise');
+      }
+      const responseData = await response.json();
+      console.log(responseData); // Handle success response as needed
+
+      // Update local state to remove the deleted exercise
+      setExercises(prevExercises => (
+        prevExercises.filter(exercise => exercise._id !== exerciseId)
+      ));
+
+      // onClose(); // Close the form after successful deletion
+    } catch (error) {
+      console.error('Error deleting exercise:', error);
+      // Handle error state or show error message to the user
+    }
+  };
+
   const handleCancel = () => {
     // Call the onCancel callback
     onClose();
   };
-
-
-
-
-  // async function updateExercise(exerciseId, exerciseNewName) {
-  //   try {
-  //     if (!exerciseId) {
-  //       throw new Error(`Exercise with name "${selectedExercise}" not found.`);
-  //     }
-
-  //     const response = await fetch('/api/exercises', {
-  //       method: 'PATCH', // Assuming PATCH method is used for updating
-  //       headers: {
-  //         'Content-Type': 'application/json'
-  //       },
-  //       body: JSON.stringify({ exerciseId, exerciseNewName })
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error('Failed to update exercise');
-  //     }
-
-  //     const responseData = await response.json();
-
-  //     setExercises(prevExercises => {
-  //       const updatedExercises = prevExercises.map(exercise => {
-  //         if (exercise._id === responseData._id) {
-  //           return responseData; // Replace the existing exercise with the updated one
-  //         }
-  //         return exercise; // Return unchanged exercise if not updated
-  //       });
-  //       return updatedExercises;
-  //     });
-
-  //     onClose(); // Close the form after successful update
-  //     return responseData;
-  //   } catch (error) {
-  //     console.error('Error updating exercise:', error);
-  //     throw error;
-  //   }
-  // }
 
   const filteredExercises = exercises.filter(exercise => exercise.house === selectedHouse.toLowerCase());
 
@@ -178,7 +162,8 @@ export default function EditDeleteExerciseForm({ onClose, fetched_exercises }) {
               Confirm
             </button>
             <button
-              onClick={handleCancel}
+              type="button"
+              onClick={handleExerciseDelete}
               className="form-button bg-red-400 hover:bg-red-500">
               Delete
             </button>
